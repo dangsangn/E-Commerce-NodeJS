@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
+import config from '../configs'
 
-const connectString = `mongodb+srv://dangsangnguyen260399_db_user:c03jDgEGgHLQeq77@cluster0.2p8zr1t.mongodb.net/`
-
+const connectString = config.dbUrl
 // singleton pattern
 class Database {
   constructor() {
