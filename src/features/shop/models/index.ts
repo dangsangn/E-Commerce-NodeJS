@@ -23,6 +23,10 @@ const shopSchema = new Schema(
       type: String,
       enum: ['active', 'inactive'],
     },
+    verify: {
+      type: Schema.Types.Boolean,
+      default: false,
+    },
     roles: {
       type: Array,
       default: [],
