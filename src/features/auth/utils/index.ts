@@ -8,14 +8,14 @@ export const createTokenPair = async (
   try {
     const accessToken = jwt.sign(payload, privateKey, {
       expiresIn: '2 days',
-      algorithm: 'RS256',
+      // algorithm: 'RS256',
     })
     const refreshToken = jwt.sign(payload, privateKey, {
       expiresIn: '7 days',
-      algorithm: 'RS256',
+      // algorithm: 'RS256',
     })
 
-    jwt.verify(accessToken, publicKey, (err: any, decoded: any) => {
+    jwt.verify(accessToken, privateKey, (err: any, decoded: any) => {
       if (err) {
         console.log('Error verifying access token:', err)
       }

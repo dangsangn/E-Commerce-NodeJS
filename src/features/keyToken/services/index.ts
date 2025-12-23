@@ -4,15 +4,18 @@ class KeyTokenService {
   static createKeyToken = async ({
     userId,
     publicKey,
+    privateKey,
   }: {
     userId: string
     publicKey: string
+    privateKey: string
   }) => {
     try {
-      const publicKeyString = publicKey.toString()
+      // const publicKeyString = publicKey.toString()
       const tokens = await KeyTokenModel.create({
         user: userId,
-        publicKey: publicKeyString,
+        publicKey: publicKey,
+        privateKey: privateKey,
       })
       return tokens ? tokens.publicKey : null
     } catch (error) {
