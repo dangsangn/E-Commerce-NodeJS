@@ -4,7 +4,7 @@
 
 POST {{baseUrl}}/auth/signup
 Content-Type: application/json
-x-api-key: 7aca2768ed08e82200a13a9a4a6cc6cd9ea5081361803bbb256851e465dc38f2f24988fa99327cea3e7fed849dde27ac212b4828d45a629409f181dfe1d1ae91
+x-api-key: 562751011b7cffb64a8a6d07a26e547afc331cafc2176136f52c2f846036a21f247af46af42e60388de5a6217782b4633110a242ace82609370cc595993b29c0
 
 {
   "email": "test7@test.com",

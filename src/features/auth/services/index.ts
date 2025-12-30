@@ -4,6 +4,7 @@ import { ShopModel } from '../../shop/models'
 import KeyTokenService from '../../keyToken/services'
 import { createTokenPair } from '../utils'
 import { getInfoData } from '../../../utils'
+import { BadRequestError } from '../../../core/error.response'
 
 export const ROLES = {
   SHOP: 'shop',
@@ -25,10 +26,8 @@ class AuthService {
     const existingShop = await ShopModel.findOne({ email }).lean()
 
     if (existingShop) {
-      return {
-        code: 'xxxx',
-        message: 'Shop already exists',
-      }
+      console.log('Shop already exists')
+      throw new BadRequestError('Shop already exists')
     }
 
     // salt and hash password
@@ -65,10 +64,7 @@ class AuthService {
       })
 
       if (!keyToken) {
-        return {
-          code: 'xxxx',
-          message: 'Create key token failed',
-        }
+        throw new BadRequestError('Create key token failed')
       }
 
       const tokens = await createTokenPair(

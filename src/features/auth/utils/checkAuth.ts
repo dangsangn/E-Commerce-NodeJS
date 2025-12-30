@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { findById } from '../../apiKey/services'
+import { ForbiddenError } from '../../../core/error.response'
 
 const HEADER = {
   API_KEY: 'x-api-key',
@@ -14,22 +15,16 @@ export const apiKey = async (
   try {
     const key = req.headers[HEADER.API_KEY]?.toString() as string
     if (!key) {
-      return res.status(403).json({
-        message: 'Forbidden',
-      })
+      throw new ForbiddenError('Forbidden')
     }
     const objectKey = await findById(key)
     if (!objectKey) {
-      return res.status(403).json({
-        message: 'Forbidden',
-      })
+      throw new ForbiddenError('Forbidden')
     }
     ;(req as any).objKey = objectKey
     return next()
   } catch (error) {
-    return res.status(403).json({
-      message: 'Forbidden',
-    })
+    throw new ForbiddenError('Forbidden')
   }
 }
 
