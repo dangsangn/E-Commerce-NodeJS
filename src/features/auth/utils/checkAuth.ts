@@ -1,10 +1,14 @@
 import { NextFunction, Request, Response } from 'express'
 import { findById } from '../../apiKey/services'
-import { ForbiddenError } from '../../../core/error.response'
+import { ForbiddenError, UnauthorizedError } from '../../../core/error.response'
+import { asyncHandler } from '../../../utils'
+import KeyTokenService from '../../keyToken/services'
+import { TokenPayload, verifyToken } from '.'
 
-const HEADER = {
+export const HEADER = {
   API_KEY: 'x-api-key',
   AUTHORIZATION: 'authorization',
+  CLIENT_ID: 'x-client-id',
 }
 
 export const apiKey = async (
@@ -47,3 +51,21 @@ export const permission = (permission: string[]) => {
     return next()
   }
 }
+
+export const authentication = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.headers[HEADER.CLIENT_ID]?.toString()
+    if (!userId) throw new ForbiddenError('Forbidden')
+
+    const keyToken = await KeyTokenService.findByUserId(userId)
+    if (!keyToken) throw new ForbiddenError('Forbidden')
+
+    const accessToken = req.headers[HEADER.AUTHORIZATION]?.toString()
+    if (!accessToken) throw new UnauthorizedError('Unauthorized')
+
+    const decoded = verifyToken(accessToken, keyToken.secretKey) as TokenPayload
+    if (decoded.userId !== userId) throw new UnauthorizedError('Unauthorized')
+    req.keyToken = keyToken
+    return next()
+  }
+)

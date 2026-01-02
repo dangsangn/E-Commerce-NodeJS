@@ -10,17 +10,17 @@ const keyTokenSchema = new Schema(
       required: true,
       ref: 'Shop',
     },
-    publicKey: {
+    secretKey: {
       type: String,
       required: true,
     },
-    privateKey: {
-      type: String,
-      required: true,
-    },
-    refreshToken: {
+    refreshTokensUsed: {
       type: Array,
       default: [],
+    },
+    refreshToken: {
+      type: String,
+      default: null,
     },
   },
   {

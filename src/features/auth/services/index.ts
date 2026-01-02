@@ -4,7 +4,11 @@ import { ShopModel } from '../../shop/models'
 import KeyTokenService from '../../keyToken/services'
 import { createTokenPair } from '../utils'
 import { getInfoData } from '../../../utils'
-import { BadRequestError } from '../../../core/error.response'
+import {
+  BadRequestError,
+  UnauthorizedError,
+} from '../../../core/error.response'
+import ShopService from '../../shop/services'
 
 export const ROLES = {
   SHOP: 'shop',
@@ -14,6 +18,53 @@ export const ROLES = {
 }
 
 class AuthService {
+  static login = async ({
+    email,
+    password,
+  }: {
+    email: string
+    password: string
+  }) => {
+    const shop = await ShopService.findByEmail({ email })
+    if (!shop) {
+      throw new BadRequestError('Shop not found')
+    }
+
+    const isMatchPassword = await bcrypt.compare(password, shop.password)
+    if (!isMatchPassword) {
+      throw new UnauthorizedError('Invalid password')
+    }
+
+    // Generate secret key for HS256 (symmetric encryption)
+    const secretKey = crypto.randomBytes(64).toString('hex')
+
+    // Store key in database (for token refresh/revocation)
+    const keyToken = await KeyTokenService.createKeyToken({
+      userId: String(shop._id),
+      secretKey,
+    })
+
+    if (!keyToken) {
+      throw new BadRequestError('Create key token failed')
+    }
+
+    const tokens = await createTokenPair(
+      {
+        userId: String(shop._id),
+        email,
+      },
+      secretKey
+    )
+
+    return {
+      shop: getInfoData({
+        fields: ['_id', 'email', 'name'],
+        object: shop,
+      }),
+      tokens,
+    }
+  }
+
   static signup = async ({
     email,
     password,
@@ -26,7 +77,6 @@ class AuthService {
     const existingShop = await ShopModel.findOne({ email }).lean()
 
     if (existingShop) {
-      console.log('Shop already exists')
       throw new BadRequestError('Shop already exists')
     }
 
@@ -54,13 +104,12 @@ class AuthService {
       //   },
       // })
 
-      const privateKey = crypto.randomBytes(64).toString('hex')
-      const publicKey = crypto.randomBytes(64).toString('hex')
+      // Generate secret key for HS256 (symmetric encryption)
+      const secretKey = crypto.randomBytes(64).toString('hex')
 
       const keyToken = await KeyTokenService.createKeyToken({
         userId: String(newShop._id),
-        publicKey: publicKey,
-        privateKey: privateKey,
+        secretKey,
       })
 
       if (!keyToken) {
@@ -72,26 +121,23 @@ class AuthService {
           userId: String(newShop._id),
           email,
         },
-        publicKey,
-        privateKey
+        secretKey
       )
 
       return {
-        code: '201',
-        metadata: {
-          shop: getInfoData({
-            fields: ['_id', 'email', 'name'],
-            object: newShop,
-          }),
-          tokens,
-        },
+        shop: getInfoData({
+          fields: ['_id', 'email', 'name'],
+          object: newShop,
+        }),
+        tokens,
       }
     }
 
-    return {
-      code: '200',
-      metadata: null,
-    }
+    return null
+  }
+
+  static logout = async ({ userId }: { userId: string }) => {
+    return await KeyTokenService.deleteKeyToken(userId)
   }
 }
 
