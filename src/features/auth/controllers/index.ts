@@ -27,6 +27,12 @@ class AuthController {
       data: { ...data, message: 'Logged out successfully' },
     })
   }
+
+  refreshToken = async (req: Request, res: Response) => {
+    const { refreshToken } = req.body
+    const data = await AuthService.refreshToken({ refreshToken })
+    return OkResponse.send(res, { data })
+  }
 }
 
 export default new AuthController()

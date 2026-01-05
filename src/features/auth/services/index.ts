@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 import { ShopModel } from '../../shop/models'
 import KeyTokenService from '../../keyToken/services'
-import { createTokenPair } from '../utils'
+import { createTokenPair, TokenPayload, verifyToken } from '../utils'
 import { getInfoData } from '../../../utils'
 import {
   BadRequestError,
@@ -38,16 +38,6 @@ class AuthService {
     // Generate secret key for HS256 (symmetric encryption)
     const secretKey = crypto.randomBytes(64).toString('hex')
 
-    // Store key in database (for token refresh/revocation)
-    const keyToken = await KeyTokenService.createKeyToken({
-      userId: String(shop._id),
-      secretKey,
-    })
-
-    if (!keyToken) {
-      throw new BadRequestError('Create key token failed')
-    }
-
     const tokens = await createTokenPair(
       {
         userId: String(shop._id),
@@ -55,6 +45,17 @@ class AuthService {
       },
       secretKey
     )
+
+    // Store key in database (for token refresh/revocation)
+    const keyToken = await KeyTokenService.createKeyToken({
+      userId: String(shop._id),
+      secretKey,
+      refreshToken: tokens.refreshToken,
+    })
+
+    if (!keyToken) {
+      throw new BadRequestError('Create key token failed')
+    }
 
     return {
       shop: getInfoData({
@@ -138,6 +139,55 @@ class AuthService {
 
   static logout = async ({ userId }: { userId: string }) => {
     return await KeyTokenService.deleteKeyToken(userId)
+  }
+
+  static refreshToken = async ({ refreshToken }: { refreshToken: string }) => {
+    const foundToken = await KeyTokenService.findByRefreshTokenUsed(
+      refreshToken
+    )
+    if (foundToken) {
+      await KeyTokenService.deleteKeyTokenByRefreshToken(refreshToken)
+      throw new BadRequestError('Refresh token is used. Please login again.')
+    }
+
+    const holdToken = await KeyTokenService.findByRefreshToken(refreshToken)
+    if (!holdToken) {
+      throw new BadRequestError('Refresh token is invalid')
+    }
+
+    const { email } = verifyToken(
+      refreshToken,
+      holdToken.secretKey
+    ) as TokenPayload
+
+    const foundShop = await ShopService.findByEmail({ email })
+
+    if (!foundShop) {
+      throw new BadRequestError('Shop not exist')
+    }
+
+    const newAccessToken = await createTokenPair(
+      { userId: String(foundShop._id), email },
+      holdToken.secretKey
+    )
+
+    //update token
+    await holdToken.updateOne({
+      $set: {
+        refreshToken: newAccessToken.refreshToken,
+      },
+      $addToSet: {
+        refreshTokensUsed: refreshToken,
+      },
+    })
+
+    return {
+      tokens: newAccessToken,
+      shop: getInfoData({
+        fields: ['_id', 'email', 'name'],
+        object: foundShop,
+      }),
+    }
   }
 }
 
