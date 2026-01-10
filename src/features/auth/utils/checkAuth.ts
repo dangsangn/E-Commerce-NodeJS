@@ -66,6 +66,7 @@ export const authentication = asyncHandler(
     const decoded = verifyToken(accessToken, keyToken.secretKey) as TokenPayload
     if (decoded.userId !== userId) throw new UnauthorizedError('Unauthorized')
     req.keyToken = keyToken
+    req.user = decoded
     return next()
   }
 )

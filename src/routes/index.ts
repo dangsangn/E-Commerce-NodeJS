@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import shopRouter from '../features/shop/routes'
 import authRouter from '../features/auth/routes'
+import productRouter from '../features/product/routes'
 import { apiKey, permission } from '../features/auth/utils/checkAuth'
 
 const router = Router()
@@ -13,5 +14,6 @@ router.use(permission(['0000']))
 
 router.use('/shop', shopRouter)
 router.use('/auth', authRouter)
+router.use('/product', productRouter)
 
 export default router

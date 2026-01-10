@@ -41,6 +41,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     code: statusCode,
     message: err.message || 'Internal Server Error',
     status: 'error',
+    stack: err.stack,
   })
 })
 

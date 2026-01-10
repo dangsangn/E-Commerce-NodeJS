@@ -18,6 +18,7 @@ declare global {
   namespace Express {
     interface Request {
       keyToken?: KeyToken
+      user?: TokenPayload
       objKey?: any // API key object (can be typed later if needed)
     }
   }
