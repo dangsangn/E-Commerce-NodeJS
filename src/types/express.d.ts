@@ -20,6 +20,7 @@ declare global {
       keyToken?: KeyToken
       user?: TokenPayload
       objKey?: any // API key object (can be typed later if needed)
+      refreshToken?: string
     }
   }
 }

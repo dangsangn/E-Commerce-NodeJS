@@ -29,8 +29,11 @@ class AuthController {
   }
 
   refreshToken = async (req: Request, res: Response) => {
-    const { refreshToken } = req.body
-    const data = await AuthService.refreshToken({ refreshToken })
+    const refreshToken = req.refreshToken as string
+    const data = await AuthService.refreshToken({
+      refreshToken,
+      userInfo: req.user,
+    })
     return OkResponse.send(res, { data })
   }
 }

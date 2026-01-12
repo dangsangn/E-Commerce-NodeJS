@@ -141,7 +141,13 @@ class AuthService {
     return await KeyTokenService.deleteKeyToken(userId)
   }
 
-  static refreshToken = async ({ refreshToken }: { refreshToken: string }) => {
+  static refreshToken = async ({
+    refreshToken,
+    userInfo,
+  }: {
+    refreshToken: string
+    userInfo: TokenPayload
+  }) => {
     const foundToken = await KeyTokenService.findByRefreshTokenUsed(
       refreshToken
     )
@@ -155,19 +161,8 @@ class AuthService {
       throw new BadRequestError('Refresh token is invalid')
     }
 
-    const { email } = verifyToken(
-      refreshToken,
-      holdToken.secretKey
-    ) as TokenPayload
-
-    const foundShop = await ShopService.findByEmail({ email })
-
-    if (!foundShop) {
-      throw new BadRequestError('Shop not exist')
-    }
-
     const newAccessToken = await createTokenPair(
-      { userId: String(foundShop._id), email },
+      { userId: userInfo.userId, email: userInfo.email },
       holdToken.secretKey
     )
 
@@ -183,10 +178,7 @@ class AuthService {
 
     return {
       tokens: newAccessToken,
-      shop: getInfoData({
-        fields: ['_id', 'email', 'name'],
-        object: foundShop,
-      }),
+      shop: userInfo,
     }
   }
 }

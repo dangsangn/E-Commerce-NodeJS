@@ -11,15 +11,19 @@ import {
 } from '../model'
 
 export class ProductServiceFactory {
+  static productRegister: Record<string, any> = {} // key: product_type, value: Class
+
+  static registerProductType = (type: string, Class: any) => {
+    this.productRegister[type] = Class
+  }
   static createProduct = (payload: any) => {
-    switch (payload.product_type) {
-      case productType.CLOTHING:
-        return new ClothingService(payload).createProduct()
-      case productType.ELECTRONICS:
-        return new ElectronicService(payload).createProduct()
-      default:
-        throw new BadRequestError('Invalid product type')
+    const type = payload.product_type
+
+    const ProductClass = this.productRegister[type]
+    if (!ProductClass) {
+      throw new BadRequestError('Invalid product type')
     }
+    return new ProductClass(payload).createProduct()
   }
 }
 
@@ -143,6 +147,12 @@ export class ElectronicService extends ProductService {
     }
   }
 }
+
+ProductServiceFactory.registerProductType(productType.CLOTHING, ClothingService)
+ProductServiceFactory.registerProductType(
+  productType.ELECTRONICS,
+  ElectronicService
+)
 
 // create data payload for clothing product
 
