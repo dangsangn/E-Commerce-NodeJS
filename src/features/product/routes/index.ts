@@ -5,7 +5,22 @@ import { authentication } from '../../auth/utils/checkAuth'
 
 const router = express.Router()
 
+router.get('/', asyncHandler(ProductController.searchProductByUser))
+
 router.use(authentication)
 router.post('/', asyncHandler(ProductController.createProduct))
+router.get('/draft', asyncHandler(ProductController.getDraftProductByShop))
+router.get(
+  '/published',
+  asyncHandler(ProductController.getPublishedProductByShop)
+)
+router.patch(
+  '/published/:id',
+  asyncHandler(ProductController.setPublishedProductByShop)
+)
+router.patch(
+  '/draft/:id',
+  asyncHandler(ProductController.setDraftProductByShop)
+)
 
 export default router

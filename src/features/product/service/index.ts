@@ -9,6 +9,8 @@ import {
   ProductModel,
   productType,
 } from '../model'
+import { ProductRepository } from '../repository'
+import { PAGINATION_DEFAULT_LIMIT } from '../../../constants/common'
 
 export class ProductServiceFactory {
   static productRegister: Record<string, any> = {} // key: product_type, value: Class
@@ -24,6 +26,76 @@ export class ProductServiceFactory {
       throw new BadRequestError('Invalid product type')
     }
     return new ProductClass(payload).createProduct()
+  }
+
+  static searchProductByUser = async ({
+    query,
+    page = 1,
+    limit = PAGINATION_DEFAULT_LIMIT,
+  }: {
+    query: any
+    page?: number
+    limit?: number
+  }) => {
+    return await ProductRepository.searchProductByUser({
+      query,
+      page,
+      limit,
+    })
+  }
+
+  static getDraftProductByShop = async ({
+    query,
+    limit = PAGINATION_DEFAULT_LIMIT,
+    page = 1,
+  }: {
+    query: any
+    limit?: number
+    page?: number
+  }) => {
+    return await ProductRepository.getDraftProductByShop({ query, limit, page })
+  }
+
+  static getPublishedProductByShop = async ({
+    query,
+    limit = PAGINATION_DEFAULT_LIMIT,
+    page = 1,
+  }: {
+    query: any
+    limit?: number
+    page?: number
+  }) => {
+    return await ProductRepository.getPublishedProductByShop({
+      query,
+      limit,
+      page,
+    })
+  }
+
+  static setPublishedProductByShop = async ({
+    product_shop,
+    product_id,
+  }: {
+    product_shop: string
+    product_id: string
+  }) => {
+    return await ProductRepository.setPublishedProductByShop({
+      product_shop,
+      product_id,
+    })
+  }
+
+  static setDraftProductByShop = async ({
+    product_shop,
+    product_id,
+  }: {
+    product_shop: string
+    product_id: string
+  }) => {
+    return await ProductRepository.setDraftProductByShop({
+      product_shop,
+      product_id,
+    })
   }
 }
 
@@ -153,37 +225,3 @@ ProductServiceFactory.registerProductType(
   productType.ELECTRONICS,
   ElectronicService
 )
-
-// create data payload for clothing product
-
-export const clothingPayload = {
-  product_name: 'Product 1',
-  product_thumb: 'https://example.com/product-1.jpg',
-  product_description: 'Description 1',
-  product_price: 100,
-  product_quantity: 10,
-  product_type: productType.CLOTHING,
-  product_shop: 'shop1',
-  product_attributes: {
-    brand: 'Brand 1',
-    color: 'Color 1',
-    size: 'Size 1',
-    material: 'Material 1',
-  },
-}
-
-// create data payload for electronic product
-
-export const electronicPayload = {
-  product_name: 'Product 1',
-  product_thumb: 'https://example.com/product-1.jpg',
-  product_description: 'Description 1',
-  product_price: 100,
-  product_quantity: 10,
-  product_type: productType.ELECTRONICS,
-  product_shop: 'shop1',
-  product_attributes: {
-    manufacturer: 'Manufacturer 1',
-    model: 'Model 1',
-  },
-}

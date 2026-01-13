@@ -10,6 +10,49 @@ class ProductController {
     })
     return OkResponse.send(res, { data })
   }
+
+  searchProductByUser = async (req: Request, res: Response) => {
+    const data = await ProductServiceFactory.searchProductByUser({
+      query: req.params,
+      page: req.query.page as unknown as number,
+      limit: req.query.limit as unknown as number,
+    })
+    return OkResponse.send(res, { data })
+  }
+
+  getDraftProductByShop = async (req: Request, res: Response) => {
+    const data = await ProductServiceFactory.getDraftProductByShop({
+      query: { ...req.params, product_shop: req.user?.userId },
+      page: req.query.page as unknown as number,
+      limit: req.query.limit as unknown as number,
+    })
+    return OkResponse.send(res, { data })
+  }
+
+  getPublishedProductByShop = async (req: Request, res: Response) => {
+    const data = await ProductServiceFactory.getPublishedProductByShop({
+      query: { ...req.params, product_shop: req.user?.userId },
+      page: req.query.page as unknown as number,
+      limit: req.query.limit as unknown as number,
+    })
+    return OkResponse.send(res, { data })
+  }
+
+  setPublishedProductByShop = async (req: Request, res: Response) => {
+    const data = await ProductServiceFactory.setPublishedProductByShop({
+      product_shop: req.user?.userId,
+      product_id: req.params.id,
+    })
+    return OkResponse.send(res, { data })
+  }
+
+  setDraftProductByShop = async (req: Request, res: Response) => {
+    const data = await ProductServiceFactory.setDraftProductByShop({
+      product_shop: req.user?.userId,
+      product_id: req.params.id,
+    })
+    return OkResponse.send(res, { data })
+  }
 }
 
 export default new ProductController()
