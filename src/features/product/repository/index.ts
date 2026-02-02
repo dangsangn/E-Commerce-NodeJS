@@ -2,7 +2,7 @@ import { createPaginationResponse, parsePagination } from '../../../utils'
 import { ProductModel } from '../model'
 
 export class ProductRepository {
-  static searchProductByUser = async ({
+  static searchProducts = async ({
     query,
     page = 1,
     limit = 50,
@@ -114,5 +114,11 @@ export class ProductRepository {
       { product_shop, _id: product_id },
       { isDraft: true, isPublished: false }
     )
+  }
+
+  static getDetailProduct = async ({ product_id }: { product_id: string }) => {
+    return ProductModel.findById(product_id).select({
+      __v: 0,
+    }).lean().exec()
   }
 }

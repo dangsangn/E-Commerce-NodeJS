@@ -5,9 +5,11 @@ import { authentication } from '../../auth/utils/checkAuth'
 
 const router = express.Router()
 
-router.get('/', asyncHandler(ProductController.searchProductByUser))
+router.get('/', asyncHandler(ProductController.searchProducts))
+router.get('/:id', asyncHandler(ProductController.getDetailProduct))
 
 router.use(authentication)
+
 router.post('/', asyncHandler(ProductController.createProduct))
 router.get('/draft', asyncHandler(ProductController.getDraftProductByShop))
 router.get(

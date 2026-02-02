@@ -28,7 +28,7 @@ export class ProductServiceFactory {
     return new ProductClass(payload).createProduct()
   }
 
-  static searchProductByUser = async ({
+  static searchProducts = async ({
     query,
     page = 1,
     limit = PAGINATION_DEFAULT_LIMIT,
@@ -37,7 +37,7 @@ export class ProductServiceFactory {
     page?: number
     limit?: number
   }) => {
-    return await ProductRepository.searchProductByUser({
+    return await ProductRepository.searchProducts({
       query,
       page,
       limit,
@@ -96,6 +96,10 @@ export class ProductServiceFactory {
       product_shop,
       product_id,
     })
+  }
+
+  static getDetailProduct = async ({ product_id }: { product_id: string }) => {
+    return await ProductRepository.getDetailProduct({ product_id })
   }
 }
 

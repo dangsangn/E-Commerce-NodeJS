@@ -11,8 +11,8 @@ class ProductController {
     return OkResponse.send(res, { data })
   }
 
-  searchProductByUser = async (req: Request, res: Response) => {
-    const data = await ProductServiceFactory.searchProductByUser({
+  searchProducts = async (req: Request, res: Response) => {
+    const data = await ProductServiceFactory.searchProducts({
       query: req.params,
       page: req.query.page as unknown as number,
       limit: req.query.limit as unknown as number,
@@ -49,6 +49,13 @@ class ProductController {
   setDraftProductByShop = async (req: Request, res: Response) => {
     const data = await ProductServiceFactory.setDraftProductByShop({
       product_shop: req.user?.userId,
+      product_id: req.params.id,
+    })
+    return OkResponse.send(res, { data })
+  }
+
+  getDetailProduct = async (req: Request, res: Response) => {
+    const data = await ProductServiceFactory.getDetailProduct({
       product_id: req.params.id,
     })
     return OkResponse.send(res, { data })
