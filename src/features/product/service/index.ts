@@ -11,6 +11,9 @@ import {
 } from '../model'
 import { ProductRepository } from '../repository'
 import { PAGINATION_DEFAULT_LIMIT } from '../../../constants/common'
+import { FindAndUpdateProductPayload } from '../dto'
+import { flattenObject, removeNullUndefinedObject } from '../../../utils'
+import { insertInventory } from '../../inventory/repository'
 
 export class ProductServiceFactory {
   static productRegister: Record<string, any> = {} // key: product_type, value: Class
@@ -101,6 +104,24 @@ export class ProductServiceFactory {
   static getDetailProduct = async ({ product_id }: { product_id: string }) => {
     return await ProductRepository.getDetailProduct({ product_id })
   }
+
+  static updateProduct = async ({
+    product_id,
+    payload,
+  }: {
+    product_id: string
+    payload: FindAndUpdateProductPayload
+  }) => {
+    const product = await ProductRepository.getDetailProduct({ product_id })
+    if (!product) throw new BadRequestError('Product not found')
+    const type = product.product_type
+
+    const ProductClass = (this.productRegister[type as keyof typeof this.productRegister])
+    if (!ProductClass) {
+      throw new BadRequestError('Invalid product type')
+    }
+    return new ProductClass(product).updateProduct(product_id, payload)
+  }
 }
 
 export abstract class ProductService {
@@ -159,10 +180,27 @@ export abstract class ProductService {
     session: mongoose.mongo.ClientSession,
     product_id: mongoose.Types.ObjectId
   ) {
-    return await ProductModel.create(
+    const newProduct = (await ProductModel.create(
       [{ ...this.toProductObject(), _id: product_id.toString() }],
       { session }
-    )
+    ))[0]
+
+    if (!newProduct) throw new BadRequestError('Create product failed')
+
+    await insertInventory({
+      product_id: newProduct._id,
+      shop_id: new mongoose.Types.ObjectId(this.product_shop),
+      stock: this.product_quantity,
+    })
+
+    return newProduct
+  }
+  async updateProduct(product_id: mongoose.Types.ObjectId, payload: FindAndUpdateProductPayload) {
+    return await ProductRepository.findAndUpdate({
+      product_id,
+      payload,
+      model: ProductModel,
+    })
   }
 }
 
@@ -192,6 +230,23 @@ export class ClothingService extends ProductService {
       session.endSession()
     }
   }
+
+  async updateProduct(product_id: mongoose.Types.ObjectId, payload: FindAndUpdateProductPayload) {
+    const flattenedPayload = flattenObject(payload)
+    // update product
+    const updatedProduct = await super.updateProduct(product_id, flattenedPayload)
+    console.log("🚀 ~ updatedProduct:", updatedProduct)
+    if (payload.product_attributes) {
+      const flattenedProductAttributes = flattenObject(payload.product_attributes)
+      await ProductRepository.findAndUpdate({
+        product_id,
+        payload: flattenedProductAttributes,
+        model: ClothingModel,
+      })
+    }
+
+  }
+
 }
 
 export class ElectronicService extends ProductService {

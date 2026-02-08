@@ -60,6 +60,13 @@ class ProductController {
     })
     return OkResponse.send(res, { data })
   }
+  updateProduct = async (req: Request, res: Response) => {
+    const data = await ProductServiceFactory.updateProduct({
+      product_id: req.params.id,
+      payload: req.body,
+    })
+    return OkResponse.send(res, { data })
+  }
 }
 
 export default new ProductController()

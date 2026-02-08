@@ -56,3 +56,35 @@ export const createPaginationResponse = <T>(
     },
   }
 }
+
+
+export const removeNullUndefinedObject = (obj: any) => {
+  return Object.keys(obj).reduce((acc, key) => {
+    if (obj[key] !== undefined && obj[key] !== null) {
+      acc[key] = removeNullUndefinedObject(obj[key])
+    }
+    return acc
+  }, {} as Record<string, any>)
+}
+
+export const flattenObject = (
+  obj: any,
+  prefix = ''
+): Record<string, any> => {
+  return Object.keys(obj).reduce((acc, key) => {
+    const value = obj[key]
+    const path = prefix ? `${prefix}.${key}` : key
+
+    if (value === undefined || value === null) {
+      return acc
+    }
+
+    if (typeof value === 'object' && !Array.isArray(value)) {
+      Object.assign(acc, flattenObject(value, path))
+    } else {
+      acc[path] = value
+    }
+
+    return acc
+  }, {} as Record<string, any>)
+}

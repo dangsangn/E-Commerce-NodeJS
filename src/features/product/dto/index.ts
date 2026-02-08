@@ -7,3 +7,5 @@ export interface BaseProductPayload {
   product_shop: string
   product_attributes: any
 }
+
+export type FindAndUpdateProductPayload = Partial<BaseProductPayload>

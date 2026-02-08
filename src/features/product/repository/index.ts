@@ -1,4 +1,6 @@
+import mongoose from 'mongoose'
 import { createPaginationResponse, parsePagination } from '../../../utils'
+import { FindAndUpdateProductPayload } from '../dto'
 import { ProductModel } from '../model'
 
 export class ProductRepository {
@@ -120,5 +122,17 @@ export class ProductRepository {
     return ProductModel.findById(product_id).select({
       __v: 0,
     }).lean().exec()
+  }
+
+  static findAndUpdate = async ({
+    product_id,
+    payload,
+    model
+  }: {
+    product_id: mongoose.Types.ObjectId
+    payload: FindAndUpdateProductPayload
+    model: mongoose.Model<any>
+  }) => {
+    return model.findByIdAndUpdate(product_id, payload, { new: true }).lean().exec()
   }
 }
