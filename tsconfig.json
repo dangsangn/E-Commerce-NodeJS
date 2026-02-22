@@ -7,7 +7,9 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": ["./node_modules/@types"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
-  "include": ["src/**/*", "src/types/**/*", "design_patterns"]
+  "include": ["src/**/*"]
 }
