@@ -28,10 +28,10 @@ export class ProductRepository {
     const [result, total] = await Promise.all([
       ProductModel.find(
         queryBuilt,
-        hasTextSearch ? { score: { $meta: 'textScore' } } : {}
+        hasTextSearch ? { score: { $meta: 'textScore' } } : {},
       )
         .sort(
-          hasTextSearch ? { score: { $meta: 'textScore' } } : { updatedAt: -1 }
+          hasTextSearch ? { score: { $meta: 'textScore' } } : { updatedAt: -1 },
         )
         .skip(skip)
         .limit(limitNum)
@@ -101,7 +101,7 @@ export class ProductRepository {
   }) => {
     return ProductModel.updateOne(
       { product_shop, _id: product_id },
-      { isPublished: true, isDraft: false }
+      { isPublished: true, isDraft: false },
     )
   }
 
@@ -114,25 +114,41 @@ export class ProductRepository {
   }) => {
     return ProductModel.updateOne(
       { product_shop, _id: product_id },
-      { isDraft: true, isPublished: false }
+      { isDraft: true, isPublished: false },
     )
   }
 
   static getDetailProduct = async ({ product_id }: { product_id: string }) => {
-    return ProductModel.findById(product_id).select({
-      __v: 0,
-    }).lean().exec()
+    return ProductModel.findById(product_id)
+      .select({
+        __v: 0,
+      })
+      .lean()
+      .exec()
   }
 
   static findAndUpdate = async ({
     product_id,
     payload,
-    model
+    model,
   }: {
     product_id: mongoose.Types.ObjectId
     payload: FindAndUpdateProductPayload
     model: mongoose.Model<any>
   }) => {
-    return model.findByIdAndUpdate(product_id, payload, { new: true }).lean().exec()
+    return model
+      .findByIdAndUpdate(product_id, payload, { new: true })
+      .lean()
+      .exec()
+  }
+
+  static getProductPublishedById = async (
+    product_id: string,
+    select?: string[],
+  ) => {
+    return ProductModel.findOne({ _id: product_id, isPublished: true })
+      .select(select || { __v: 0 })
+      .lean()
+      .exec()
   }
 }

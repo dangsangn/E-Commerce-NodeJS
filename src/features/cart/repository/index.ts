@@ -24,4 +24,81 @@ export class CartRepository {
       cart_count_product: totalQuantity,
     })
   }
+
+  // add product to cart
+  static pushProductToCart = async (cartId: string, product: any) => {
+    return CartModel.findByIdAndUpdate(
+      cartId,
+      {
+        $push: { cart_products: product },
+        $inc: { cart_count_product: product.quantity },
+      },
+      {
+        new: true,
+        lean: true,
+      },
+    )
+  }
+
+  // update quantity product in cart
+  // avoid race condition
+  static updateProductQuantity = async ({
+    cartId,
+    productId,
+    oldQuantity,
+    newQuantity,
+  }: {
+    cartId: string
+    productId: string
+    oldQuantity: number
+    newQuantity: number
+  }) => {
+    const quantityDiff = newQuantity - oldQuantity
+    return CartModel.findOneAndUpdate(
+      {
+        _id: cartId,
+        'cart_products.productId': productId,
+        'cart_products.quantity': oldQuantity, // optimistic lock
+      },
+      {
+        $set: { 'cart_products.$.quantity': newQuantity },
+        $inc: { cart_count_product: quantityDiff },
+      },
+      {
+        new: true,
+        lean: true,
+      },
+    )
+  }
+
+  static removeProductFromCart = async (
+    cartId: string,
+    productId: string,
+    oldQuantity: number,
+  ) => {
+    return CartModel.findOneAndUpdate(
+      {
+        _id: cartId,
+        'cart_products.productId': productId,
+        'cart_products.quantity': oldQuantity, // optimistic when delete
+      },
+      {
+        $pull: {
+          cart_products: { productId: new mongoose.Types.ObjectId(productId) },
+        },
+        $inc: { cart_count_product: -oldQuantity },
+      },
+      {
+        new: true,
+        lean: true,
+      },
+    )
+  }
+
+  // delete cart after checkout
+  static deleteCartByUserId = async (userId: string) => {
+    return CartModel.findOneAndDelete({
+      cart_userId: userId,
+    })
+  }
 }
