@@ -8,7 +8,7 @@ export interface KeyToken {
   user: Types.ObjectId
   secretKey: string
   refreshTokensUsed: string[]
-  refreshToken: string | null
+  refreshToken?: string | null
   createdAt?: Date
   updatedAt?: Date
 }

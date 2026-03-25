@@ -116,7 +116,8 @@ export class ProductServiceFactory {
     if (!product) throw new BadRequestError('Product not found')
     const type = product.product_type
 
-    const ProductClass = (this.productRegister[type as keyof typeof this.productRegister])
+    const ProductClass =
+      this.productRegister[type as keyof typeof this.productRegister]
     if (!ProductClass) {
       throw new BadRequestError('Invalid product type')
     }
@@ -178,12 +179,14 @@ export abstract class ProductService {
 
   async createProduct(
     session: mongoose.mongo.ClientSession,
-    product_id: mongoose.Types.ObjectId
+    product_id: mongoose.Types.ObjectId,
   ) {
-    const newProduct = (await ProductModel.create(
-      [{ ...this.toProductObject(), _id: product_id.toString() }],
-      { session }
-    ))[0]
+    const newProduct = (
+      await ProductModel.create(
+        [{ ...this.toProductObject(), _id: product_id.toString() }],
+        { session },
+      )
+    )[0]
 
     if (!newProduct) throw new BadRequestError('Create product failed')
 
@@ -191,11 +194,15 @@ export abstract class ProductService {
       product_id: newProduct._id,
       shop_id: new mongoose.Types.ObjectId(this.product_shop),
       stock: this.product_quantity,
+      session,
     })
 
     return newProduct
   }
-  async updateProduct(product_id: mongoose.Types.ObjectId, payload: FindAndUpdateProductPayload) {
+  async updateProduct(
+    product_id: mongoose.Types.ObjectId,
+    payload: FindAndUpdateProductPayload,
+  ) {
     return await ProductRepository.findAndUpdate({
       product_id,
       payload,
@@ -213,12 +220,12 @@ export class ClothingService extends ProductService {
         [{ ...this.product_attributes, product_shop: this.product_shop }],
         {
           session,
-        }
+        },
       )
       if (!createClothing) throw new BadRequestError('Create clothing failed')
       const newProduct = await super.createProduct(
         session,
-        createClothing[0]._id
+        createClothing[0]._id,
       )
       if (!newProduct) throw new BadRequestError('Create product failed')
       await session.commitTransaction()
@@ -231,22 +238,27 @@ export class ClothingService extends ProductService {
     }
   }
 
-  async updateProduct(product_id: mongoose.Types.ObjectId, payload: FindAndUpdateProductPayload) {
+  async updateProduct(
+    product_id: mongoose.Types.ObjectId,
+    payload: FindAndUpdateProductPayload,
+  ) {
     const flattenedPayload = flattenObject(payload)
     // update product
-    const updatedProduct = await super.updateProduct(product_id, flattenedPayload)
-    console.log("🚀 ~ updatedProduct:", updatedProduct)
+    const updatedProduct = await super.updateProduct(
+      product_id,
+      flattenedPayload,
+    )
     if (payload.product_attributes) {
-      const flattenedProductAttributes = flattenObject(payload.product_attributes)
+      const flattenedProductAttributes = flattenObject(
+        payload.product_attributes,
+      )
       await ProductRepository.findAndUpdate({
         product_id,
         payload: flattenedProductAttributes,
         model: ClothingModel,
       })
     }
-
   }
-
 }
 
 export class ElectronicService extends ProductService {
@@ -259,13 +271,13 @@ export class ElectronicService extends ProductService {
         [this.product_attributes],
         {
           session,
-        }
+        },
       )
       if (!createElectronic)
         throw new BadRequestError('Create electronic failed')
       const newProduct = await super.createProduct(
         session,
-        createElectronic[0]._id
+        createElectronic[0]._id,
       )
       if (!newProduct) throw new BadRequestError('Create product failed')
       await session.commitTransaction()
@@ -282,5 +294,5 @@ export class ElectronicService extends ProductService {
 ProductServiceFactory.registerProductType(productType.CLOTHING, ClothingService)
 ProductServiceFactory.registerProductType(
   productType.ELECTRONICS,
-  ElectronicService
+  ElectronicService,
 )

@@ -41,7 +41,7 @@ class ProductController {
   setPublishedProductByShop = async (req: Request, res: Response) => {
     const data = await ProductServiceFactory.setPublishedProductByShop({
       product_shop: req.user?.userId,
-      product_id: req.params.id,
+      product_id: req.params.id as string,
     })
     return OkResponse.send(res, { data })
   }
@@ -49,20 +49,20 @@ class ProductController {
   setDraftProductByShop = async (req: Request, res: Response) => {
     const data = await ProductServiceFactory.setDraftProductByShop({
       product_shop: req.user?.userId,
-      product_id: req.params.id,
+      product_id: req.params.id as string,
     })
     return OkResponse.send(res, { data })
   }
 
   getDetailProduct = async (req: Request, res: Response) => {
     const data = await ProductServiceFactory.getDetailProduct({
-      product_id: req.params.id,
+      product_id: req.params.id as string,
     })
     return OkResponse.send(res, { data })
   }
   updateProduct = async (req: Request, res: Response) => {
     const data = await ProductServiceFactory.updateProduct({
-      product_id: req.params.id,
+      product_id: req.params.id as string,
       payload: req.body,
     })
     return OkResponse.send(res, { data })

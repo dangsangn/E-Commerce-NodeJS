@@ -15,7 +15,7 @@ export const HEADER = {
 export const apiKey = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const key = req.headers[HEADER.API_KEY]?.toString() as string
@@ -42,7 +42,7 @@ export const permission = (permission: string[]) => {
     }
 
     const validPermission = permission.some((item) =>
-      req.objKey.permissions.includes(item)
+      req.objKey.permissions.includes(item),
     )
     if (!validPermission) {
       return res.status(403).json({
@@ -66,7 +66,7 @@ export const authentication = asyncHandler(
     if (refreshToken) {
       const decoded = verifyToken(
         refreshToken,
-        keyToken.secretKey
+        keyToken.secretKey,
       ) as TokenPayload
       if (decoded.userId !== userId) throw new UnauthorizedError('Unauthorized')
       req.user = decoded
@@ -83,5 +83,5 @@ export const authentication = asyncHandler(
     req.keyToken = keyToken
     req.user = decoded
     return next()
-  }
+  },
 )
