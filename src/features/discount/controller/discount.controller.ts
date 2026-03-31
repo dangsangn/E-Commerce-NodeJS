@@ -27,7 +27,7 @@ export class DiscountController {
 
   async getDiscountsByShop(req: Request, res: Response) {
     const { shopId } = req.params
-    const data = await this.discountService.getDiscountsByShop(shopId)
+    const data = await this.discountService.getDiscountsByShop(shopId as string)
     return OkResponse.send(res, { data })
   }
 }

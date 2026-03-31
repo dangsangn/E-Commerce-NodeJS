@@ -12,7 +12,7 @@ import {
 import { ProductRepository } from '../repository'
 import { PAGINATION_DEFAULT_LIMIT } from '../../../constants/common'
 import { FindAndUpdateProductPayload } from '../dto'
-import { flattenObject, removeNullUndefinedObject } from '../../../utils'
+import { flattenObject } from '../../../utils'
 import { insertInventory } from '../../inventory/repository'
 
 export class ProductServiceFactory {
@@ -82,7 +82,16 @@ export class ProductServiceFactory {
     product_shop: string
     product_id: string
   }) => {
-    return await ProductRepository.setPublishedProductByShop({
+    // check product exist
+    const product = await ProductRepository.getDetailProduct({ product_id })
+    if (!product) throw new BadRequestError('Product not found')
+    const type = product.product_type
+    const ProductClass = this.productRegister[type]
+    if (!ProductClass) {
+      throw new BadRequestError('Invalid product type')
+    }
+
+    return ProductRepository.setPublishedProductByShop({
       product_shop,
       product_id,
     })
@@ -258,6 +267,7 @@ export class ClothingService extends ProductService {
         model: ClothingModel,
       })
     }
+    return updatedProduct
   }
 }
 
@@ -268,7 +278,7 @@ export class ElectronicService extends ProductService {
 
     try {
       const createElectronic = await ElectronicModel.create(
-        [this.product_attributes],
+        [{ ...this.product_attributes, product_shop: this.product_shop }],
         {
           session,
         },
@@ -284,10 +294,34 @@ export class ElectronicService extends ProductService {
       return newProduct
     } catch (error) {
       await session.abortTransaction()
-      throw new InternalServerError()
+      throw error
     } finally {
       session.endSession()
     }
+  }
+
+  // update product electronic
+  async updateProduct(
+    product_id: mongoose.Types.ObjectId,
+    payload: FindAndUpdateProductPayload,
+  ) {
+    const flattenedPayload = flattenObject(payload)
+    // update product
+    const updatedProduct = await super.updateProduct(
+      product_id,
+      flattenedPayload,
+    )
+    if (payload.product_attributes) {
+      const flattenedProductAttributes = flattenObject(
+        payload.product_attributes,
+      )
+      await ProductRepository.findAndUpdate({
+        product_id,
+        payload: flattenedProductAttributes,
+        model: ElectronicModel,
+      })
+    }
+    return updatedProduct
   }
 }
 

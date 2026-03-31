@@ -11,9 +11,9 @@ router.get('/:id', asyncHandler(ProductController.getDetailProduct))
 router.use(authentication)
 
 router.post('/', asyncHandler(ProductController.createProduct))
-router.get('/draft', asyncHandler(ProductController.getDraftProductByShop))
+router.get('/list/draft', asyncHandler(ProductController.getDraftProductByShop))
 router.get(
-  '/published',
+  '/list/published',
   asyncHandler(ProductController.getPublishedProductByShop),
 )
 router.patch('/:id', asyncHandler(ProductController.updateProduct))

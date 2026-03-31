@@ -1,9 +1,17 @@
 import { Request, Response } from 'express'
 import { OkResponse } from '../../../core/success.response'
 import { ProductServiceFactory } from '../service'
+import { validate } from 'class-validator'
+import { createProductSchema } from '../dto/create.dto'
+import { BadRequestError } from '../../../core/error.response'
 
 class ProductController {
   createProduct = async (req: Request, res: Response) => {
+    // validate req.body
+    const validated = validate(createProductSchema, req.body)
+    if (!validated) {
+      throw new BadRequestError('Invalid product data')
+    }
     const data = await ProductServiceFactory.createProduct({
       ...req.body,
       product_shop: req.user?.userId,

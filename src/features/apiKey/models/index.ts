@@ -5,6 +5,12 @@ const COLLECTION_NAME = 'ApiKeys'
 
 const apiKeySchema = new Schema(
   {
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+      comment: 'Identifies the client app, e.g. Web App, Mobile App',
+    },
     key: {
       type: String,
       required: true,

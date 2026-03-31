@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.ts"
+    "start": "nodemon server.ts",
+    "migrate:apikeys": "npx ts-node src/migrations/001_create_api_keys.ts"
   },
   "keywords": [],
   "author": "",
@@ -35,6 +36,7 @@
     "jsonwebtoken": "^9.0.3",
     "lodash": "^4.17.21",
     "mongoose": "^9.0.1",
-    "slugify": "^1.6.6"
+    "slugify": "^1.6.6",
+    "zod": "^4.3.6"
   }
 }
