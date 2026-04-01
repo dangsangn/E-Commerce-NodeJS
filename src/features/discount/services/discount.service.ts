@@ -174,7 +174,7 @@ export class DiscountService {
       discount._id.toString(),
       userId,
     )
-    if (userUsage >= !discount.discount_max_uses_per_user) {
+    if (userUsage >= (discount.discount_max_uses_per_user ?? 1)) {
       throw new BadRequestError(
         'You have used this discount code too many times.',
       )

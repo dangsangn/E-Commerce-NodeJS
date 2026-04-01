@@ -19,3 +19,5 @@ router.post(
   validationMiddleware(CreateDiscountDTO, 'body'),
   discountController.createDiscount,
 )
+
+export default router

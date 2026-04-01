@@ -22,7 +22,7 @@ export const apiKey = async (
     if (!key) {
       throw new ForbiddenError('Forbidden')
     }
-    const objectKey = await ApiKeyService.findById(key)
+    const objectKey = await ApiKeyService.findByApiKey(key)
     if (!objectKey) {
       throw new ForbiddenError('Forbidden')
     }

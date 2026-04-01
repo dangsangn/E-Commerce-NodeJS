@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.ts",
-    "migrate:apikeys": "npx ts-node src/migrations/001_create_api_keys.ts"
+    "migrate:apikeys": "npx ts-node src/migrations/001_create_api_keys.ts",
+    "dev": "nodemon server.ts"
   },
   "keywords": [],
   "author": "",

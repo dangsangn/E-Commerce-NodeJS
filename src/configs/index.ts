@@ -15,5 +15,6 @@ const environmentConfig: Partial<IConfig> = {
 }
 
 const config = { ...defaultConfig, ...environmentConfig } as IConfig
+console.log('🚀 ~ config:', config)
 
 export default config

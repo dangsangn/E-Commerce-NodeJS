@@ -1,6 +1,6 @@
 import { CreateDiscountDTO, QueryDiscountDTO, UpdateDiscountDTO } from '../dtos'
 import { DiscountModel } from '../models'
-import { QueryFilter } from 'mongoose'
+import mongoose, { QueryFilter } from 'mongoose'
 
 class DiscountRepository {
   static async findByCode(code: string) {
@@ -30,7 +30,7 @@ class DiscountRepository {
     const { page = 1, limit = 10, sort = '-createdAt', ...filter } = query
 
     // build filter object
-    const filterQuery: QueryFilter<any> = {}
+    const filterQuery: QueryFilter<QueryDiscountDTO> = {}
     if (filter.discount_code) {
       filterQuery.discount_code = filter.discount_code
     }
@@ -103,7 +103,7 @@ class DiscountRepository {
 
   static async countUserUsage(discountId: string, userId: string) {
     const result = await DiscountModel.aggregate([
-      { $match: { _id: discountId } },
+      { $match: { _id: new mongoose.Types.ObjectId(discountId) } },
       {
         $project: {
           count: {

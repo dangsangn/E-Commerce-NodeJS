@@ -23,9 +23,12 @@ app.use(express.urlencoded({ extended: true }))
 instanceMongoDB
 
 // checkOverload()
+app.get('/health', (req: Request, res: Response) => {
+  return res.status(200).json({ message: 'OK' })
+})
 
 // routes
-app.use('/v1/api', router)
+app.use('/api/v1', router)
 
 // handle error
 app.use((req: Request, res: Response, next: NextFunction) => {
