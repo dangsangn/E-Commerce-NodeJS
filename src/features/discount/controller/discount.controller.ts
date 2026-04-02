@@ -9,7 +9,7 @@ export class DiscountController {
     this.discountService = new DiscountService()
   }
 
-  async createDiscount(req: Request, res: Response) {
+  createDiscount = async (req: Request, res: Response) => {
     const payload = req.body
     const shopId = req.user?.userId
     const data = await this.discountService.createDiscount({
@@ -19,13 +19,13 @@ export class DiscountController {
     return CreatedResponse.send(res, { data })
   }
 
-  async getDiscountByCode(req: Request, res: Response) {
+  getDiscountByCode = async (req: Request, res: Response) => {
     const { code } = req.query
     const data = await this.discountService.getDiscountByCode(code as string)
     return OkResponse.send(res, { data })
   }
 
-  async getDiscountsByShop(req: Request, res: Response) {
+  getDiscountsByShop = async (req: Request, res: Response) => {
     const { shopId } = req.params
     const data = await this.discountService.getDiscountsByShop(shopId as string)
     return OkResponse.send(res, { data })

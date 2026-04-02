@@ -3,6 +3,7 @@ import shopRouter from '../features/shop/routes'
 import authRouter from '../features/auth/routes'
 import productRouter from '../features/product/routes'
 import cartRouter from '../features/cart/routes'
+import discountRouter from '../features/discount/routes'
 import { apiKey, permission } from '../features/auth/utils/checkAuth'
 
 const router = Router()
@@ -17,5 +18,6 @@ router.use('/shop', shopRouter)
 router.use('/auth', authRouter)
 router.use('/product', productRouter)
 router.use('/cart', cartRouter)
+router.use('/discount', discountRouter)
 
 export default router
