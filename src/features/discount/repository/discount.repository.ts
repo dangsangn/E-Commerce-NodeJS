@@ -1,6 +1,6 @@
 import { CreateDiscountDTO, QueryDiscountDTO, UpdateDiscountDTO } from '../dtos'
 import { DiscountModel } from '../models'
-import mongoose, { QueryFilter } from 'mongoose'
+import mongoose from 'mongoose'
 
 class DiscountRepository {
   static async findByCode(code: string) {
@@ -20,7 +20,7 @@ class DiscountRepository {
   }
 
   static async findByShopId(shopId: string, isActive?: boolean) {
-    const filter: QueryFilter<any> = { discount_shop_id: shopId }
+    const filter = { discount_shop_id: shopId, discount_is_active: true }
     if (isActive !== undefined) filter.discount_is_active = isActive
 
     return await DiscountModel.find(filter).sort({ createdAt: -1 }).lean()
@@ -30,7 +30,7 @@ class DiscountRepository {
     const { page = 1, limit = 10, sort = '-createdAt', ...filter } = query
 
     // build filter object
-    const filterQuery: QueryFilter<QueryDiscountDTO> = {}
+    const filterQuery: { [key: string]: any } = {}
     if (filter.discount_code) {
       filterQuery.discount_code = filter.discount_code
     }
