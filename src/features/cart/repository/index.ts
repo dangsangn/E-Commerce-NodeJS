@@ -6,22 +6,18 @@ export class CartRepository {
   static findActiveCartByUserId = async (userId: string) => {
     return CartModel.findOne({
       cart_userId: userId,
-      cart_status: CART_STATE.ACTIVE,
+      cart_state: CART_STATE.ACTIVE,
     })
       .lean()
       .exec()
   }
 
   // create new cart (supports single or multiple products)
-  static createCart = async (userId: string, products: any) => {
-    const totalQuantity = products.reduce(
-      (sum: number, p: any) => sum + (p.quantity ?? 1),
-      0,
-    )
+  static createCart = async (userId: string, product: any) => {
     return CartModel.create({
       cart_userId: new mongoose.Types.ObjectId(userId),
-      cart_products: products,
-      cart_count_product: totalQuantity,
+      cart_products: [product],
+      cart_count_product: product.quantity,
     })
   }
 

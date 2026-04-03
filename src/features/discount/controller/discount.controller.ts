@@ -20,7 +20,7 @@ export class DiscountController {
   }
 
   getDiscountByCode = async (req: Request, res: Response) => {
-    const { code } = req.query
+    const { code } = req.params
     const data = await this.discountService.getDiscountByCode(code as string)
     return OkResponse.send(res, { data })
   }

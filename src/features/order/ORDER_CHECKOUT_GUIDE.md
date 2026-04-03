@@ -1,29 +1,29 @@
-# Hướng dẫn xây dựng Module Order & Checkout
+# Guide to Building the Order & Checkout Module
 
-## Mục lục
+## Table of Contents
 
-1. [Kiến thức nền tảng](#1-kiến-thức-nền-tảng)
-2. [Thiết kế Database](#2-thiết-kế-database)
-3. [Step 1: Tạo Order Model](#step-1-tạo-order-model)
-4. [Step 2: Cập nhật Inventory Repository](#step-2-cập-nhật-inventory-repository)
-5. [Step 3: Tạo Checkout Service](#step-3-tạo-checkout-service)
-6. [Step 4: Tạo Order Repository](#step-4-tạo-order-repository)
-7. [Step 5: Tạo Order Service](#step-5-tạo-order-service)
-8. [Step 6: Tạo Controllers](#step-6-tạo-controllers)
-9. [Step 7: Tạo Routes & Đăng ký](#step-7-tạo-routes--đăng-ký)
-10. [Bài tập nâng cao](#bài-tập-nâng-cao)
+1. [Foundational Knowledge](#1-foundational-knowledge)
+2. [Database Design](#2-database-design)
+3. [Step 1: Create Order Model](#step-1-create-order-model)
+4. [Step 2: Update Inventory Repository](#step-2-update-inventory-repository)
+5. [Step 3: Create Checkout Service](#step-3-create-checkout-service)
+6. [Step 4: Create Order Repository](#step-4-create-order-repository)
+7. [Step 5: Create Order Service](#step-5-create-order-service)
+8. [Step 6: Create Controllers](#step-6-create-controllers)
+9. [Step 7: Create Routes & Register](#step-7-create-routes--register)
+10. [Advanced Exercises](#advanced-exercises)
 
 ---
 
-# 1. Kiến thức nền tảng
+# 1. Foundational Knowledge
 
-## Checkout vs Order — Khác nhau thế nào?
+## Checkout vs Order — What's the Difference?
 
 | | Checkout | Order |
 |---|---|---|
-| **Là gì?** | Quá trình **xem lại** đơn hàng trước khi xác nhận | Đơn hàng **đã được xác nhận** |
-| **Có lưu DB không?** | **KHÔNG** — chỉ tính toán rồi trả về | **CÓ** — lưu vào collection `Orders` |
-| **Khi nào xảy ra?** | User nhấn "Thanh toán" → hiện trang review | User nhấn "Xác nhận đặt hàng" |
+| **What is it?** | The process of **reviewing** the order before confirming | An order that **has been confirmed** |
+| **Saved to DB?** | **NO** — only calculates and returns | **YES** — saved to the `Orders` collection |
+| **When does it happen?** | User clicks "Pay" → review page is shown | User clicks "Confirm Order" |
 
 ```mermaid
 sequenceDiagram
@@ -32,36 +32,36 @@ sequenceDiagram
     participant Checkout as Checkout API
     participant Order as Order API
 
-    User->>FE: Nhấn "Thanh toán"
+    User->>FE: Clicks "Pay"
     FE->>Checkout: POST /checkout/review
-    Note over Checkout: Tính giá, áp discount,<br/>validate tồn kho.<br/>KHÔNG lưu DB.
-    Checkout-->>FE: Trả về order_review
-    FE->>User: Hiển thị trang xác nhận
+    Note over Checkout: Calculate price, apply discount,<br/>validate inventory.<br/>Does NOT save to DB.
+    Checkout-->>FE: Returns order_review
+    FE->>User: Displays confirmation page
 
-    User->>FE: Nhấn "Đặt hàng"
+    User->>FE: Clicks "Place Order"
     FE->>Order: POST /order
-    Note over Order: Tạo đơn, trừ kho,<br/>xóa cart. LƯU DB.<br/>Dùng Transaction.
-    Order-->>FE: Trả về order đã tạo
-    FE->>User: "Đặt hàng thành công"
+    Note over Order: Create order, deduct stock,<br/>clear cart. SAVES to DB.<br/>Uses Transaction.
+    Order-->>FE: Returns created order
+    FE->>User: "Order placed successfully"
 ```
 
-## Tại sao tách Checkout ra khỏi Order?
+## Why Separate Checkout from Order?
 
-1. **Separation of Concerns** — Tính toán (checkout) và hành động (order) là 2 trách nhiệm khác nhau
-2. **UX tốt hơn** — User được xem lại tổng tiền trước khi xác nhận
-3. **Idempotent** — Gọi checkout/review nhiều lần không gây side effect
-4. **Bảo mật** — Validate lại giá từ server, không tin client
+1. **Separation of Concerns** — Calculation (checkout) and action (order) are two different responsibilities
+2. **Better UX** — Users can review the total before confirming
+3. **Idempotent** — Calling checkout/review multiple times causes no side effects
+4. **Security** — Re-validate price from the server, do not trust the client
 
 ## Inventory Reservation Pattern
 
 > [!IMPORTANT]
-> Pattern cực kỳ quan trọng trong E-Commerce thực tế — giải quyết race condition.
+> This is an extremely important pattern in real-world E-Commerce — it solves race conditions.
 
-**Vấn đề:** 2 user cùng mua sản phẩm cuối cùng → ai được?
+**Problem:** 2 users buy the last item at the same time → who gets it?
 
-**Giải pháp:** Dùng MongoDB atomic operation `$gte` + `$inc`:
+**Solution:** Use MongoDB atomic operation `$gte` + `$inc`:
 ```
-Tồn kho: 5
+Stock: 5
 User A: qty=3 → inven_stock >= 3? ✅ → stock = 2
 User B: qty=3 → inven_stock >= 3? ❌ → return null → throw Error
 ```
@@ -70,23 +70,23 @@ User B: qty=3 → inven_stock >= 3? ❌ → return null → throw Error
 
 ```mermaid
 stateDiagram-v2
-    [*] --> pending: User đặt hàng
-    pending --> confirmed: Shop xác nhận
-    pending --> cancelled: User/System hủy
-    confirmed --> shipping: Giao cho shipper
-    shipping --> delivered: Giao thành công
-    shipping --> failed: Giao thất bại
+    [*] --> pending: User places order
+    pending --> confirmed: Shop confirms
+    pending --> cancelled: User/System cancels
+    confirmed --> shipping: Handed to shipper
+    shipping --> delivered: Delivered successfully
+    shipping --> failed: Delivery failed
     delivered --> [*]
     cancelled --> [*]
-    failed --> pending: Đặt lại
+    failed --> pending: Re-order
 ```
 
 ---
 
-# 2. Thiết kế Database
+# 2. Database Design
 
 > [!TIP]
-> **Snapshot Pattern:** Khi tạo order, **copy toàn bộ thông tin sản phẩm** (tên, giá, ảnh) vào order. Lý do: Nếu shop đổi giá sau khi user đặt, order phải giữ nguyên giá tại thời điểm đặt.
+> **Snapshot Pattern:** When creating an order, **copy all product information** (name, price, image) into the order. Reason: If the shop changes the price after the user orders, the order must retain the price at the time of ordering.
 
 ```mermaid
 erDiagram
@@ -104,9 +104,9 @@ erDiagram
 
 ---
 
-# Step 1: Tạo Order Model
+# Step 1: Create Order Model
 
-### Tạo file: `features/order/model/index.ts`
+### Create file: `features/order/model/index.ts`
 
 ```typescript
 import { model, Schema } from 'mongoose'
@@ -127,17 +127,17 @@ const orderSchema = new Schema(
   {
     order_userId: {
       type: Schema.Types.ObjectId,
-      ref: 'Shop', // tạm dùng Shop làm User
+      ref: 'Shop', // temporarily using Shop as User
       required: true,
     },
     /*
-      order_checkout là snapshot kết quả checkout tại thời điểm đặt hàng.
-      Lưu lại để sau này tra cứu mà không cần tính lại.
+      order_checkout is a snapshot of the checkout result at the time of ordering.
+      Saved so it can be retrieved later without recalculating.
       {
-        totalPrice: number,      // tổng giá gốc
-        totalDiscount: number,   // tổng giảm giá
-        feeShip: number,         // phí ship
-        totalCheckout: number,   // tổng thanh toán thực tế
+        totalPrice: number,      // total original price
+        totalDiscount: number,   // total discount
+        feeShip: number,         // shipping fee
+        totalCheckout: number,   // actual total amount paid
       }
     */
     order_checkout: {
@@ -146,7 +146,7 @@ const orderSchema = new Schema(
       required: true,
     },
     /*
-      order_shipping là snapshot thông tin giao hàng.
+      order_shipping is a snapshot of the shipping information.
       {
         street: string,
         city: string,
@@ -160,7 +160,7 @@ const orderSchema = new Schema(
       required: true,
     },
     /*
-      order_payment là thông tin thanh toán.
+      order_payment is the payment information.
       {
         method: 'COD' | 'CARD' | 'MOMO',
       }
@@ -171,8 +171,8 @@ const orderSchema = new Schema(
       required: true,
     },
     /*
-      order_products là snapshot toàn bộ sản phẩm, group theo shop.
-      Cấu trúc giống shop_order_ids_new từ checkout review:
+      order_products is a snapshot of all products, grouped by shop.
+      Structure is similar to shop_order_ids_new from checkout review:
       [
         {
           shopId: string,
@@ -209,17 +209,17 @@ export const OrderModel = model(DOCUMENT_NAME, orderSchema)
 
 ---
 
-# Step 2: Cập nhật Inventory Repository
+# Step 2: Update Inventory Repository
 
-### Sửa file: `features/inventory/repository/index.ts`
+### Edit file: `features/inventory/repository/index.ts`
 
-Thêm 2 hàm `reserveInventory` và `releaseInventory` vào file hiện tại.
+Add 2 functions `reserveInventory` and `releaseInventory` to the existing file.
 
 ```typescript
 import mongoose from 'mongoose'
 import { InventoryModel } from '../models'
 
-// ===== HÀM CŨ — giữ nguyên =====
+// ===== EXISTING FUNCTION — keep as is =====
 export const insertInventory = async ({
   product_id,
   shop_id,
@@ -245,18 +245,18 @@ export const insertInventory = async ({
   return await InventoryModel.create(payload)
 }
 
-// ===== HÀM MỚI — thêm vào =====
+// ===== NEW FUNCTIONS — add below =====
 
 /*
-  reserveInventory — Đặt chỗ sản phẩm khi tạo order.
+  reserveInventory — Reserve a product when creating an order.
 
-  Cách hoạt động:
-  - Dùng { $gte: quantity } để kiểm tra tồn kho đủ hay không
-  - Nếu đủ → trừ kho ($inc: -quantity) + thêm reservation
-  - Nếu KHÔNG đủ → findOneAndUpdate return null
+  How it works:
+  - Uses { $gte: quantity } to check if inventory is sufficient
+  - If sufficient → deduct stock ($inc: -quantity) + add reservation
+  - If NOT sufficient → findOneAndUpdate returns null
 
-  Đây là atomic operation — MongoDB đảm bảo không có race condition.
-  Không cần pessimistic lock, không cần distributed lock.
+  This is an atomic operation — MongoDB guarantees no race conditions.
+  No pessimistic lock needed, no distributed lock needed.
 */
 export const reserveInventory = async ({
   productId,
@@ -272,7 +272,7 @@ export const reserveInventory = async ({
   return InventoryModel.findOneAndUpdate(
     {
       inven_product_id: new mongoose.Types.ObjectId(productId),
-      inven_stock: { $gte: quantity }, // CHỈ update nếu tồn kho >= quantity
+      inven_stock: { $gte: quantity }, // ONLY update if stock >= quantity
     },
     {
       $inc: { inven_stock: -quantity },
@@ -292,11 +292,11 @@ export const reserveInventory = async ({
 }
 
 /*
-  releaseInventory — Hoàn lại tồn kho khi user hủy order.
+  releaseInventory — Restore inventory when a user cancels an order.
 
-  Cách hoạt động:
-  - Cộng lại số lượng vào kho ($inc: +quantity)
-  - Xóa reservation record ($pull)
+  How it works:
+  - Add the quantity back to stock ($inc: +quantity)
+  - Remove the reservation record ($pull)
 */
 export const releaseInventory = async ({
   productId,
@@ -314,9 +314,9 @@ export const releaseInventory = async ({
       inven_product_id: new mongoose.Types.ObjectId(productId),
     },
     {
-      $inc: { inven_stock: quantity }, // cộng lại kho
+      $inc: { inven_stock: quantity }, // add back to stock
       $pull: {
-        inven_reservation: { cartId }, // xóa reservation
+        inven_reservation: { cartId }, // remove reservation
       },
     },
     {
@@ -328,13 +328,13 @@ export const releaseInventory = async ({
 ```
 
 > [!WARNING]
-> Lưu ý: Vừa phát hiện bug trong `insertInventory` hiện tại của bạn — có 2 lần gọi `InventoryModel.create` lồng nhau. Hãy sửa branch `if (session)` thành `return (await InventoryModel.create([payload], { session }))[0]` như code trên.
+> Note: A bug was found in your current `insertInventory` — there are 2 nested `InventoryModel.create` calls. Fix the `if (session)` branch to `return (await InventoryModel.create([payload], { session }))[0]` as shown in the code above.
 
 ---
 
-# Step 3: Tạo Checkout Service
+# Step 3: Create Checkout Service
 
-### Tạo file: `features/checkout/service/index.ts`
+### Create file: `features/checkout/service/index.ts`
 
 ```typescript
 import { BadRequestError } from '../../../core/error.response'
@@ -342,9 +342,9 @@ import { ProductRepository } from '../../product/repository'
 import { DiscountService } from '../../discount/services/discount.service'
 
 /*
-  Interface cho input từ client.
-  Client gửi lên sản phẩm ĐÃ GROUP theo shop.
-  Mỗi shop có thể có discount riêng.
+  Interface for input from the client.
+  The client sends products already GROUPED by shop.
+  Each shop can have its own discount.
 */
 interface ShopOrderItem {
   shopId: string
@@ -355,7 +355,7 @@ interface ShopOrderItem {
   item_products: Array<{
     productId: string
     quantity: number
-    price: number // client gửi giá lên → server sẽ VALIDATE lại
+    price: number // client sends price → server will VALIDATE it
   }>
 }
 
@@ -367,49 +367,49 @@ interface CheckoutReviewPayload {
 
 export class CheckoutService {
   /*
-    checkoutReview — Tính toán tổng tiền cho đơn hàng.
+    checkoutReview — Calculate the total amount for an order.
 
-    KHÔNG lưu DB. KHÔNG trừ kho. KHÔNG có side effect.
-    Chỉ đọc + tính toán + validate + trả về kết quả.
+    Does NOT save to DB. Does NOT deduct stock. Does NOT have side effects.
+    Only reads + calculates + validates + returns the result.
 
     Flow:
-    1. Duyệt từng shop trong shop_order_ids
-    2. Với mỗi item: validate sản phẩm tồn tại + giá đúng
-    3. Tính giá gốc (rawPrice)
-    4. Áp discount nếu có → tính discountAmount
-    5. Tính giá sau discount (checkoutPrice)
-    6. Trả về tổng cộng
+    1. Iterate through each shop in shop_order_ids
+    2. For each item: validate product exists + price is correct
+    3. Calculate raw price (rawPrice)
+    4. Apply discount if available → calculate discountAmount
+    5. Calculate price after discount (checkoutPrice)
+    6. Return totals
   */
   static checkoutReview = async ({
     cartId,
     userId,
     shop_order_ids,
   }: CheckoutReviewPayload) => {
-    // Mảng kết quả sau khi đã validate + tính giá
+    // Array of results after validation + price calculation
     const shop_order_ids_new: any[] = []
 
-    // Biến tổng
-    let totalPrice = 0 // tổng giá gốc
-    let totalDiscount = 0 // tổng discount
-    let totalCheckout = 0 // tổng thanh toán
-    const feeShip = 0 // phí ship (có thể tính sau)
+    // Total variables
+    let totalPrice = 0 // total original price
+    let totalDiscount = 0 // total discount
+    let totalCheckout = 0 // total amount to pay
+    const feeShip = 0 // shipping fee (can be calculated later)
 
-    // 1. Duyệt từng shop
+    // 1. Iterate through each shop
     for (const shopOrder of shop_order_ids) {
       const { shopId, shop_discounts, item_products } = shopOrder
 
-      // 2. Validate từng sản phẩm
+      // 2. Validate each product
       const validatedProducts: any[] = []
       let rawPrice = 0
 
       for (const item of item_products) {
         /*
-          Luôn lấy giá từ DB, KHÔNG tin giá client gửi lên.
-          Tại sao? Vì client có thể sửa giá trong devtools.
+          Always get price from DB, do NOT trust the price sent by the client.
+          Why? Because the client can modify prices in devtools.
           Flow:
-          - Client gửi: { productId, price: 100, quantity: 2 }
-          - Server lấy từ DB: product.product_price = 150
-          - So sánh: 100 !== 150 → throw Error
+          - Client sends: { productId, price: 100, quantity: 2 }
+          - Server gets from DB: product.product_price = 150
+          - Compare: 100 !== 150 → throw Error
         */
         const product = await ProductRepository.getProductPublishedById(
           item.productId,
@@ -422,14 +422,14 @@ export class CheckoutService {
           )
         }
 
-        // Validate giá: client price phải bằng server price
+        // Validate price: client price must equal server price
         if (item.price !== product.product_price) {
           throw new BadRequestError(
             `Product ${product.product_name} price has changed. Please refresh.`,
           )
         }
 
-        // Validate shop: sản phẩm phải thuộc đúng shop
+        // Validate shop: product must belong to the correct shop
         if (product.product_shop?.toString() !== shopId) {
           throw new BadRequestError(
             `Product ${product.product_name} does not belong to this shop`,
@@ -439,7 +439,7 @@ export class CheckoutService {
         const itemTotal = item.price * item.quantity
         rawPrice += itemTotal
 
-        // Lưu snapshot sản phẩm (dùng cho order sau này)
+        // Save product snapshot (used for order later)
         validatedProducts.push({
           productId: item.productId,
           price: product.product_price,
@@ -449,20 +449,20 @@ export class CheckoutService {
         })
       }
 
-      // 3. Áp discount (nếu có)
+      // 3. Apply discount (if any)
       let discountAmount = 0
 
       if (shop_discounts && shop_discounts.length > 0) {
         /*
-          Hiện tại DiscountService.applyDiscount là instance method,
-          nên cần tạo instance. Nếu bạn refactor thành static method thì
-          gọi trực tiếp DiscountService.applyDiscount(...)
+          Currently DiscountService.applyDiscount is an instance method,
+          so we need to create an instance. If you refactor to a static method
+          then call DiscountService.applyDiscount(...) directly.
 
-          Lưu ý: applyDiscount hiện tại sẽ INCREMENT usage count.
-          Trong checkout review, ta chưa muốn tăng count (vì user chưa xác nhận).
-          → Bạn nên tạo thêm 1 hàm calculateDiscount trong DiscountService
-          chỉ tính toán mà KHÔNG tăng usage count.
-          Tạm thời, ta gọi applyDiscount ở đây.
+          Note: applyDiscount currently INCREMENTS the usage count.
+          In checkout review, we don't want to increase count yet (user hasn't confirmed).
+          → You should create a separate calculateDiscount function in DiscountService
+          that only calculates WITHOUT incrementing usage count.
+          For now, we call applyDiscount here.
         */
         const discountService = new DiscountService()
         for (const disc of shop_discounts) {
@@ -475,22 +475,22 @@ export class CheckoutService {
             )
             discountAmount += result.discountAmount
           } catch (error) {
-            // Nếu discount không hợp lệ → bỏ qua hoặc throw tùy business logic
-            // Ở đây ta throw để user biết
+            // If discount is invalid → skip or throw depending on business logic
+            // Here we throw so the user knows
             throw error
           }
         }
       }
 
-      // 4. Tính giá sau discount
+      // 4. Calculate price after discount
       const checkoutPrice = rawPrice - discountAmount
 
-      // 5. Cộng vào tổng
+      // 5. Add to totals
       totalPrice += rawPrice
       totalDiscount += discountAmount
       totalCheckout += checkoutPrice
 
-      // 6. Lưu kết quả cho shop này
+      // 6. Save result for this shop
       shop_order_ids_new.push({
         shopId,
         shop_discounts,
@@ -501,8 +501,8 @@ export class CheckoutService {
     }
 
     return {
-      shop_order_ids, // input gốc
-      shop_order_ids_new, // kết quả đã validate + tính giá
+      shop_order_ids, // original input
+      shop_order_ids_new, // result after validation + price calculation
       checkout_order: {
         totalPrice,
         totalDiscount,
@@ -515,13 +515,13 @@ export class CheckoutService {
 ```
 
 > [!IMPORTANT]
-> **Vấn đề với `DiscountService.applyDiscount`:** Hàm hiện tại vừa tính discount vừa tăng `usage count`. Trong checkout review, chưa nên tăng count (vì user chưa xác nhận). Bạn nên tạo thêm hàm `calculateDiscount` trong `DiscountService` chỉ **tính toán** mà **KHÔNG** gọi `incrementUserCount`. Đây là bài tập cho bạn refactor.
+> **Issue with `DiscountService.applyDiscount`:** The current function both calculates the discount and increments the `usage count`. In checkout review, the count should not be incremented yet (since the user hasn't confirmed). You should create a separate `calculateDiscount` function in `DiscountService` that only **calculates** and does **NOT** call `incrementUserCount`. This is left as a refactoring exercise for you.
 
 ---
 
-# Step 4: Tạo Order Repository
+# Step 4: Create Order Repository
 
-### Tạo file: `features/order/repository/index.ts`
+### Create file: `features/order/repository/index.ts`
 
 ```typescript
 import mongoose from 'mongoose'
@@ -529,7 +529,7 @@ import { OrderModel } from '../model'
 import { createPaginationResponse, parsePagination } from '../../../utils'
 
 export class OrderRepository {
-  // Tạo order — truyền session để nằm trong transaction
+  // Create an order — pass session to be part of a transaction
   static createOrder = async ({
     payload,
     session,
@@ -540,7 +540,7 @@ export class OrderRepository {
     return (await OrderModel.create([payload], { session }))[0]
   }
 
-  // Lấy danh sách orders của 1 user, có phân trang
+  // Get a paginated list of orders for a user
   static getOrdersByUserId = async ({
     userId,
     page = 1,
@@ -558,7 +558,7 @@ export class OrderRepository {
 
     const [result, total] = await Promise.all([
       OrderModel.find({ order_userId: userId })
-        .sort({ createdAt: -1 }) // mới nhất trước
+        .sort({ createdAt: -1 }) // newest first
         .skip(skip)
         .limit(limitNum)
         .lean()
@@ -569,12 +569,12 @@ export class OrderRepository {
     return createPaginationResponse(result, total, pageNum, limitNum)
   }
 
-  // Lấy chi tiết 1 order
+  // Get details of a single order
   static getOrderById = async (orderId: string) => {
     return OrderModel.findById(orderId).lean().exec()
   }
 
-  // Cập nhật trạng thái order
+  // Update an order's status
   static updateOrderStatus = async ({
     orderId,
     status,
@@ -595,9 +595,9 @@ export class OrderRepository {
 
 ---
 
-# Step 5: Tạo Order Service
+# Step 5: Create Order Service
 
-### Tạo file: `features/order/service/index.ts`
+### Create file: `features/order/service/index.ts`
 
 ```typescript
 import mongoose from 'mongoose'
@@ -613,20 +613,20 @@ import { ORDER_STATUS } from '../model'
 
 export class OrderService {
   /*
-    createOrder — Tạo đơn hàng chính thức.
+    createOrder — Create an official order.
 
-    Đây là hàm quan trọng nhất. Flow:
-    1. Gọi lại checkoutReview để validate + tính giá mới nhất
-    2. Mở transaction
-    3. Reserve inventory (trừ kho atomic)
-    4. Tạo Order document
-    5. Xóa cart (hoặc xóa items đã đặt khỏi cart)
+    This is the most important function. Flow:
+    1. Call checkoutReview again to validate + get the latest price
+    2. Open a transaction
+    3. Reserve inventory (atomically deduct stock)
+    4. Create Order document
+    5. Clear cart (or remove ordered items from cart)
     6. Commit / Rollback
 
-    Tại sao gọi lại checkoutReview?
-    → Vì giữa lúc user xem checkout page và nhấn "Đặt hàng"
-      có thể đã qua vài phút. Giá có thể thay đổi, discount hết hạn,
-      tồn kho hết. LUÔN tính lại.
+    Why call checkoutReview again?
+    → Because between the time the user views the checkout page and clicks "Place Order"
+      several minutes may have passed. Prices may have changed, discounts expired,
+      or stock may have run out. ALWAYS recalculate.
   */
   static createOrder = async ({
     cartId,
@@ -648,7 +648,7 @@ export class OrderService {
       method: string
     }
   }) => {
-    // 1. Gọi lại checkoutReview — validate + tính giá mới nhất
+    // 1. Call checkoutReview again — validate + get latest price
     const checkoutResult = await CheckoutService.checkoutReview({
       cartId,
       userId,
@@ -657,18 +657,18 @@ export class OrderService {
 
     const { shop_order_ids_new, checkout_order } = checkoutResult
 
-    // 2. Lấy tất cả products cần trừ kho
-    //    Flatten từ shop_order_ids_new ra 1 mảng products
+    // 2. Get all products that need stock deducted
+    //    Flatten from shop_order_ids_new into a single products array
     const allProducts = shop_order_ids_new.flatMap(
       (shopOrder: any) => shopOrder.item_products,
     )
 
-    // 3. Mở transaction
+    // 3. Open a transaction
     const session = await mongoose.startSession()
     session.startTransaction()
 
     try {
-      // 4. Reserve inventory cho từng sản phẩm
+      // 4. Reserve inventory for each product
       for (const product of allProducts) {
         const reservation = await reserveInventory({
           productId: product.productId,
@@ -678,9 +678,9 @@ export class OrderService {
         })
 
         /*
-          Nếu reservation === null → tồn kho không đủ.
-          findOneAndUpdate với điều kiện { inven_stock: { $gte: quantity } }
-          sẽ return null khi không tìm thấy document thỏa mãn.
+          If reservation === null → insufficient stock.
+          findOneAndUpdate with condition { inven_stock: { $gte: quantity } }
+          will return null when no matching document is found.
         */
         if (!reservation) {
           throw new BadRequestError(
@@ -689,7 +689,7 @@ export class OrderService {
         }
       }
 
-      // 5. Tạo Order document
+      // 5. Create Order document
       const newOrder = await OrderRepository.createOrder({
         payload: {
           order_userId: new mongoose.Types.ObjectId(userId),
@@ -706,9 +706,9 @@ export class OrderService {
         throw new BadRequestError('Failed to create order')
       }
 
-      // 6. Xóa cart sau khi đặt hàng thành công
-      //    Lưu ý: clearCart hiện tại không nhận session
-      //    → Nếu muốn an toàn hơn, refactor clearCart để nhận session
+      // 6. Clear cart after successful order placement
+      //    Note: clearCart currently does not accept a session
+      //    → For more safety, refactor clearCart to accept a session
       await CartService.clearCart({ userId })
 
       // 7. Commit transaction
@@ -716,7 +716,7 @@ export class OrderService {
 
       return newOrder
     } catch (error) {
-      // Rollback tất cả thay đổi
+      // Rollback all changes
       await session.abortTransaction()
       throw error
     } finally {
@@ -725,7 +725,7 @@ export class OrderService {
   }
 
   /*
-    getOrdersByUser — Lấy danh sách orders của user hiện tại.
+    getOrdersByUser — Get the list of orders for the current user.
   */
   static getOrdersByUser = async ({
     userId,
@@ -740,8 +740,8 @@ export class OrderService {
   }
 
   /*
-    getOrderDetail — Lấy chi tiết 1 order.
-    Kiểm tra order có thuộc user hiện tại không (authorization).
+    getOrderDetail — Get the details of a single order.
+    Checks whether the order belongs to the current user (authorization).
   */
   static getOrderDetail = async ({
     orderId,
@@ -753,7 +753,7 @@ export class OrderService {
     const order = await OrderRepository.getOrderById(orderId)
     if (!order) throw new NotFoundError('Order not found')
 
-    // Authorization: chỉ user tạo order mới được xem
+    // Authorization: only the user who created the order can view it
     if (order.order_userId.toString() !== userId) {
       throw new BadRequestError('You are not authorized to view this order')
     }
@@ -762,12 +762,12 @@ export class OrderService {
   }
 
   /*
-    cancelOrder — Hủy đơn hàng.
+    cancelOrder — Cancel an order.
 
-    Chỉ cho phép hủy khi status = 'pending'.
-    Khi hủy cần:
-    1. Hoàn lại tồn kho (releaseInventory)
-    2. Cập nhật status = 'cancelled'
+    Only allowed when status = 'pending'.
+    When cancelling:
+    1. Restore inventory (releaseInventory)
+    2. Update status = 'cancelled'
   */
   static cancelOrder = async ({
     orderId,
@@ -784,19 +784,19 @@ export class OrderService {
       throw new BadRequestError('You are not authorized to cancel this order')
     }
 
-    // Chỉ hủy khi trạng thái là pending
+    // Only cancel when status is pending
     if (order.order_status !== ORDER_STATUS.PENDING) {
       throw new BadRequestError(
         `Cannot cancel order with status: ${order.order_status}. Only pending orders can be cancelled.`,
       )
     }
 
-    // Mở transaction
+    // Open a transaction
     const session = await mongoose.startSession()
     session.startTransaction()
 
     try {
-      // 1. Hoàn lại tồn kho cho từng sản phẩm
+      // 1. Restore inventory for each product
       const allProducts = order.order_products.flatMap(
         (shopOrder: any) => shopOrder.item_products,
       )
@@ -805,12 +805,12 @@ export class OrderService {
         await releaseInventory({
           productId: product.productId,
           quantity: product.quantity,
-          cartId: '', // có thể lưu cartId trong order để dùng ở đây
+          cartId: '', // can store cartId in the order to use here
           session,
         })
       }
 
-      // 2. Cập nhật trạng thái = cancelled
+      // 2. Update status = cancelled
       const cancelledOrder = await OrderRepository.updateOrderStatus({
         orderId,
         status: ORDER_STATUS.CANCELLED,
@@ -831,9 +831,9 @@ export class OrderService {
 
 ---
 
-# Step 6: Tạo Controllers
+# Step 6: Create Controllers
 
-### Tạo file: `features/checkout/controller/index.ts`
+### Create file: `features/checkout/controller/index.ts`
 
 ```typescript
 import { Request, Response } from 'express'
@@ -844,7 +844,7 @@ class CheckoutController {
   /*
     POST /checkout/review
     Body: { cartId, shop_order_ids: [...] }
-    userId lấy từ authentication middleware (req.user.userId)
+    userId is retrieved from the authentication middleware (req.user.userId)
   */
   checkoutReview = async (req: Request, res: Response) => {
     const data = await CheckoutService.checkoutReview({
@@ -858,7 +858,7 @@ class CheckoutController {
 export default new CheckoutController()
 ```
 
-### Tạo file: `features/order/controller/index.ts`
+### Create file: `features/order/controller/index.ts`
 
 ```typescript
 import { Request, Response } from 'express'
@@ -919,9 +919,9 @@ export default new OrderController()
 
 ---
 
-# Step 7: Tạo Routes & Đăng ký
+# Step 7: Create Routes & Register
 
-### Tạo file: `features/checkout/routes/index.ts`
+### Create file: `features/checkout/routes/index.ts`
 
 ```typescript
 import express from 'express'
@@ -931,7 +931,7 @@ import { authentication } from '../../auth/utils/checkAuth'
 
 const router = express.Router()
 
-// Tất cả checkout routes cần authentication
+// All checkout routes require authentication
 router.use(authentication)
 
 router.post('/review', asyncHandler(CheckoutController.checkoutReview))
@@ -939,7 +939,7 @@ router.post('/review', asyncHandler(CheckoutController.checkoutReview))
 export default router
 ```
 
-### Tạo file: `features/order/routes/index.ts`
+### Create file: `features/order/routes/index.ts`
 
 ```typescript
 import express from 'express'
@@ -949,20 +949,20 @@ import { authentication } from '../../auth/utils/checkAuth'
 
 const router = express.Router()
 
-// Tất cả order routes cần authentication
+// All order routes require authentication
 router.use(authentication)
 
 router.post('/', asyncHandler(OrderController.createOrder))
 router.get('/', asyncHandler(OrderController.getOrdersByUser))
 
-// Static routes trước dynamic routes (bài học từ product module!)
+// Static routes before dynamic routes (lesson learned from the product module!)
 router.patch('/:id/cancel', asyncHandler(OrderController.cancelOrder))
 router.get('/:id', asyncHandler(OrderController.getOrderDetail))
 
 export default router
 ```
 
-### Sửa file: `routes/index.ts` — Đăng ký routes mới
+### Edit file: `routes/index.ts` — Register new routes
 
 ```diff
  import cartRouter from '../features/cart/routes'
@@ -979,16 +979,16 @@ export default router
 
 ---
 
-# Cấu trúc thư mục cuối cùng
+# Final Directory Structure
 
 ```
 features/
-├── checkout/                        ← MỚI
+├── checkout/                        ← NEW
 │   ├── controller/index.ts
 │   ├── service/index.ts
 │   └── routes/index.ts
 │
-├── order/                           ← MỚI
+├── order/                           ← NEW
 │   ├── controller/index.ts
 │   ├── model/index.ts
 │   ├── repository/index.ts
@@ -996,34 +996,34 @@ features/
 │   └── routes/index.ts
 │
 ├── inventory/
-│   └── repository/index.ts          ← SỬA (thêm reserve + release)
+│   └── repository/index.ts          ← EDITED (added reserve + release)
 │
 ├── cart/
-│   └── ... (giữ nguyên)
+│   └── ... (unchanged)
 │
-└── routes/index.ts                  ← SỬA (đăng ký routes mới)
+└── routes/index.ts                  ← EDITED (registered new routes)
 ```
 
 ---
 
-# Thứ tự code
+# Implementation Order
 
-| Bước | File | Hành động |
-|------|------|-----------|
-| 1 | `features/order/model/index.ts` | Tạo mới |
-| 2 | `features/inventory/repository/index.ts` | Sửa — thêm `reserveInventory` + `releaseInventory` |
-| 3 | `features/checkout/service/index.ts` | Tạo mới |
-| 4 | `features/order/repository/index.ts` | Tạo mới |
-| 5 | `features/order/service/index.ts` | Tạo mới |
-| 6 | `features/checkout/controller/index.ts` | Tạo mới |
-| 7 | `features/order/controller/index.ts` | Tạo mới |
-| 8 | `features/checkout/routes/index.ts` | Tạo mới |
-| 9 | `features/order/routes/index.ts` | Tạo mới |
-| 10 | `routes/index.ts` | Sửa — thêm import + `router.use` |
+| Step | File | Action |
+|------|------|--------|
+| 1 | `features/order/model/index.ts` | Create new |
+| 2 | `features/inventory/repository/index.ts` | Edit — add `reserveInventory` + `releaseInventory` |
+| 3 | `features/checkout/service/index.ts` | Create new |
+| 4 | `features/order/repository/index.ts` | Create new |
+| 5 | `features/order/service/index.ts` | Create new |
+| 6 | `features/checkout/controller/index.ts` | Create new |
+| 7 | `features/order/controller/index.ts` | Create new |
+| 8 | `features/checkout/routes/index.ts` | Create new |
+| 9 | `features/order/routes/index.ts` | Create new |
+| 10 | `routes/index.ts` | Edit — add import + `router.use` |
 
 ---
 
-# Test bằng Postman
+# Testing with Postman
 
 ### 1. Checkout Review
 ```
@@ -1031,7 +1031,7 @@ POST /api/checkout/review
 Headers: x-client-id, authorization, x-api-key
 Body:
 {
-  "cartId": "<cartId từ cart>",
+  "cartId": "<cartId from cart>",
   "shop_order_ids": [
     {
       "shopId": "<shopId>",
@@ -1055,7 +1055,7 @@ Headers: x-client-id, authorization, x-api-key
 Body:
 {
   "cartId": "<cartId>",
-  "shop_order_ids": [ ... ],  // giống checkout review
+  "shop_order_ids": [ ... ],  // same as checkout review
   "user_address": {
     "street": "123 ABC",
     "city": "HCM",
@@ -1082,27 +1082,27 @@ Headers: x-client-id, authorization, x-api-key
 
 ---
 
-# Bài tập nâng cao
+# Advanced Exercises
 
-### 1. Tách `calculateDiscount` ra khỏi `applyDiscount`
-Hiện tại `applyDiscount` vừa tính vừa tăng usage count. Tạo hàm `calculateDiscount` chỉ **tính toán** (dùng trong checkout review) và `applyDiscount` chỉ gọi khi **tạo order thật**.
+### 1. Separate `calculateDiscount` from `applyDiscount`
+Currently `applyDiscount` both calculates and increments the usage count. Create a `calculateDiscount` function that only **calculates** (used during checkout review) and `applyDiscount` that is only called when **actually creating an order**.
 
-### 2. Refactor `clearCart` để nhận session
-Hiện tại xóa cart nằm ngoài transaction. Nếu xóa cart fail → order đã tạo nhưng cart vẫn còn.
+### 2. Refactor `clearCart` to accept a session
+Currently cart clearing happens outside the transaction. If clearing the cart fails → the order is created but the cart still exists.
 
-### 3. Lưu `cartId` vào order
-Để khi cancel order, có thể dùng `cartId` để `releaseInventory` chính xác.
+### 3. Store `cartId` in the order
+So that when cancelling an order, the `cartId` can be used to accurately call `releaseInventory`.
 
 ### 4. Order History
-Mỗi lần status thay đổi → push vào `order_history` array:
+Every time the status changes → push to an `order_history` array:
 ```typescript
 order_history: [{
   status: 'confirmed',
   changed_by: shopId,
   changed_at: new Date(),
-  note: 'Shop đã xác nhận đơn',
+  note: 'Shop has confirmed the order',
 }]
 ```
 
 ### 5. Payment Integration
-Pattern: Tạo order `status = pending_payment` → redirect đến VNPay/MoMo → nhận webhook → cập nhật `status = confirmed`.
+Pattern: Create order with `status = pending_payment` → redirect to VNPay/MoMo → receive webhook → update `status = confirmed`.

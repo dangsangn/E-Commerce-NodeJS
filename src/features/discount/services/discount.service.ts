@@ -162,6 +162,7 @@ export class DiscountService {
     userId: string,
     orderValue: number,
     productId: string,
+    isView?: boolean,
   ): Promise<{
     discountAmount: number
     finalAmount: number
@@ -207,7 +208,12 @@ export class DiscountService {
     )
 
     // 6. update discount uses count
-    await DiscountRepository.incrementUserCount(discount._id.toString(), userId)
+    if (!isView) {
+      await DiscountRepository.incrementUserCount(
+        discount._id.toString(),
+        userId,
+      )
+    }
 
     return {
       discountAmount,

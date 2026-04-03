@@ -1,14 +1,9 @@
-import crypto from 'crypto'
-import { ApiKeyModel } from '../models'
+import { getInventoryByProductId } from '../repository'
 
-export class ApiKeyService {
-  static findById = async (key: string) => {
-    // const createdKey = await ApiKeyModel.create({
-    //   key: crypto.randomBytes(64).toString('hex'),
-    //   permissions: ['0000'],
-    // })
-    // console.log('apiKey', createdKey)
-    const apiKey = await ApiKeyModel.findOne({ key, status: true }).lean()
-    return apiKey
+export class InventoryService {
+  static getByProductId = async (id: string) => {
+    const inventory = await getInventoryByProductId(id)
+    if (!inventory) throw new Error('Inventory not found')
+    return inventory
   }
 }
