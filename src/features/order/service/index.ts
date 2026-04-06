@@ -103,8 +103,10 @@ export class OrderService {
       // 6. Clear cart after successful order placement
       //    Note: clearCart currently does not accept a session
       //    → For more safety, refactor clearCart to accept a session
-      // TODO: not clear cart, only remove ordered items from cart
-      await CartService.clearCart({ userId })
+      await CartService.removeProductsFromCart({
+        userId,
+        productIds: allProducts.map((product) => product.productId),
+      })
 
       // 7. Commit transaction
       await session.commitTransaction()

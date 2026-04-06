@@ -67,6 +67,7 @@ export class CartRepository {
     )
   }
 
+  // remove product from cart
   static removeProductFromCart = async (
     cartId: string,
     productId: string,
@@ -84,6 +85,48 @@ export class CartRepository {
         },
         $inc: { cart_count_product: -oldQuantity },
       },
+      {
+        new: true,
+        lean: true,
+      },
+    )
+  }
+
+  // remove multiple products from cart
+  static removeProductsFromCart = async (
+    cartId: string,
+    productIds: string[],
+  ) => {
+    const objectProductIds = productIds.map(
+      (id) => new mongoose.Types.ObjectId(id),
+    )
+
+    return CartModel.findOneAndUpdate(
+      { _id: cartId },
+      [
+        {
+          $set: {
+            cart_products: {
+              $filter: {
+                input: '$cart_products',
+                as: 'item',
+                cond: {
+                  $not: {
+                    $in: ['$$item.productId', objectProductIds],
+                  },
+                },
+              },
+            },
+          },
+        },
+        {
+          $set: {
+            cart_count_product: {
+              $sum: '$cart_products.quantity',
+            },
+          },
+        },
+      ],
       {
         new: true,
         lean: true,

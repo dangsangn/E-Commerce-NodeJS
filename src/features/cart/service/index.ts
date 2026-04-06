@@ -164,4 +164,27 @@ export class CartService {
   static clearCart = async ({ userId }: { userId: string }) => {
     return CartRepository.deleteCartByUserId(userId)
   }
+
+  // remove multiple products from cart
+  static removeProductsFromCart = async ({
+    userId,
+    productIds,
+  }: {
+    userId: string
+    productIds: string[]
+  }) => {
+    const cart = await CartRepository.findActiveCartByUserId(userId)
+    if (!cart) throw new NotFoundError('Cart not found')
+
+    const updated = await CartRepository.removeProductsFromCart(
+      cart._id.toString(),
+      productIds,
+    )
+    if (!updated)
+      throw new ConflictRequestError(
+        'Cart was updated by other request. Please request and try again',
+      )
+
+    return updated
+  }
 }
