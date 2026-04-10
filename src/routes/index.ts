@@ -8,6 +8,7 @@ import checkoutRouter from '../features/checkout/routes'
 import orderRouter from '../features/order/routes'
 import inventoryRouter from '../features/inventory/routes'
 import { apiKey, permission } from '../features/auth/utils/checkAuth'
+import testRouter from './test.route'
 
 const router = Router()
 
@@ -25,5 +26,6 @@ router.use('/inventory', inventoryRouter)
 router.use('/discount', discountRouter)
 router.use('/checkout', checkoutRouter)
 router.use('/order', orderRouter)
+router.use('/test', testRouter)
 
 export default router

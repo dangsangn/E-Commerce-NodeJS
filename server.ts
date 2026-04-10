@@ -1,6 +1,7 @@
 import app from './src/app'
 import config from './src/configs'
 import instanceMongoDB from './src/dbs/init.mongodb'
+import { initRedis } from './src/utils/redis.util'
 
 const PORT = config.port
 
@@ -15,3 +16,14 @@ process.on('SIGINT', () => {
   instanceMongoDB.close()
   process.exit(0)
 })
+
+const startServer = async () => {
+  try {
+    await initRedis()
+    // ... rest of your startup logic
+  } catch (error) {
+    console.error('Failed to start server:', error)
+  }
+}
+
+startServer()
