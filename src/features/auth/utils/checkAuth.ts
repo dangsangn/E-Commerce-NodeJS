@@ -61,6 +61,7 @@ export const authentication = asyncHandler(
     if (!userId) throw new ForbiddenError('Forbidden')
 
     const keyToken = await KeyTokenService.findByUserId(userId)
+    console.log('🚀 ~ keyToken:', keyToken)
     if (!keyToken) throw new ForbiddenError('Forbidden')
 
     if (refreshToken) {

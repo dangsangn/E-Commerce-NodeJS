@@ -22,6 +22,7 @@ services:
   mongodb:
     image: mongo:7
     container_name: ecommerce_mongodb_dev
+    command: ['mongod', '--replSet', 'rs0', '--bind_ip_all']
     ports:
       - '27018:27017'
     volumes:
