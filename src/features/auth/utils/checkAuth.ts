@@ -19,10 +19,12 @@ export const apiKey = async (
 ) => {
   try {
     const key = req.headers[HEADER.API_KEY]?.toString() as string
+    console.log('🚀 ~ key:', key)
     if (!key) {
       throw new ForbiddenError('Forbidden')
     }
     const objectKey = await ApiKeyService.findByApiKey(key)
+    console.log('🚀 ~ objectKey:', objectKey)
     if (!objectKey) {
       throw new ForbiddenError('Forbidden')
     }
@@ -61,7 +63,6 @@ export const authentication = asyncHandler(
     if (!userId) throw new ForbiddenError('Forbidden')
 
     const keyToken = await KeyTokenService.findByUserId(userId)
-    console.log('🚀 ~ keyToken:', keyToken)
     if (!keyToken) throw new ForbiddenError('Forbidden')
 
     if (refreshToken) {

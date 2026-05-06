@@ -35,7 +35,7 @@ const shopSchema = new Schema(
   {
     timestamps: true,
     collection: COLLECTION_NAME,
-  }
+  },
 )
 
 export const ShopModel = model(DOCUMENT_NAME, shopSchema)

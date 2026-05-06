@@ -7,6 +7,7 @@ import discountRouter from '../features/discount/routes'
 import checkoutRouter from '../features/checkout/routes'
 import orderRouter from '../features/order/routes'
 import inventoryRouter from '../features/inventory/routes'
+import commentRouter from '../features/comments/presentation/routes'
 import { apiKey, permission } from '../features/auth/utils/checkAuth'
 import testRouter from './test.route'
 
@@ -27,5 +28,6 @@ router.use('/discount', discountRouter)
 router.use('/checkout', checkoutRouter)
 router.use('/order', orderRouter)
 router.use('/test', testRouter)
+router.use('/comment', commentRouter)
 
 export default router
