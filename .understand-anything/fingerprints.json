@@ -1,0 +1,3510 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "aae17cbb81be9a7a1024ff1ffb7524e516f7e8b2",
+  "generatedAt": "2026-05-28T03:58:56.091Z",
+  "files": {
+    ".dockerignore": {
+      "filePath": ".dockerignore",
+      "contentHash": "76839dd33d3f5e5aedcbc0e605f39f0033a5e0c358a62c332de427c03cf9eb96",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": false
+    },
+    ".understand-anything/.understandignore": {
+      "filePath": ".understand-anything/.understandignore",
+      "contentHash": "2da6bf5ed3ab54598c7becae4a0ac1a44f57ed715cd5324d29db7052c0f36dc3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 23,
+      "hasStructuralAnalysis": false
+    },
+    ".understand-anything/tmp/ua-scan-files.json": {
+      "filePath": ".understand-anything/tmp/ua-scan-files.json",
+      "contentHash": "946d43928e16520e75df96e07533132be4d28cc19b659fefbff6709922a6c0a9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 680,
+      "hasStructuralAnalysis": true
+    },
+    "docker-compose.yml": {
+      "filePath": "docker-compose.yml",
+      "contentHash": "0567be3305f0d52b440c021f09c104c8b2ef9fdc94f56931e1c239130989f58d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 45,
+      "hasStructuralAnalysis": true
+    },
+    "Dockerfile": {
+      "filePath": "Dockerfile",
+      "contentHash": "957706b0a0ada758d4ca9e7033634daaf873759f7715c9881b1a561a52c5407c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "package.json": {
+      "filePath": "package.json",
+      "contentHash": "fe6294769a316b6cdfd782fda632a38107e00488f3e858ddf87ea6c4e7f93b21",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 48,
+      "hasStructuralAnalysis": true
+    },
+    "pnpm-workspace.yaml": {
+      "filePath": "pnpm-workspace.yaml",
+      "contentHash": "078f9ae6e1c32f005774cfa206691bfd65a2b187cb552cf080353f317fba1886",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 3,
+      "hasStructuralAnalysis": true
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "5539d09199404ec71fdd07e0b489cfd899a218d8be55d607be7a7050b5a1d979",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "server.ts": {
+      "filePath": "server.ts",
+      "contentHash": "6f7f36853df67bff4b20660494b1155f285f71d721fe0908f4127d9df4c75709",
+      "functions": [
+        {
+          "name": "startServer",
+          "params": [],
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "./src/app",
+          "specifiers": [
+            "app"
+          ]
+        },
+        {
+          "source": "./src/configs",
+          "specifiers": [
+            "config"
+          ]
+        },
+        {
+          "source": "./src/dbs/init.mongodb",
+          "specifiers": [
+            "instanceMongoDB"
+          ]
+        },
+        {
+          "source": "./src/utils/redis.util",
+          "specifiers": [
+            "initRedis"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": true
+    },
+    "src/app.ts": {
+      "filePath": "src/app.ts",
+      "contentHash": "1f3844d3227496f77054af0688631ab1ff7640e3cd8fcb6b0f954b02788df6a4",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "express",
+            "NextFunction",
+            "Request",
+            "Response"
+          ]
+        },
+        {
+          "source": "compression",
+          "specifiers": [
+            "compression"
+          ]
+        },
+        {
+          "source": "helmet",
+          "specifiers": [
+            "helmet"
+          ]
+        },
+        {
+          "source": "morgan",
+          "specifiers": [
+            "morgan"
+          ]
+        },
+        {
+          "source": "./dbs/init.mongodb",
+          "specifiers": [
+            "instanceMongoDB"
+          ]
+        },
+        {
+          "source": "./helpers/check.connect",
+          "specifiers": [
+            "checkOverload"
+          ]
+        },
+        {
+          "source": "./features/shop/routes",
+          "specifiers": [
+            "shopRouter"
+          ]
+        },
+        {
+          "source": "./features/auth/routes",
+          "specifiers": [
+            "authRouter"
+          ]
+        },
+        {
+          "source": "./routes",
+          "specifiers": [
+            "router"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    "src/configs/default.ts": {
+      "filePath": "src/configs/default.ts",
+      "contentHash": "9aadfc9476826ee653c677b58531d2fe8edc5db23268372fb75c115af21f0fc3",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "./IConfig",
+          "specifiers": [
+            "IConfig"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "src/configs/IConfig.ts": {
+      "filePath": "src/configs/IConfig.ts",
+      "contentHash": "ae8022c3552077b58502f37fb9957d16d9ecef09b2824d18d524557ec53f69d8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "src/configs/index.ts": {
+      "filePath": "src/configs/index.ts",
+      "contentHash": "3f61d64300eb4edfe6f90553e711bb61b43e1f118096c43380d3c2bf2c623322",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "path",
+          "specifiers": [
+            "* as path"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "* as dotenv"
+          ]
+        },
+        {
+          "source": "./IConfig",
+          "specifiers": [
+            "IConfig"
+          ]
+        },
+        {
+          "source": "./default",
+          "specifiers": [
+            "defaultConfig"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 20,
+      "hasStructuralAnalysis": true
+    },
+    "src/constants/common/index.ts": {
+      "filePath": "src/constants/common/index.ts",
+      "contentHash": "fc067c25b6727eebeb2967deb0bd230b2a2abe67a53b843c5f15b1c3f59f9769",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "PAGINATION_DEFAULT_LIMIT"
+      ],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    "src/constants/httpStatusCode/index.ts": {
+      "filePath": "src/constants/httpStatusCode/index.ts",
+      "contentHash": "c45ec0df598ad14041176ad0847a3e0aaeaf99f4dd0c2dd5356e2f01eee08f70",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 3,
+      "hasStructuralAnalysis": true
+    },
+    "src/constants/httpStatusCode/reasonPhrases.ts": {
+      "filePath": "src/constants/httpStatusCode/reasonPhrases.ts",
+      "contentHash": "1430136a9cc20ece010c2929729d88804d56cd41632dd8a1ee68481615780276",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "REASON_PHRASES"
+      ],
+      "totalLines": 345,
+      "hasStructuralAnalysis": true
+    },
+    "src/constants/httpStatusCode/statusCodes.ts": {
+      "filePath": "src/constants/httpStatusCode/statusCodes.ts",
+      "contentHash": "d9c83fcb24d3dcaf87799a43c09c12b7ecd478eb026ddcd527abc952bc1f920f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "STATUS_CODES"
+      ],
+      "totalLines": 345,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/error.response.ts": {
+      "filePath": "src/core/error.response.ts",
+      "contentHash": "c971e43c632314ca761032e904b6ed8bb4bcd8880b03a8464623856cab039a22",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ErrorResponse",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [
+            "status"
+          ],
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "ConflictRequestError",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "BadRequestError",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "NotFoundError",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "UnauthorizedError",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "ForbiddenError",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "InternalServerError",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "imports": [
+        {
+          "source": "../constants/httpStatusCode",
+          "specifiers": [
+            "REASON_PHRASES",
+            "STATUS_CODES"
+          ]
+        }
+      ],
+      "exports": [
+        "ConflictRequestError",
+        "BadRequestError",
+        "NotFoundError",
+        "UnauthorizedError",
+        "ForbiddenError",
+        "InternalServerError"
+      ],
+      "totalLines": 73,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/success.response.ts": {
+      "filePath": "src/core/success.response.ts",
+      "contentHash": "d58a2fe19e2cc506d5e48048c128d20c975a2906c14f7bf452ec544ae09e0f10",
+      "functions": [],
+      "classes": [
+        {
+          "name": "SuccessResponse",
+          "methods": [
+            "constructor",
+            "send"
+          ],
+          "properties": [
+            "message",
+            "statusCode",
+            "data"
+          ],
+          "exported": false,
+          "lineCount": 22
+        },
+        {
+          "name": "OkResponse",
+          "methods": [
+            "constructor",
+            "send"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "CreatedResponse",
+          "methods": [
+            "constructor",
+            "send"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Response"
+          ]
+        },
+        {
+          "source": "../constants/httpStatusCode",
+          "specifiers": [
+            "REASON_PHRASES",
+            "STATUS_CODES"
+          ]
+        }
+      ],
+      "exports": [
+        "OkResponse",
+        "CreatedResponse"
+      ],
+      "totalLines": 54,
+      "hasStructuralAnalysis": true
+    },
+    "src/dbs/init.mongodb.lv0.ts": {
+      "filePath": "src/dbs/init.mongodb.lv0.ts",
+      "contentHash": "083649047d58ec30147ac7c679bc7ed24be738e6ee2cc752d0c5a116fffa1d62",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "mongoose"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "src/dbs/init.mongodb.ts": {
+      "filePath": "src/dbs/init.mongodb.ts",
+      "contentHash": "4e863a9d8b197ae15a48feb84a4a840d2e8d64918aaa6fdf81ce80ae56b6c7ab",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Database",
+          "methods": [
+            "constructor",
+            "connect",
+            "getInstance",
+            "close"
+          ],
+          "properties": [
+            "_instance"
+          ],
+          "exported": false,
+          "lineCount": 30
+        }
+      ],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "mongoose"
+          ]
+        },
+        {
+          "source": "../configs",
+          "specifiers": [
+            "config"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "src/design_patterns/method.factory.pattern.ts": {
+      "filePath": "src/design_patterns/method.factory.pattern.ts",
+      "contentHash": "3a36ec9213cfe81b3ba80a046dd4554aa943e9a64cff452849e338435f243961",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ServiceLogistic",
+          "methods": [],
+          "properties": [
+            "transportClass",
+            "getTransport"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "Car",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [
+            "name",
+            "price",
+            "customerInfo"
+          ],
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "Truck",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [
+            "name",
+            "price",
+            "customerInfo"
+          ],
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "CarServiceLogistic",
+          "methods": [],
+          "properties": [
+            "transportClass"
+          ],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "TruckServiceLogistic",
+          "methods": [],
+          "properties": [
+            "transportClass"
+          ],
+          "exported": false,
+          "lineCount": 3
+        }
+      ],
+      "imports": [],
+      "exports": [
+        "ServiceLogistic"
+      ],
+      "totalLines": 58,
+      "hasStructuralAnalysis": true
+    },
+    "src/design_patterns/package.json": {
+      "filePath": "src/design_patterns/package.json",
+      "contentHash": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "src/design_patterns/simple.factory.pattern.ts": {
+      "filePath": "src/design_patterns/simple.factory.pattern.ts",
+      "contentHash": "07df6c24de2450b9b63ef488f0449924783e3274c0a7b2b07b476b91ca8966cf",
+      "functions": [
+        {
+          "name": "getTransport",
+          "params": [
+            "cargoVolume"
+          ],
+          "exported": false,
+          "lineCount": 27
+        }
+      ],
+      "classes": [
+        {
+          "name": "ServiceLogistic",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [
+            "name",
+            "price",
+            "getTransport"
+          ],
+          "exported": true,
+          "lineCount": 25
+        }
+      ],
+      "imports": [],
+      "exports": [
+        "ServiceLogistic"
+      ],
+      "totalLines": 61,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/apiKey/models/index.ts": {
+      "filePath": "src/features/apiKey/models/index.ts",
+      "contentHash": "9728206181efca1d86555540ce7a3c4fb0fdaf57caedd3150cc7a5bfd4c1759e",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "model",
+            "Schema"
+          ]
+        }
+      ],
+      "exports": [
+        "ApiKeyModel"
+      ],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/apiKey/services/index.ts": {
+      "filePath": "src/features/apiKey/services/index.ts",
+      "contentHash": "3eeccce4eeccfd5a2b5a166fa7fd8bd0bb39d85f0727af8fc741e298a45a37ce",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ApiKeyService",
+          "methods": [],
+          "properties": [
+            "findByApiKey"
+          ],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "imports": [
+        {
+          "source": "../models",
+          "specifiers": [
+            "ApiKeyModel"
+          ]
+        }
+      ],
+      "exports": [
+        "ApiKeyService"
+      ],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/auth/controllers/index.ts": {
+      "filePath": "src/features/auth/controllers/index.ts",
+      "contentHash": "c7942da2ad0ba0c700af9ffcb6382d508dd8d5081782a7ed472904cffe7d7f13",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AuthController",
+          "methods": [],
+          "properties": [
+            "signup",
+            "login",
+            "logout",
+            "refreshToken"
+          ],
+          "exported": false,
+          "lineCount": 33
+        }
+      ],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Request",
+            "Response"
+          ]
+        },
+        {
+          "source": "../services",
+          "specifiers": [
+            "AuthService"
+          ]
+        },
+        {
+          "source": "../../../core/success.response",
+          "specifiers": [
+            "CreatedResponse",
+            "OkResponse"
+          ]
+        },
+        {
+          "source": "../../../core/error.response",
+          "specifiers": [
+            "NotFoundError"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/auth/dtos/index.ts": {
+      "filePath": "src/features/auth/dtos/index.ts",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/auth/routes/index.ts": {
+      "filePath": "src/features/auth/routes/index.ts",
+      "contentHash": "192060f43dab19f67a3da9704c47574a3e6135c8e13ff45f1a85ed3f7e6b25da",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "express"
+          ]
+        },
+        {
+          "source": "../controllers",
+          "specifiers": [
+            "AuthController"
+          ]
+        },
+        {
+          "source": "../../../utils",
+          "specifiers": [
+            "asyncHandler"
+          ]
+        },
+        {
+          "source": "../utils/checkAuth",
+          "specifiers": [
+            "authentication"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/auth/services/index.ts": {
+      "filePath": "src/features/auth/services/index.ts",
+      "contentHash": "86f5d4b3c572949c3962378f1b9ce21366708fdd0f189ae7f00357cdea2a8353",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AuthService",
+          "methods": [],
+          "properties": [
+            "login",
+            "signup",
+            "logout",
+            "refreshToken"
+          ],
+          "exported": false,
+          "lineCount": 165
+        }
+      ],
+      "imports": [
+        {
+          "source": "bcrypt",
+          "specifiers": [
+            "bcrypt"
+          ]
+        },
+        {
+          "source": "crypto",
+          "specifiers": [
+            "crypto"
+          ]
+        },
+        {
+          "source": "../../shop/models",
+          "specifiers": [
+            "ShopModel"
+          ]
+        },
+        {
+          "source": "../../keyToken/services",
+          "specifiers": [
+            "KeyTokenService"
+          ]
+        },
+        {
+          "source": "../utils",
+          "specifiers": [
+            "createTokenPair",
+            "TokenPayload",
+            "verifyToken"
+          ]
+        },
+        {
+          "source": "../../../utils",
+          "specifiers": [
+            "getInfoData"
+          ]
+        },
+        {
+          "source": "../../../core/error.response",
+          "specifiers": [
+            "BadRequestError",
+            "UnauthorizedError"
+          ]
+        },
+        {
+          "source": "../../shop/services",
+          "specifiers": [
+            "ShopService"
+          ]
+        }
+      ],
+      "exports": [
+        "ROLES"
+      ],
+      "totalLines": 187,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/auth/utils/checkAuth.ts": {
+      "filePath": "src/features/auth/utils/checkAuth.ts",
+      "contentHash": "6b41736e72d130c7d1db2b8637997707572ecf1799547a0549c4b4fd1206afb7",
+      "functions": [
+        {
+          "name": "apiKey",
+          "params": [
+            "req",
+            "res",
+            "next"
+          ],
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "permission",
+          "params": [
+            "permission"
+          ],
+          "exported": true,
+          "lineCount": 19
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "NextFunction",
+            "Request",
+            "Response"
+          ]
+        },
+        {
+          "source": ".",
+          "specifiers": [
+            "TokenPayload",
+            "verifyToken"
+          ]
+        },
+        {
+          "source": "../../../core/error.response",
+          "specifiers": [
+            "ForbiddenError",
+            "UnauthorizedError"
+          ]
+        },
+        {
+          "source": "../../../utils",
+          "specifiers": [
+            "asyncHandler"
+          ]
+        },
+        {
+          "source": "../../apiKey/services",
+          "specifiers": [
+            "ApiKeyService"
+          ]
+        },
+        {
+          "source": "../../keyToken/services",
+          "specifiers": [
+            "KeyTokenService"
+          ]
+        }
+      ],
+      "exports": [
+        "HEADER",
+        "apiKey",
+        "permission",
+        "authentication"
+      ],
+      "totalLines": 90,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/auth/utils/index.ts": {
+      "filePath": "src/features/auth/utils/index.ts",
+      "contentHash": "d574819178870a1839eaa69ad12031d83bc3a6205fde7b38fef8719bfdee0169",
+      "functions": [
+        {
+          "name": "createTokenPair",
+          "params": [
+            "payload",
+            "secretKey"
+          ],
+          "exported": true,
+          "lineCount": 29
+        },
+        {
+          "name": "verifyToken",
+          "params": [
+            "token",
+            "secretKey"
+          ],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "jsonwebtoken",
+          "specifiers": [
+            "jwt"
+          ]
+        }
+      ],
+      "exports": [
+        "createTokenPair",
+        "verifyToken"
+      ],
+      "totalLines": 55,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/cart/controller/index.ts": {
+      "filePath": "src/features/cart/controller/index.ts",
+      "contentHash": "aa8eb6d5c2145edb93f1aa0c3e89d70e92ecd590d0f526d28e945d8ed1d26ce2",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CartController",
+          "methods": [],
+          "properties": [
+            "addToCart",
+            "getCart",
+            "updateCartQuantity",
+            "removeFromCart",
+            "clearCart"
+          ],
+          "exported": false,
+          "lineCount": 52
+        }
+      ],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Request",
+            "Response"
+          ]
+        },
+        {
+          "source": "../service",
+          "specifiers": [
+            "CartService"
+          ]
+        },
+        {
+          "source": "../../../core/success.response",
+          "specifiers": [
+            "CreatedResponse",
+            "OkResponse"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 59,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/cart/model/index.ts": {
+      "filePath": "src/features/cart/model/index.ts",
+      "contentHash": "5716f2c785b7591a9368e1b55af9404321b4770aff76b184749ad69677e015fc",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "model",
+            "Schema"
+          ]
+        }
+      ],
+      "exports": [
+        "CART_STATE",
+        "cartProductSchema",
+        "CartModel"
+      ],
+      "totalLines": 76,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/cart/repository/index.ts": {
+      "filePath": "src/features/cart/repository/index.ts",
+      "contentHash": "e417f55c7e33ca8306191fe58d86835a2b0101f3cb93c0afd09dfff59c552cbb",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CartRepository",
+          "methods": [],
+          "properties": [
+            "findActiveCartByUserId",
+            "createCart",
+            "pushProductToCart",
+            "updateProductQuantity",
+            "removeProductFromCart",
+            "removeProductsFromCart",
+            "deleteCartByUserId"
+          ],
+          "exported": true,
+          "lineCount": 140
+        }
+      ],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "mongoose"
+          ]
+        },
+        {
+          "source": "../model",
+          "specifiers": [
+            "CART_STATE",
+            "CartModel"
+          ]
+        }
+      ],
+      "exports": [
+        "CartRepository"
+      ],
+      "totalLines": 144,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/cart/routes/index.ts": {
+      "filePath": "src/features/cart/routes/index.ts",
+      "contentHash": "2caf44182e3d5a94767d3fa7bac8608f6709063313318e472a1fe067640d8846",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "express"
+          ]
+        },
+        {
+          "source": "../../../utils",
+          "specifiers": [
+            "asyncHandler"
+          ]
+        },
+        {
+          "source": "../../auth/utils/checkAuth",
+          "specifiers": [
+            "authentication"
+          ]
+        },
+        {
+          "source": "../controller",
+          "specifiers": [
+            "CartController"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/cart/service/index.ts": {
+      "filePath": "src/features/cart/service/index.ts",
+      "contentHash": "333b9bdde854e17e537940a7ba9551686ffc6e688a7f87431ffaa2b3488e5178",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CartService",
+          "methods": [],
+          "properties": [
+            "addToCart",
+            "updateCartProductQuantity",
+            "removeFromCart",
+            "getCart",
+            "clearCart",
+            "removeProductsFromCart"
+          ],
+          "exported": true,
+          "lineCount": 182
+        }
+      ],
+      "imports": [
+        {
+          "source": "../../../core/error.response",
+          "specifiers": [
+            "BadRequestError",
+            "ConflictRequestError",
+            "NotFoundError"
+          ]
+        },
+        {
+          "source": "../../product/repository",
+          "specifiers": [
+            "ProductRepository"
+          ]
+        },
+        {
+          "source": "../repository",
+          "specifiers": [
+            "CartRepository"
+          ]
+        }
+      ],
+      "exports": [
+        "CartService"
+      ],
+      "totalLines": 191,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/checkout/controller/index.ts": {
+      "filePath": "src/features/checkout/controller/index.ts",
+      "contentHash": "f620c333377c0639a15ab934938733e7e142ab28934cb13118bbb18dae54002f",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CheckoutController",
+          "methods": [],
+          "properties": [
+            "checkoutReview"
+          ],
+          "exported": false,
+          "lineCount": 9
+        }
+      ],
+      "imports": [
+        {
+          "source": "../../../core/success.response",
+          "specifiers": [
+            "OkResponse"
+          ]
+        },
+        {
+          "source": "../service",
+          "specifiers": [
+            "CheckoutService"
+          ]
+        },
+        {
+          "source": "express",
+          "specifiers": [
+            "Request",
+            "Response"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/checkout/routes/index.ts": {
+      "filePath": "src/features/checkout/routes/index.ts",
+      "contentHash": "a872183e4896d37564cdef23c55b615041c518c1b87dd21036a195826e68b75e",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "express"
+          ]
+        },
+        {
+          "source": "../../auth/utils/checkAuth",
+          "specifiers": [
+            "authentication"
+          ]
+        },
+        {
+          "source": "../../../utils",
+          "specifiers": [
+            "asyncHandler"
+          ]
+        },
+        {
+          "source": "../controller",
+          "specifiers": [
+            "CheckoutController"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/checkout/service/index.ts": {
+      "filePath": "src/features/checkout/service/index.ts",
+      "contentHash": "faa48de7bd4fd91bb94a3df8c265e9b171db9e4d7d4f18d0d8fe32bfdfcdb464",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CheckoutService",
+          "methods": [],
+          "properties": [
+            "checkoutReview"
+          ],
+          "exported": true,
+          "lineCount": 147
+        }
+      ],
+      "imports": [
+        {
+          "source": "../../../core/error.response",
+          "specifiers": [
+            "BadRequestError"
+          ]
+        },
+        {
+          "source": "../../product/repository",
+          "specifiers": [
+            "ProductRepository"
+          ]
+        },
+        {
+          "source": "../../discount/services/discount.service",
+          "specifiers": [
+            "DiscountService"
+          ]
+        },
+        {
+          "source": "../../order/types",
+          "specifiers": [
+            "ShopOrderItem"
+          ]
+        }
+      ],
+      "exports": [
+        "CheckoutService"
+      ],
+      "totalLines": 158,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/comments/application/interfaces/comment.repository.interface.ts": {
+      "filePath": "src/features/comments/application/interfaces/comment.repository.interface.ts",
+      "contentHash": "1860318eef0cbfb33e8bf6e7acf54851cd237f3a0c443ad71cf15b8e873c350c",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../../domain/entities/comment.entity",
+          "specifiers": [
+            "CommentEntity"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/comments/application/use-cases/comment.use-case.ts": {
+      "filePath": "src/features/comments/application/use-cases/comment.use-case.ts",
+      "contentHash": "56190b87c14d02b5aa25b78e84e1091ab77d57164a949757d4ad67972b6f31ac",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CommentUseCase",
+          "methods": [
+            "constructor",
+            "createComment",
+            "getComments",
+            "deleteComment"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 35
+        }
+      ],
+      "imports": [
+        {
+          "source": "../interfaces/comment.repository.interface",
+          "specifiers": [
+            "ICommentRepository",
+            "GetCommentsParams"
+          ]
+        },
+        {
+          "source": "../../domain/entities/comment.entity",
+          "specifiers": [
+            "CommentEntity"
+          ]
+        }
+      ],
+      "exports": [
+        "CommentUseCase"
+      ],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/comments/domain/entities/comment.entity.ts": {
+      "filePath": "src/features/comments/domain/entities/comment.entity.ts",
+      "contentHash": "17e7e7b08cf6006d426aae86566995e6f3561b562d837e528e8dce2a14334e3c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/comments/infrastructure/database/models/comment.model.ts": {
+      "filePath": "src/features/comments/infrastructure/database/models/comment.model.ts",
+      "contentHash": "475bd8e4478b63b7c19a594119f01cefc4eb91aaeb5c057b01155677239d87ed",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "Schema",
+            "model",
+            "Document",
+            "Types"
+          ]
+        }
+      ],
+      "exports": [
+        "CommentModel"
+      ],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/comments/infrastructure/repositories/comment.repository.ts": {
+      "filePath": "src/features/comments/infrastructure/repositories/comment.repository.ts",
+      "contentHash": "76a877a195c16ee5c2262df0e6d1f568845f495b9552c1bb6c1b76a2f4c8c9c5",
+      "functions": [],
+      "classes": [
+        {
+          "name": "MongoCommentRepository",
+          "methods": [
+            "mapToEntity",
+            "create",
+            "findById",
+            "findComments",
+            "deleteMany",
+            "deleteOne"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 63
+        }
+      ],
+      "imports": [
+        {
+          "source": "../../application/interfaces/comment.repository.interface",
+          "specifiers": [
+            "ICommentRepository",
+            "GetCommentsParams"
+          ]
+        },
+        {
+          "source": "../../domain/entities/comment.entity",
+          "specifiers": [
+            "CommentEntity"
+          ]
+        },
+        {
+          "source": "../database/models/comment.model",
+          "specifiers": [
+            "CommentModel"
+          ]
+        }
+      ],
+      "exports": [
+        "MongoCommentRepository"
+      ],
+      "totalLines": 71,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/comments/presentation/controllers/comment.controller.ts": {
+      "filePath": "src/features/comments/presentation/controllers/comment.controller.ts",
+      "contentHash": "1fdfddbdbf03b6f399314f02fef748dd3498a8aadab826843ad138b77bc91acc",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CommentController",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [
+            "createComment",
+            "getComments",
+            "deleteComment"
+          ],
+          "exported": true,
+          "lineCount": 26
+        }
+      ],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Request",
+            "Response"
+          ]
+        },
+        {
+          "source": "../../application/use-cases/comment.use-case",
+          "specifiers": [
+            "CommentUseCase"
+          ]
+        },
+        {
+          "source": "../../../../core/success.response",
+          "specifiers": [
+            "OkResponse"
+          ]
+        }
+      ],
+      "exports": [
+        "CommentController"
+      ],
+      "totalLines": 31,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/comments/presentation/routes/index.ts": {
+      "filePath": "src/features/comments/presentation/routes/index.ts",
+      "contentHash": "e30daa58f934ee65e42f962ae87578690c81f77469c3ec22e58eed1becdfa715",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "express"
+          ]
+        },
+        {
+          "source": "../controllers/comment.controller",
+          "specifiers": [
+            "CommentController"
+          ]
+        },
+        {
+          "source": "../../application/use-cases/comment.use-case",
+          "specifiers": [
+            "CommentUseCase"
+          ]
+        },
+        {
+          "source": "../../infrastructure/repositories/comment.repository",
+          "specifiers": [
+            "MongoCommentRepository"
+          ]
+        },
+        {
+          "source": "../../../auth/utils/checkAuth",
+          "specifiers": [
+            "authentication"
+          ]
+        },
+        {
+          "source": "../../../../utils",
+          "specifiers": [
+            "asyncHandler"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 28,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/discount/controller/discount.controller.ts": {
+      "filePath": "src/features/discount/controller/discount.controller.ts",
+      "contentHash": "4ec77a337371158cd226455fd1d311d8ab21de94a5f571421b29b1ccb7df423f",
+      "functions": [],
+      "classes": [
+        {
+          "name": "DiscountController",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [
+            "discountService",
+            "createDiscount",
+            "getDiscountByCode",
+            "getDiscountsByShop"
+          ],
+          "exported": true,
+          "lineCount": 29
+        }
+      ],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Request",
+            "Response"
+          ]
+        },
+        {
+          "source": "../services/discount.service",
+          "specifiers": [
+            "DiscountService"
+          ]
+        },
+        {
+          "source": "../../../core/success.response",
+          "specifiers": [
+            "CreatedResponse",
+            "OkResponse"
+          ]
+        }
+      ],
+      "exports": [
+        "DiscountController"
+      ],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/discount/dtos/apply-discount.dto.ts": {
+      "filePath": "src/features/discount/dtos/apply-discount.dto.ts",
+      "contentHash": "ba259b9294aef47cfeb9acebb87eddf93fc02b59746f409ba7c9860e031852c6",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ApplyDiscountDTO",
+          "methods": [],
+          "properties": [
+            "code",
+            "orderValue",
+            "productIds",
+            "userId"
+          ],
+          "exported": true,
+          "lineCount": 17
+        }
+      ],
+      "imports": [
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsString",
+            "IsNotEmpty",
+            "IsNumber",
+            "IsArray",
+            "Min",
+            "IsOptional"
+          ]
+        }
+      ],
+      "exports": [
+        "ApplyDiscountDTO"
+      ],
+      "totalLines": 27,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/discount/dtos/create-discount.dto.ts": {
+      "filePath": "src/features/discount/dtos/create-discount.dto.ts",
+      "contentHash": "8b3a99095761859b83c0b803d0f404843b4867ffde57921f6c5f4d476803e5e6",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CreateDiscountDTO",
+          "methods": [],
+          "properties": [
+            "discount_name",
+            "discount_description",
+            "discount_code",
+            "discount_type",
+            "discount_value",
+            "discount_start_date",
+            "discount_end_date",
+            "discount_max_uses",
+            "discount_max_uses_per_user",
+            "discount_min_order_value",
+            "discount_shop_id",
+            "discount_is_active",
+            "discount_applies_to",
+            "discount_product_ids"
+          ],
+          "exported": true,
+          "lineCount": 61
+        }
+      ],
+      "imports": [
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsString",
+            "IsNotEmpty",
+            "IsNumber",
+            "IsDateString",
+            "IsOptional",
+            "IsBoolean",
+            "IsIn",
+            "Min",
+            "IsArray"
+          ]
+        }
+      ],
+      "exports": [
+        "CreateDiscountDTO"
+      ],
+      "totalLines": 74,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/discount/dtos/discount-response.dto.ts": {
+      "filePath": "src/features/discount/dtos/discount-response.dto.ts",
+      "contentHash": "5a6088be331820d020ae66edd3365695e91bcb409fe35234426ffcfc60d118eb",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "mongoose"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/discount/dtos/index.ts": {
+      "filePath": "src/features/discount/dtos/index.ts",
+      "contentHash": "2685ed405cf1e6716c641998eb04958aaa2ccee364d79ba14354d04ffc00215d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/discount/dtos/query-discount.dto.ts": {
+      "filePath": "src/features/discount/dtos/query-discount.dto.ts",
+      "contentHash": "0a87798f6e130376058628166f65d950902961ff52416c6668a5065fa7acaf6e",
+      "functions": [],
+      "classes": [
+        {
+          "name": "QueryDiscountDTO",
+          "methods": [],
+          "properties": [
+            "discount_code",
+            "discount_shop_id",
+            "discount_is_active",
+            "discount_type",
+            "page",
+            "limit",
+            "sort"
+          ],
+          "exported": true,
+          "lineCount": 32
+        }
+      ],
+      "imports": [
+        {
+          "source": "class-transformer",
+          "specifiers": [
+            "Transform"
+          ]
+        },
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsBoolean",
+            "IsIn",
+            "IsNumber",
+            "IsOptional",
+            "IsString"
+          ]
+        }
+      ],
+      "exports": [
+        "QueryDiscountDTO"
+      ],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/discount/dtos/update-discount.dto.ts": {
+      "filePath": "src/features/discount/dtos/update-discount.dto.ts",
+      "contentHash": "49252e4a523cfffe48f5c5386fa35802cc460e0ec1fd9939db3aa4230439c89f",
+      "functions": [],
+      "classes": [
+        {
+          "name": "UpdateDiscountDTO",
+          "methods": [],
+          "properties": [
+            "discount_name",
+            "discount_description",
+            "discount_type",
+            "discount_value",
+            "discount_start_date",
+            "discount_end_date",
+            "discount_max_uses",
+            "discount_max_uses_per_user",
+            "discount_min_order_value",
+            "discount_is_active",
+            "discount_applies_to",
+            "discount_product_ids"
+          ],
+          "exported": true,
+          "lineCount": 54
+        }
+      ],
+      "imports": [
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsArray",
+            "IsBoolean",
+            "IsDateString",
+            "IsIn",
+            "IsNumber",
+            "IsOptional",
+            "IsString",
+            "Min"
+          ]
+        },
+        {
+          "source": "./create-discount.dto",
+          "specifiers": [
+            "CreateDiscountDTO"
+          ]
+        }
+      ],
+      "exports": [
+        "UpdateDiscountDTO"
+      ],
+      "totalLines": 67,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/discount/models/index.ts": {
+      "filePath": "src/features/discount/models/index.ts",
+      "contentHash": "4ed2698126ee4bb49db8c96227392ffe5ccaa78c56764047139614ecfe67885e",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "model",
+            "Schema"
+          ]
+        }
+      ],
+      "exports": [
+        "DiscountModel"
+      ],
+      "totalLines": 101,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/discount/repository/discount.repository.ts": {
+      "filePath": "src/features/discount/repository/discount.repository.ts",
+      "contentHash": "d6d931ffba6c458860096fe59e719831f6e40e556ff9e02be70804d20d02a200",
+      "functions": [],
+      "classes": [
+        {
+          "name": "DiscountRepository",
+          "methods": [
+            "findByCode",
+            "create",
+            "findById",
+            "findByShopId",
+            "findWithPagination",
+            "update",
+            "softDelete",
+            "delete",
+            "incrementUserCount",
+            "hasUserUsedDiscount",
+            "countUserUsage"
+          ],
+          "properties": [],
+          "exported": false,
+          "lineCount": 120
+        }
+      ],
+      "imports": [
+        {
+          "source": "../dtos",
+          "specifiers": [
+            "CreateDiscountDTO",
+            "QueryDiscountDTO",
+            "UpdateDiscountDTO"
+          ]
+        },
+        {
+          "source": "../models",
+          "specifiers": [
+            "DiscountModel"
+          ]
+        },
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "mongoose"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 127,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/discount/routes/index.ts": {
+      "filePath": "src/features/discount/routes/index.ts",
+      "contentHash": "9b5bef13c36f55cab5c47aafe42618362c7e32cc17c09ca6153dafb8f6d5820a",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Router"
+          ]
+        },
+        {
+          "source": "../controller/discount.controller",
+          "specifiers": [
+            "DiscountController"
+          ]
+        },
+        {
+          "source": "../../auth/utils/checkAuth",
+          "specifiers": [
+            "authentication"
+          ]
+        },
+        {
+          "source": "../../../middlewares/validation.middleware",
+          "specifiers": [
+            "validationMiddleware"
+          ]
+        },
+        {
+          "source": "../dtos",
+          "specifiers": [
+            "CreateDiscountDTO"
+          ]
+        },
+        {
+          "source": "../../../utils",
+          "specifiers": [
+            "asyncHandler"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 25,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/discount/services/discount.service.ts": {
+      "filePath": "src/features/discount/services/discount.service.ts",
+      "contentHash": "6a46e5452b01082bcb9a8700444813ddf818197007bd3c4c6adcf5477888d264",
+      "functions": [],
+      "classes": [
+        {
+          "name": "DiscountService",
+          "methods": [
+            "getDiscountsByShop",
+            "getDiscountByCode",
+            "validateDiscountValue",
+            "validateDiscountDates",
+            "applyDiscount",
+            "calculateDiscountAmount",
+            "transformDiscount"
+          ],
+          "properties": [
+            "createDiscount",
+            "updateDiscount",
+            "deleteDiscount",
+            "queryDiscounts"
+          ],
+          "exported": true,
+          "lineCount": 266
+        }
+      ],
+      "imports": [
+        {
+          "source": "../../../core/error.response",
+          "specifiers": [
+            "BadRequestError"
+          ]
+        },
+        {
+          "source": "../dtos",
+          "specifiers": [
+            "DiscountResponseDTO",
+            "QueryDiscountDTO",
+            "UpdateDiscountDTO"
+          ]
+        },
+        {
+          "source": "../dtos/create-discount.dto",
+          "specifiers": [
+            "CreateDiscountDTO"
+          ]
+        },
+        {
+          "source": "../repository/discount.repository",
+          "specifiers": [
+            "DiscountRepository"
+          ]
+        }
+      ],
+      "exports": [
+        "DiscountService"
+      ],
+      "totalLines": 283,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/inventory/controller/index.ts": {
+      "filePath": "src/features/inventory/controller/index.ts",
+      "contentHash": "401e5b3fe512021aeba3906338583af4e23df5a72e95a6e3e950498510bd9964",
+      "functions": [],
+      "classes": [
+        {
+          "name": "InventoryController",
+          "methods": [],
+          "properties": [
+            "getByProductId"
+          ],
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Request",
+            "Response"
+          ]
+        },
+        {
+          "source": "../services",
+          "specifiers": [
+            "InventoryService"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/inventory/models/index.ts": {
+      "filePath": "src/features/inventory/models/index.ts",
+      "contentHash": "1f9b17ce69f7a358cccac2630886edcb44f00cdbefe920525d7eb916673f6b33",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "model",
+            "Schema"
+          ]
+        }
+      ],
+      "exports": [
+        "InventoryModel"
+      ],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/inventory/repository/index.ts": {
+      "filePath": "src/features/inventory/repository/index.ts",
+      "contentHash": "e4671718b443979a2aca283a374da76ea062be71c277b692f72268bf7698054a",
+      "functions": [
+        {
+          "name": "insertInventory",
+          "params": [
+            "{\n  product_id,\n  shop_id,\n  stock,\n  location = 'unKnow',\n  session,\n}"
+          ],
+          "exported": true,
+          "lineCount": 28
+        },
+        {
+          "name": "reserveInventory",
+          "params": [
+            "{\n  productId,\n  quantity,\n  cartId,\n  session,\n}"
+          ],
+          "exported": true,
+          "lineCount": 32
+        },
+        {
+          "name": "releaseInventory",
+          "params": [
+            "{\n  productId,\n  quantity,\n  cartId,\n  session,\n}"
+          ],
+          "exported": true,
+          "lineCount": 27
+        },
+        {
+          "name": "getInventoryByProductId",
+          "params": [
+            "productId"
+          ],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "mongoose"
+          ]
+        },
+        {
+          "source": "../models",
+          "specifiers": [
+            "InventoryModel"
+          ]
+        }
+      ],
+      "exports": [
+        "insertInventory",
+        "reserveInventory",
+        "releaseInventory",
+        "getInventoryByProductId"
+      ],
+      "totalLines": 117,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/inventory/routes/index.ts": {
+      "filePath": "src/features/inventory/routes/index.ts",
+      "contentHash": "db3de0722389bcfbf97e862a2d1037207547b2a0e654736ce69876f8dff2033f",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "express"
+          ]
+        },
+        {
+          "source": "../../../utils",
+          "specifiers": [
+            "asyncHandler"
+          ]
+        },
+        {
+          "source": "../controller",
+          "specifiers": [
+            "InventoryController"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/inventory/services/index.ts": {
+      "filePath": "src/features/inventory/services/index.ts",
+      "contentHash": "801883ea7b5d710a8424202328124c112211ad242615ec6d95789d5bb0fe71be",
+      "functions": [],
+      "classes": [
+        {
+          "name": "InventoryService",
+          "methods": [],
+          "properties": [
+            "getByProductId"
+          ],
+          "exported": true,
+          "lineCount": 7
+        }
+      ],
+      "imports": [
+        {
+          "source": "../repository",
+          "specifiers": [
+            "getInventoryByProductId"
+          ]
+        }
+      ],
+      "exports": [
+        "InventoryService"
+      ],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/keyToken/controllers/index.ts": {
+      "filePath": "src/features/keyToken/controllers/index.ts",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/keyToken/dtos/index.ts": {
+      "filePath": "src/features/keyToken/dtos/index.ts",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/keyToken/models/index.ts": {
+      "filePath": "src/features/keyToken/models/index.ts",
+      "contentHash": "77f6f750a84253da2fd5248ce15ade4ff9b1e59bee4e247b7b4e9d3bd5e39c62",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "Schema",
+            "model"
+          ]
+        }
+      ],
+      "exports": [
+        "KeyTokenModel"
+      ],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/keyToken/routes/index.ts": {
+      "filePath": "src/features/keyToken/routes/index.ts",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/keyToken/services/index.ts": {
+      "filePath": "src/features/keyToken/services/index.ts",
+      "contentHash": "8b0a9f2d1e6107bb6fe7ad5b3ecb2ee72c6e716a01edd322f8dcc798451dc336",
+      "functions": [],
+      "classes": [
+        {
+          "name": "KeyTokenService",
+          "methods": [],
+          "properties": [
+            "createKeyToken",
+            "findByUserId",
+            "deleteKeyToken",
+            "findByRefreshTokenUsed",
+            "deleteKeyTokenByRefreshToken",
+            "findByRefreshToken"
+          ],
+          "exported": false,
+          "lineCount": 46
+        }
+      ],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "Types"
+          ]
+        },
+        {
+          "source": "../models",
+          "specifiers": [
+            "KeyTokenModel"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/order/controller/index.ts": {
+      "filePath": "src/features/order/controller/index.ts",
+      "contentHash": "aad9d780142c3049485f684525c32ef0ff9128f89e5f21a9d5acd8c77d3c5ec8",
+      "functions": [],
+      "classes": [
+        {
+          "name": "OrderController",
+          "methods": [],
+          "properties": [
+            "createOrder",
+            "getOrdersByUser",
+            "getOrderDetail",
+            "cancelOrder"
+          ],
+          "exported": false,
+          "lineCount": 32
+        }
+      ],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Request",
+            "Response"
+          ]
+        },
+        {
+          "source": "../service",
+          "specifiers": [
+            "OrderService"
+          ]
+        },
+        {
+          "source": "../../../core/success.response",
+          "specifiers": [
+            "CreatedResponse",
+            "OkResponse"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/order/model/index.ts": {
+      "filePath": "src/features/order/model/index.ts",
+      "contentHash": "9a00c4ccd32a89daf10945329bc5dbc2d0504351b0f71c0d6b30aa07b16435fe",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "model",
+            "Schema"
+          ]
+        }
+      ],
+      "exports": [
+        "ORDER_STATUS",
+        "OrderModel"
+      ],
+      "totalLines": 97,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/order/ORDER_CHECKOUT_GUIDE.md": {
+      "filePath": "src/features/order/ORDER_CHECKOUT_GUIDE.md",
+      "contentHash": "104f36810abd1346a7764590aee2e8c5d895033c994fec519e67af721d214237",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1109,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/order/repository/index.ts": {
+      "filePath": "src/features/order/repository/index.ts",
+      "contentHash": "9f85b8b81ec7f871e778423ec90f3d7e7fce0f4a1f9edf4b008ce1717bd73c2b",
+      "functions": [],
+      "classes": [
+        {
+          "name": "OrderRepository",
+          "methods": [],
+          "properties": [
+            "createOrder",
+            "getOrdersByUserId",
+            "getOrderById",
+            "updateOrderStatus"
+          ],
+          "exported": true,
+          "lineCount": 63
+        }
+      ],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "mongoose"
+          ]
+        },
+        {
+          "source": "../model",
+          "specifiers": [
+            "OrderModel"
+          ]
+        },
+        {
+          "source": "../../../utils",
+          "specifiers": [
+            "createPaginationResponse",
+            "parsePagination"
+          ]
+        }
+      ],
+      "exports": [
+        "OrderRepository"
+      ],
+      "totalLines": 68,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/order/routes/index.ts": {
+      "filePath": "src/features/order/routes/index.ts",
+      "contentHash": "1c646a99e71d8c86c6b8c2e8fea0965c804e9dc6d238d0e1151fb115d978a819",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "express"
+          ]
+        },
+        {
+          "source": "../../auth/utils/checkAuth",
+          "specifiers": [
+            "authentication"
+          ]
+        },
+        {
+          "source": "../../../utils",
+          "specifiers": [
+            "asyncHandler"
+          ]
+        },
+        {
+          "source": "../controller",
+          "specifiers": [
+            "OrderController"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/order/service/index.ts": {
+      "filePath": "src/features/order/service/index.ts",
+      "contentHash": "7b312dc332c14e0386a2f4d766ce6f3964031277d0bbe44d0dfe57c3ef734c1e",
+      "functions": [],
+      "classes": [
+        {
+          "name": "OrderService",
+          "methods": [],
+          "properties": [
+            "createOrder",
+            "getOrdersByUser",
+            "getOrderDetail",
+            "cancelOrder"
+          ],
+          "exported": true,
+          "lineCount": 218
+        }
+      ],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "mongoose"
+          ]
+        },
+        {
+          "source": "../../../core/error.response",
+          "specifiers": [
+            "BadRequestError",
+            "NotFoundError"
+          ]
+        },
+        {
+          "source": "../../checkout/service",
+          "specifiers": [
+            "CheckoutService"
+          ]
+        },
+        {
+          "source": "../../inventory/repository",
+          "specifiers": [
+            "reserveInventory",
+            "releaseInventory"
+          ]
+        },
+        {
+          "source": "../../cart/service",
+          "specifiers": [
+            "CartService"
+          ]
+        },
+        {
+          "source": "../repository",
+          "specifiers": [
+            "OrderRepository"
+          ]
+        },
+        {
+          "source": "../model",
+          "specifiers": [
+            "ORDER_STATUS"
+          ]
+        }
+      ],
+      "exports": [
+        "OrderService"
+      ],
+      "totalLines": 227,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/order/types/index.ts": {
+      "filePath": "src/features/order/types/index.ts",
+      "contentHash": "96197c2f2473441496b9248ad7bf110e121f2f28a3e4a5934a98435cd73ab654",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/product/controller/index.ts": {
+      "filePath": "src/features/product/controller/index.ts",
+      "contentHash": "98432d2507a840f58430e4072cf8f04940043a2ca460fcb36aa8de5f1ed5aa6a",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ProductController",
+          "methods": [],
+          "properties": [
+            "createProduct",
+            "searchProducts",
+            "getDraftProductByShop",
+            "getPublishedProductByShop",
+            "setPublishedProductByShop",
+            "setDraftProductByShop",
+            "getDetailProduct",
+            "updateProduct"
+          ],
+          "exported": false,
+          "lineCount": 71
+        }
+      ],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Request",
+            "Response"
+          ]
+        },
+        {
+          "source": "../../../core/success.response",
+          "specifiers": [
+            "OkResponse"
+          ]
+        },
+        {
+          "source": "../service",
+          "specifiers": [
+            "ProductServiceFactory"
+          ]
+        },
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "validate"
+          ]
+        },
+        {
+          "source": "../dto/create.dto",
+          "specifiers": [
+            "createProductSchema"
+          ]
+        },
+        {
+          "source": "../../../core/error.response",
+          "specifiers": [
+            "BadRequestError"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 81,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/product/dto/create.dto.ts": {
+      "filePath": "src/features/product/dto/create.dto.ts",
+      "contentHash": "baf5e2980d46b9ee23a0d8d59177d1a63c587ae719fab0136c172acef406c3cf",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "zod",
+          "specifiers": [
+            "z"
+          ]
+        }
+      ],
+      "exports": [
+        "createProductSchema"
+      ],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/product/dto/index.ts": {
+      "filePath": "src/features/product/dto/index.ts",
+      "contentHash": "bae709f85d0652a50d9253528d034b317df8468efa22c9fbe4ac6c47fadb41f7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/product/model/index.ts": {
+      "filePath": "src/features/product/model/index.ts",
+      "contentHash": "15a65dbdee92cf150337873ffa44000be18414ab9e6ed34830328f0b171ddb0c",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "model",
+            "Schema"
+          ]
+        },
+        {
+          "source": "slugify",
+          "specifiers": [
+            "slugify"
+          ]
+        }
+      ],
+      "exports": [
+        "productType",
+        "clothingSchema",
+        "electronicSchema",
+        "ProductModel",
+        "ClothingModel",
+        "ElectronicModel"
+      ],
+      "totalLines": 139,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/product/PRODUCT_MODULE.md": {
+      "filePath": "src/features/product/PRODUCT_MODULE.md",
+      "contentHash": "6a3789eeb74215bf73ec0fbdef35165e4e8a2c134973c143ae567e97606ce401",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 382,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/product/repository/index.ts": {
+      "filePath": "src/features/product/repository/index.ts",
+      "contentHash": "84ce2976e14b9418c710aec318523841802153835b682c3a10609e594b4226f1",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ProductRepository",
+          "methods": [],
+          "properties": [
+            "searchProducts",
+            "getDraftProductByShop",
+            "getPublishedProductByShop",
+            "setPublishedProductByShop",
+            "setDraftProductByShop",
+            "getDetailProduct",
+            "findAndUpdate",
+            "getProductPublishedById"
+          ],
+          "exported": true,
+          "lineCount": 149
+        }
+      ],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "mongoose"
+          ]
+        },
+        {
+          "source": "../../../utils",
+          "specifiers": [
+            "createPaginationResponse",
+            "parsePagination"
+          ]
+        },
+        {
+          "source": "../dto",
+          "specifiers": [
+            "FindAndUpdateProductPayload"
+          ]
+        },
+        {
+          "source": "../model",
+          "specifiers": [
+            "ProductModel"
+          ]
+        }
+      ],
+      "exports": [
+        "ProductRepository"
+      ],
+      "totalLines": 155,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/product/routes/index.ts": {
+      "filePath": "src/features/product/routes/index.ts",
+      "contentHash": "eda78a644c22d90944bb46137e842eab706c317f272f94884e047776e43b74ad",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "express"
+          ]
+        },
+        {
+          "source": "../controller",
+          "specifiers": [
+            "ProductController"
+          ]
+        },
+        {
+          "source": "../../../utils",
+          "specifiers": [
+            "asyncHandler"
+          ]
+        },
+        {
+          "source": "../../auth/utils/checkAuth",
+          "specifiers": [
+            "authentication"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/product/service/index.ts": {
+      "filePath": "src/features/product/service/index.ts",
+      "contentHash": "a4e2deb06ff6a1fed093972ed1e61bec761ae17b8dfc94ebae05b979d3523ece",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ProductServiceFactory",
+          "methods": [],
+          "properties": [
+            "productRegister",
+            "registerProductType",
+            "createProduct",
+            "searchProducts",
+            "getDraftProductByShop",
+            "getPublishedProductByShop",
+            "setPublishedProductByShop",
+            "setDraftProductByShop",
+            "getDetailProduct",
+            "updateProduct"
+          ],
+          "exported": true,
+          "lineCount": 118
+        },
+        {
+          "name": "ClothingService",
+          "methods": [
+            "createProduct",
+            "updateProduct"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 50
+        },
+        {
+          "name": "ElectronicService",
+          "methods": [
+            "createProduct",
+            "updateProduct"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 53
+        }
+      ],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "mongoose"
+          ]
+        },
+        {
+          "source": "../../../core/error.response",
+          "specifiers": [
+            "BadRequestError",
+            "InternalServerError"
+          ]
+        },
+        {
+          "source": "../model",
+          "specifiers": [
+            "ClothingModel",
+            "ElectronicModel",
+            "ProductModel",
+            "productType"
+          ]
+        },
+        {
+          "source": "../repository",
+          "specifiers": [
+            "ProductRepository"
+          ]
+        },
+        {
+          "source": "../../../constants/common",
+          "specifiers": [
+            "PAGINATION_DEFAULT_LIMIT"
+          ]
+        },
+        {
+          "source": "../dto",
+          "specifiers": [
+            "FindAndUpdateProductPayload"
+          ]
+        },
+        {
+          "source": "../../../utils",
+          "specifiers": [
+            "flattenObject"
+          ]
+        },
+        {
+          "source": "../../inventory/repository",
+          "specifiers": [
+            "insertInventory"
+          ]
+        }
+      ],
+      "exports": [
+        "ProductServiceFactory",
+        "ClothingService",
+        "ElectronicService"
+      ],
+      "totalLines": 333,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/shop/controllers/index.ts": {
+      "filePath": "src/features/shop/controllers/index.ts",
+      "contentHash": "329ae05e3d018a69f6fd487ceeb7d3011ee00b73874bc00d9110049bc612b856",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ShopController",
+          "methods": [],
+          "properties": [
+            "getAllShops"
+          ],
+          "exported": false,
+          "lineCount": 6
+        }
+      ],
+      "imports": [
+        {
+          "source": "../../../core/success.response",
+          "specifiers": [
+            "OkResponse"
+          ]
+        },
+        {
+          "source": "../services",
+          "specifiers": [
+            "ShopService"
+          ]
+        },
+        {
+          "source": "express",
+          "specifiers": [
+            "Request",
+            "Response"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/shop/dtos/index.ts": {
+      "filePath": "src/features/shop/dtos/index.ts",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/shop/models/index.ts": {
+      "filePath": "src/features/shop/models/index.ts",
+      "contentHash": "16b9b302e5ff115623f97f8d87568c521aed45b23fb97d5f1d4301821d063fc7",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "Schema",
+            "model"
+          ]
+        }
+      ],
+      "exports": [
+        "ShopModel"
+      ],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/shop/routes/index.ts": {
+      "filePath": "src/features/shop/routes/index.ts",
+      "contentHash": "d8f3555f4b6fb2be5f6e434539aa1e420ba0bf636ebb80a72b4b8fe8ead4678e",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "express"
+          ]
+        },
+        {
+          "source": "../controllers",
+          "specifiers": [
+            "ShopController"
+          ]
+        },
+        {
+          "source": "../../../utils",
+          "specifiers": [
+            "asyncHandler"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/shop/services/index.ts": {
+      "filePath": "src/features/shop/services/index.ts",
+      "contentHash": "ad34d4acd2c87b9c5134bafd45d3ed08a903388d7dafb222b67b0bcd67c98bea",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ShopService",
+          "methods": [],
+          "properties": [
+            "findByEmail",
+            "getShops"
+          ],
+          "exported": false,
+          "lineCount": 47
+        }
+      ],
+      "imports": [
+        {
+          "source": "../models",
+          "specifiers": [
+            "ShopModel"
+          ]
+        }
+      ],
+      "exports": [
+        "default"
+      ],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    "src/helpers/check.connect.ts": {
+      "filePath": "src/helpers/check.connect.ts",
+      "contentHash": "94f3fc0d3563269e253252a93ac64dd2c7222b1b1a12b16eccb0fb84a29068e7",
+      "functions": [
+        {
+          "name": "getCountConnect",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "checkOverload",
+          "params": [],
+          "exported": true,
+          "lineCount": 17
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "mongoose"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        }
+      ],
+      "exports": [
+        "getCountConnect",
+        "checkOverload"
+      ],
+      "totalLines": 27,
+      "hasStructuralAnalysis": true
+    },
+    "src/middlewares/validation.middleware.ts": {
+      "filePath": "src/middlewares/validation.middleware.ts",
+      "contentHash": "e597111125c37719ea4ccc22d5461b3446b3846fd65b255e247627f79cb94019",
+      "functions": [
+        {
+          "name": "validationMiddleware",
+          "params": [
+            "type",
+            "value"
+          ],
+          "exported": true,
+          "lineCount": 23
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "class-transformer",
+          "specifiers": [
+            "plainToInstance"
+          ]
+        },
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "validate"
+          ]
+        },
+        {
+          "source": "express",
+          "specifiers": [
+            "NextFunction",
+            "Request",
+            "Response"
+          ]
+        },
+        {
+          "source": "../core/error.response",
+          "specifiers": [
+            "BadRequestError"
+          ]
+        }
+      ],
+      "exports": [
+        "validationMiddleware"
+      ],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "src/migrations/001_create_api_keys.ts": {
+      "filePath": "src/migrations/001_create_api_keys.ts",
+      "contentHash": "7222fe405d8bcec041b12d2167fc7f09247c93c22ceb8c1050dd78e48d446c84",
+      "functions": [
+        {
+          "name": "generateKey",
+          "params": [],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "migrate",
+          "params": [],
+          "exported": false,
+          "lineCount": 46
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "mongoose"
+          ]
+        },
+        {
+          "source": "crypto",
+          "specifiers": [
+            "crypto"
+          ]
+        },
+        {
+          "source": "path",
+          "specifiers": [
+            "* as path"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "* as dotenv"
+          ]
+        },
+        {
+          "source": "../features/apiKey/models",
+          "specifiers": [
+            "ApiKeyModel"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 103,
+      "hasStructuralAnalysis": true
+    },
+    "src/postman/auth/index.http": {
+      "filePath": "src/postman/auth/index.http",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": false
+    },
+    "src/postman/auth/post.http": {
+      "filePath": "src/postman/auth/post.http",
+      "contentHash": "7d5128f0de4b40e386d8b89892007ddd8853cbda6504c37c1a4d0d232651ffb8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "src/postman/shop/index.http": {
+      "filePath": "src/postman/shop/index.http",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": false
+    },
+    "src/routes/index.ts": {
+      "filePath": "src/routes/index.ts",
+      "contentHash": "ba5f4007180c7bde521c6b9a7d3522437792fe4256ff6fc6466dde04b6f2d140",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Router"
+          ]
+        },
+        {
+          "source": "../features/shop/routes",
+          "specifiers": [
+            "shopRouter"
+          ]
+        },
+        {
+          "source": "../features/auth/routes",
+          "specifiers": [
+            "authRouter"
+          ]
+        },
+        {
+          "source": "../features/product/routes",
+          "specifiers": [
+            "productRouter"
+          ]
+        },
+        {
+          "source": "../features/cart/routes",
+          "specifiers": [
+            "cartRouter"
+          ]
+        },
+        {
+          "source": "../features/discount/routes",
+          "specifiers": [
+            "discountRouter"
+          ]
+        },
+        {
+          "source": "../features/checkout/routes",
+          "specifiers": [
+            "checkoutRouter"
+          ]
+        },
+        {
+          "source": "../features/order/routes",
+          "specifiers": [
+            "orderRouter"
+          ]
+        },
+        {
+          "source": "../features/inventory/routes",
+          "specifiers": [
+            "inventoryRouter"
+          ]
+        },
+        {
+          "source": "../features/comments/presentation/routes",
+          "specifiers": [
+            "commentRouter"
+          ]
+        },
+        {
+          "source": "../features/auth/utils/checkAuth",
+          "specifiers": [
+            "apiKey",
+            "permission"
+          ]
+        },
+        {
+          "source": "./test.route",
+          "specifiers": [
+            "testRouter"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "src/routes/test.route.ts": {
+      "filePath": "src/routes/test.route.ts",
+      "contentHash": "18796c2b9464e2e8f08a8ead740faf5339fbedd763749097e7369d61f67f0258",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "express"
+          ]
+        },
+        {
+          "source": "../services/pubsub.service",
+          "specifiers": [
+            "PubSubService"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 25,
+      "hasStructuralAnalysis": true
+    },
+    "src/services/pubsub.service.ts": {
+      "filePath": "src/services/pubsub.service.ts",
+      "contentHash": "4f1c498f606bbbca7c228dc48eec7c90b633d152a062d4ac7b0564575fdc6de0",
+      "functions": [],
+      "classes": [
+        {
+          "name": "PubSubService",
+          "methods": [
+            "publish",
+            "subscribe"
+          ],
+          "properties": [],
+          "exported": false,
+          "lineCount": 16
+        }
+      ],
+      "imports": [
+        {
+          "source": "../utils/redis.util",
+          "specifiers": [
+            "pubClient",
+            "subClient"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "src/test/message_queue/kafka/consumer.ts": {
+      "filePath": "src/test/message_queue/kafka/consumer.ts",
+      "contentHash": "d5ddcf255074326542f471fcfd999844bef0d3bac08434e6ef8d567f2f1fdd2b",
+      "functions": [
+        {
+          "name": "runConsumer",
+          "params": [],
+          "exported": true,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "./index",
+          "specifiers": [
+            "kafka"
+          ]
+        }
+      ],
+      "exports": [
+        "runConsumer"
+      ],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "src/test/message_queue/kafka/index.ts": {
+      "filePath": "src/test/message_queue/kafka/index.ts",
+      "contentHash": "b7b9ca865bbc614c46ecd932660add64bd7ef868cdd2c4a26ab0510a4785746b",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "kafkajs",
+          "specifiers": [
+            "Kafka"
+          ]
+        }
+      ],
+      "exports": [
+        "kafka"
+      ],
+      "totalLines": 7,
+      "hasStructuralAnalysis": true
+    },
+    "src/test/message_queue/kafka/producer.ts": {
+      "filePath": "src/test/message_queue/kafka/producer.ts",
+      "contentHash": "0ce9b48361ab37562435fb404ecaa6fbac7eff1d178bb3f025fd2db03c199d84",
+      "functions": [
+        {
+          "name": "runProducer",
+          "params": [],
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "./index",
+          "specifiers": [
+            "kafka"
+          ]
+        }
+      ],
+      "exports": [
+        "runProducer"
+      ],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "src/test/message_queue/rabbitmq/consumer.ts": {
+      "filePath": "src/test/message_queue/rabbitmq/consumer.ts",
+      "contentHash": "87e1dbd86918c9d0fbb2ccb9a0f2160da2a22883631a08625c10c9674d6a9594",
+      "functions": [
+        {
+          "name": "receiveMessage",
+          "params": [],
+          "exported": false,
+          "lineCount": 21
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "amqplib",
+          "specifiers": [
+            "* as amqp"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "src/test/message_queue/rabbitmq/producer.ts": {
+      "filePath": "src/test/message_queue/rabbitmq/producer.ts",
+      "contentHash": "1a39f2e1cb41eb68c773bbec6bd33c66e3c1f814a667b16ced21933939b5339a",
+      "functions": [
+        {
+          "name": "sendMessage",
+          "params": [],
+          "exported": false,
+          "lineCount": 19
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "amqplib",
+          "specifiers": [
+            "* as amqp"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": true
+    },
+    "src/types/common.ts": {
+      "filePath": "src/types/common.ts",
+      "contentHash": "fa6aacc677027c03432d2e173b7a5fbbf7f62a954320d6f03dbf67309deb2639",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "src/types/express.d.ts": {
+      "filePath": "src/types/express.d.ts",
+      "contentHash": "e34ae25ad449afbe661534f1619ee81983363c86849f50f9e4e369734db41d27",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "mongoose",
+          "specifiers": [
+            "Types"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": true
+    },
+    "src/types/index.ts": {
+      "filePath": "src/types/index.ts",
+      "contentHash": "2de0962c735569b518c9ab5e5d509a6541a0adb58c6230905e6c2a6ab632a433",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    "src/utils/common.ts": {
+      "filePath": "src/utils/common.ts",
+      "contentHash": "b09ed69fa4c937610e13a36448cd16454c9cf04d1a99f4ab61bef88a93f15268",
+      "functions": [
+        {
+          "name": "getInfoData",
+          "params": [
+            "{\n  fields = [] as string[],\n  object = {},\n}"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "asyncHandler",
+          "params": [
+            "func"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "parsePagination",
+          "params": [
+            "pagination"
+          ],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "createPaginationResponse",
+          "params": [
+            "data",
+            "total",
+            "page",
+            "limit"
+          ],
+          "returnType": "PaginationResponse<T>",
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "removeNullUndefinedObject",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "flattenObject",
+          "params": [
+            "obj",
+            "prefix"
+          ],
+          "returnType": "Record<string, any>",
+          "exported": true,
+          "lineCount": 21
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Request",
+            "Response",
+            "NextFunction"
+          ]
+        },
+        {
+          "source": "lodash/pick",
+          "specifiers": [
+            "pick"
+          ]
+        },
+        {
+          "source": "../types",
+          "specifiers": [
+            "PaginationParams",
+            "PaginationResponse"
+          ]
+        }
+      ],
+      "exports": [
+        "getInfoData",
+        "asyncHandler",
+        "parsePagination",
+        "createPaginationResponse",
+        "removeNullUndefinedObject",
+        "flattenObject"
+      ],
+      "totalLines": 90,
+      "hasStructuralAnalysis": true
+    },
+    "src/utils/index.ts": {
+      "filePath": "src/utils/index.ts",
+      "contentHash": "2de0962c735569b518c9ab5e5d509a6541a0adb58c6230905e6c2a6ab632a433",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    "src/utils/redis.util.ts": {
+      "filePath": "src/utils/redis.util.ts",
+      "contentHash": "0d74d17ee40cbc81cb44244e7d4da06cafecec1046d2e630d82e12c9cac4d7ef",
+      "functions": [
+        {
+          "name": "initRedis",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "closeRedis",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "redis",
+          "specifiers": [
+            "createClient"
+          ]
+        }
+      ],
+      "exports": [
+        "pubClient",
+        "subClient",
+        "initRedis",
+        "closeRedis"
+      ],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "tsconfig.json": {
+      "filePath": "tsconfig.json",
+      "contentHash": "b8241c50cf3758e8b2c06e5e1d1c35ff19a152265e964961daf45cd9760d9aac",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    }
+  }
+}

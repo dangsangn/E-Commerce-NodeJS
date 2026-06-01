@@ -1,0 +1,4758 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "ecommerce-nodejs",
+    "languages": [
+      "dockerfile",
+      "http",
+      "json",
+      "markdown",
+      "typescript",
+      "yaml"
+    ],
+    "frameworks": [
+      "Express",
+      "Mongoose",
+      "RabbitMQ",
+      "KafkaJS",
+      "Redis",
+      "Docker",
+      "Docker Compose",
+      "TypeScript"
+    ],
+    "description": "An e-commerce backend built with Node.js, Express, and TypeScript, utilizing RabbitMQ, Kafka, Redis, and MongoDB. Note: this project has over 100 source files; consider scoping analysis to a subdirectory for faster results.",
+    "analyzedAt": "2026-05-28T03:58:55.831Z",
+    "gitCommitHash": "aae17cbb81be9a7a1024ff1ffb7524e516f7e8b2"
+  },
+  "nodes": [
+    {
+      "id": "file:server.ts",
+      "type": "file",
+      "name": "server.ts",
+      "filePath": "server.ts",
+      "summary": "Application entry point bootstrapping the HTTP server, initializing connections, and setting up clean exits.",
+      "tags": [
+        "entry-point",
+        "bootstrap",
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app.ts",
+      "type": "file",
+      "name": "app.ts",
+      "filePath": "src/app.ts",
+      "summary": "Express application setup configuration defining middleware stacks, routes, and global error handling.",
+      "tags": [
+        "entry-point",
+        "bootstrap",
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/configs/IConfig.ts",
+      "type": "file",
+      "name": "IConfig.ts",
+      "filePath": "src/configs/IConfig.ts",
+      "summary": "Provides implementation details and structures for the IConfig.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/configs/default.ts",
+      "type": "file",
+      "name": "default.ts",
+      "filePath": "src/configs/default.ts",
+      "summary": "Provides implementation details and structures for the default.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/configs/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/configs/index.ts",
+      "summary": "Provides implementation details and structures for the index.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/dbs/init.mongodb.ts",
+      "type": "file",
+      "name": "init.mongodb.ts",
+      "filePath": "src/dbs/init.mongodb.ts",
+      "summary": "Provides implementation details and structures for the init.mongodb.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/dbs/init.mongodb.ts:Database",
+      "type": "class",
+      "name": "Database",
+      "filePath": "src/dbs/init.mongodb.ts",
+      "lineRange": [
+        6,
+        35
+      ],
+      "summary": "Class defining properties and methods for Database within init.mongodb.ts.",
+      "tags": [
+        "module",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/auth/routes/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/auth/routes/index.ts",
+      "summary": "Express API routes routing request endpoints to their respective controllers for auth.",
+      "tags": [
+        "auth",
+        "routing",
+        "endpoints"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/shop/routes/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/shop/routes/index.ts",
+      "summary": "Express API routes routing request endpoints to their respective controllers for shop.",
+      "tags": [
+        "shop",
+        "routing",
+        "endpoints"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/helpers/check.connect.ts",
+      "type": "file",
+      "name": "check.connect.ts",
+      "filePath": "src/helpers/check.connect.ts",
+      "summary": "Helper utility to monitor database connections and detect server overloading issues.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/helpers/check.connect.ts:getCountConnect",
+      "type": "function",
+      "name": "getCountConnect",
+      "filePath": "src/helpers/check.connect.ts",
+      "lineRange": [
+        6,
+        8
+      ],
+      "summary": "Function executing operations for getCountConnect in check.connect.ts.",
+      "tags": [
+        "module",
+        "function",
+        "handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/helpers/check.connect.ts:checkOverload",
+      "type": "function",
+      "name": "checkOverload",
+      "filePath": "src/helpers/check.connect.ts",
+      "lineRange": [
+        10,
+        26
+      ],
+      "summary": "Function executing operations for checkOverload in check.connect.ts.",
+      "tags": [
+        "module",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/routes/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/routes/index.ts",
+      "summary": "Core Express routing setup combining all api feature routes under standard prefixes.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/routes/test.route.ts",
+      "type": "file",
+      "name": "test.route.ts",
+      "filePath": "src/routes/test.route.ts",
+      "summary": "Express routing definitions for testing publish/subscribe and background worker triggers.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/services/pubsub.service.ts",
+      "type": "file",
+      "name": "pubsub.service.ts",
+      "filePath": "src/services/pubsub.service.ts",
+      "summary": "Publish/Subscribe service wrapper wrapping Redis pub/sub commands for event-driven flows.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/services/pubsub.service.ts:PubSubService",
+      "type": "class",
+      "name": "PubSubService",
+      "filePath": "src/services/pubsub.service.ts",
+      "lineRange": [
+        3,
+        18
+      ],
+      "summary": "Class defining properties and methods for PubSubService within pubsub.service.ts.",
+      "tags": [
+        "module",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/utils/redis.util.ts",
+      "type": "file",
+      "name": "redis.util.ts",
+      "filePath": "src/utils/redis.util.ts",
+      "summary": "Configures the Redis clients for publish/subscribe services and general cache operations.",
+      "tags": [
+        "utility",
+        "redis",
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/utils/redis.util.ts:initRedis",
+      "type": "function",
+      "name": "initRedis",
+      "filePath": "src/utils/redis.util.ts",
+      "lineRange": [
+        13,
+        16
+      ],
+      "summary": "Function executing operations for initRedis in redis.util.ts.",
+      "tags": [
+        "utility",
+        "function",
+        "handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/utils/redis.util.ts:closeRedis",
+      "type": "function",
+      "name": "closeRedis",
+      "filePath": "src/utils/redis.util.ts",
+      "lineRange": [
+        18,
+        20
+      ],
+      "summary": "Function executing operations for closeRedis in redis.util.ts.",
+      "tags": [
+        "utility",
+        "function",
+        "handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/inventory/controller/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/inventory/controller/index.ts",
+      "summary": "Express controller handling HTTP requests and response formatting for the inventory feature.",
+      "tags": [
+        "inventory",
+        "controller",
+        "api-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/inventory/models/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/inventory/models/index.ts",
+      "summary": "Mongoose data models and schemas defining the MongoDB database structures for the inventory feature.",
+      "tags": [
+        "inventory",
+        "data-model",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/inventory/repository/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/inventory/repository/index.ts",
+      "summary": "Data access layer repository performing direct database queries and CRUD operations for inventory.",
+      "tags": [
+        "inventory",
+        "repository",
+        "database"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/features/inventory/repository/index.ts:insertInventory",
+      "type": "function",
+      "name": "insertInventory",
+      "filePath": "src/features/inventory/repository/index.ts",
+      "lineRange": [
+        4,
+        31
+      ],
+      "summary": "Function executing operations for insertInventory in index.ts.",
+      "tags": [
+        "inventory",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/features/inventory/repository/index.ts:reserveInventory",
+      "type": "function",
+      "name": "reserveInventory",
+      "filePath": "src/features/inventory/repository/index.ts",
+      "lineRange": [
+        44,
+        75
+      ],
+      "summary": "Function executing operations for reserveInventory in index.ts.",
+      "tags": [
+        "inventory",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/features/inventory/repository/index.ts:releaseInventory",
+      "type": "function",
+      "name": "releaseInventory",
+      "filePath": "src/features/inventory/repository/index.ts",
+      "lineRange": [
+        84,
+        110
+      ],
+      "summary": "Function executing operations for releaseInventory in index.ts.",
+      "tags": [
+        "inventory",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/features/inventory/repository/index.ts:getInventoryByProductId",
+      "type": "function",
+      "name": "getInventoryByProductId",
+      "filePath": "src/features/inventory/repository/index.ts",
+      "lineRange": [
+        112,
+        116
+      ],
+      "summary": "Function executing operations for getInventoryByProductId in index.ts.",
+      "tags": [
+        "inventory",
+        "function",
+        "handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/inventory/routes/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/inventory/routes/index.ts",
+      "summary": "Express API routes routing request endpoints to their respective controllers for inventory.",
+      "tags": [
+        "inventory",
+        "routing",
+        "endpoints"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/inventory/services/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/inventory/services/index.ts",
+      "summary": "Service layer orchestrating the core business logic and database interactions for the inventory feature.",
+      "tags": [
+        "inventory",
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/features/inventory/services/index.ts:InventoryService",
+      "type": "class",
+      "name": "InventoryService",
+      "filePath": "src/features/inventory/services/index.ts",
+      "lineRange": [
+        3,
+        9
+      ],
+      "summary": "Class defining properties and methods for InventoryService within index.ts.",
+      "tags": [
+        "inventory",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/order/controller/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/order/controller/index.ts",
+      "summary": "Express controller handling HTTP requests and response formatting for the order feature.",
+      "tags": [
+        "order",
+        "controller",
+        "api-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/features/order/controller/index.ts:OrderController",
+      "type": "class",
+      "name": "OrderController",
+      "filePath": "src/features/order/controller/index.ts",
+      "lineRange": [
+        5,
+        36
+      ],
+      "summary": "Class defining properties and methods for OrderController within index.ts.",
+      "tags": [
+        "order",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/order/model/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/order/model/index.ts",
+      "summary": "Mongoose data models and schemas defining the MongoDB database structures for the order feature.",
+      "tags": [
+        "order",
+        "data-model",
+        "database"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/order/repository/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/order/repository/index.ts",
+      "summary": "Data access layer repository performing direct database queries and CRUD operations for order.",
+      "tags": [
+        "order",
+        "repository",
+        "database"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/order/repository/index.ts:OrderRepository",
+      "type": "class",
+      "name": "OrderRepository",
+      "filePath": "src/features/order/repository/index.ts",
+      "lineRange": [
+        5,
+        67
+      ],
+      "summary": "Class defining properties and methods for OrderRepository within index.ts.",
+      "tags": [
+        "order",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/order/routes/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/order/routes/index.ts",
+      "summary": "Express API routes routing request endpoints to their respective controllers for order.",
+      "tags": [
+        "order",
+        "routing",
+        "endpoints"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/order/service/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/order/service/index.ts",
+      "summary": "Service layer orchestrating the core business logic and database interactions for the order feature.",
+      "tags": [
+        "order",
+        "service",
+        "business-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/order/service/index.ts:OrderService",
+      "type": "class",
+      "name": "OrderService",
+      "filePath": "src/features/order/service/index.ts",
+      "lineRange": [
+        9,
+        226
+      ],
+      "summary": "Class defining properties and methods for OrderService within index.ts.",
+      "tags": [
+        "order",
+        "class",
+        "oop"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/constants/common/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/constants/common/index.ts",
+      "summary": "Provides implementation details and structures for the index.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/product/controller/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/product/controller/index.ts",
+      "summary": "Express controller handling HTTP requests and response formatting for the product feature.",
+      "tags": [
+        "product",
+        "controller",
+        "api-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/product/controller/index.ts:ProductController",
+      "type": "class",
+      "name": "ProductController",
+      "filePath": "src/features/product/controller/index.ts",
+      "lineRange": [
+        8,
+        78
+      ],
+      "summary": "Class defining properties and methods for ProductController within index.ts.",
+      "tags": [
+        "product",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/product/dto/create.dto.ts",
+      "type": "file",
+      "name": "create.dto.ts",
+      "filePath": "src/features/product/dto/create.dto.ts",
+      "summary": "Data Transfer Objects (DTO) defining schemas and validation rules for product requests.",
+      "tags": [
+        "product",
+        "dto",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/product/dto/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/product/dto/index.ts",
+      "summary": "Data Transfer Objects (DTO) defining schemas and validation rules for product requests.",
+      "tags": [
+        "product",
+        "dto",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/product/model/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/product/model/index.ts",
+      "summary": "Mongoose data models and schemas defining the MongoDB database structures for the product feature.",
+      "tags": [
+        "product",
+        "data-model",
+        "database"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/product/repository/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/product/repository/index.ts",
+      "summary": "Data access layer repository performing direct database queries and CRUD operations for product.",
+      "tags": [
+        "product",
+        "repository",
+        "database"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/product/repository/index.ts:ProductRepository",
+      "type": "class",
+      "name": "ProductRepository",
+      "filePath": "src/features/product/repository/index.ts",
+      "lineRange": [
+        6,
+        154
+      ],
+      "summary": "Class defining properties and methods for ProductRepository within index.ts.",
+      "tags": [
+        "product",
+        "class",
+        "oop"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/features/product/routes/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/product/routes/index.ts",
+      "summary": "Express API routes routing request endpoints to their respective controllers for product.",
+      "tags": [
+        "product",
+        "routing",
+        "endpoints"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/product/service/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/product/service/index.ts",
+      "summary": "Service layer orchestrating the core business logic and database interactions for the product feature.",
+      "tags": [
+        "product",
+        "service",
+        "business-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:src/features/product/service/index.ts:ProductServiceFactory",
+      "type": "class",
+      "name": "ProductServiceFactory",
+      "filePath": "src/features/product/service/index.ts",
+      "lineRange": [
+        18,
+        135
+      ],
+      "summary": "Class defining properties and methods for ProductServiceFactory within index.ts.",
+      "tags": [
+        "product",
+        "class",
+        "oop"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:src/features/product/service/index.ts:ClothingService",
+      "type": "class",
+      "name": "ClothingService",
+      "filePath": "src/features/product/service/index.ts",
+      "lineRange": [
+        223,
+        272
+      ],
+      "summary": "Class defining properties and methods for ClothingService within index.ts.",
+      "tags": [
+        "product",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/product/service/index.ts:ElectronicService",
+      "type": "class",
+      "name": "ElectronicService",
+      "filePath": "src/features/product/service/index.ts",
+      "lineRange": [
+        274,
+        326
+      ],
+      "summary": "Class defining properties and methods for ElectronicService within index.ts.",
+      "tags": [
+        "product",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/utils/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/utils/index.ts",
+      "summary": "Provides implementation details and structures for the index.ts module.",
+      "tags": [
+        "utility",
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/constants/httpStatusCode/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/constants/httpStatusCode/index.ts",
+      "summary": "Provides implementation details and structures for the index.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/core/error.response.ts",
+      "type": "file",
+      "name": "error.response.ts",
+      "filePath": "src/core/error.response.ts",
+      "summary": "Custom response class constructors representing common HTTP error codes and messages.",
+      "tags": [
+        "core",
+        "response",
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/core/error.response.ts:ConflictRequestError",
+      "type": "class",
+      "name": "ConflictRequestError",
+      "filePath": "src/core/error.response.ts",
+      "lineRange": [
+        11,
+        18
+      ],
+      "summary": "Class defining properties and methods for ConflictRequestError within error.response.ts.",
+      "tags": [
+        "core",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/core/error.response.ts:BadRequestError",
+      "type": "class",
+      "name": "BadRequestError",
+      "filePath": "src/core/error.response.ts",
+      "lineRange": [
+        20,
+        27
+      ],
+      "summary": "Class defining properties and methods for BadRequestError within error.response.ts.",
+      "tags": [
+        "core",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/core/error.response.ts:NotFoundError",
+      "type": "class",
+      "name": "NotFoundError",
+      "filePath": "src/core/error.response.ts",
+      "lineRange": [
+        29,
+        36
+      ],
+      "summary": "Class defining properties and methods for NotFoundError within error.response.ts.",
+      "tags": [
+        "core",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/core/error.response.ts:UnauthorizedError",
+      "type": "class",
+      "name": "UnauthorizedError",
+      "filePath": "src/core/error.response.ts",
+      "lineRange": [
+        38,
+        45
+      ],
+      "summary": "Class defining properties and methods for UnauthorizedError within error.response.ts.",
+      "tags": [
+        "core",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/core/error.response.ts:ForbiddenError",
+      "type": "class",
+      "name": "ForbiddenError",
+      "filePath": "src/core/error.response.ts",
+      "lineRange": [
+        47,
+        54
+      ],
+      "summary": "Class defining properties and methods for ForbiddenError within error.response.ts.",
+      "tags": [
+        "core",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/core/error.response.ts:InternalServerError",
+      "type": "class",
+      "name": "InternalServerError",
+      "filePath": "src/core/error.response.ts",
+      "lineRange": [
+        56,
+        63
+      ],
+      "summary": "Class defining properties and methods for InternalServerError within error.response.ts.",
+      "tags": [
+        "core",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/core/success.response.ts",
+      "type": "file",
+      "name": "success.response.ts",
+      "filePath": "src/core/success.response.ts",
+      "summary": "Custom response classes and helper methods representing successful HTTP operations.",
+      "tags": [
+        "core",
+        "response",
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/core/success.response.ts:SuccessResponse",
+      "type": "class",
+      "name": "SuccessResponse",
+      "filePath": "src/core/success.response.ts",
+      "lineRange": [
+        4,
+        25
+      ],
+      "summary": "Class defining properties and methods for SuccessResponse within success.response.ts.",
+      "tags": [
+        "core",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/core/success.response.ts:OkResponse",
+      "type": "class",
+      "name": "OkResponse",
+      "filePath": "src/core/success.response.ts",
+      "lineRange": [
+        27,
+        38
+      ],
+      "summary": "Class defining properties and methods for OkResponse within success.response.ts.",
+      "tags": [
+        "core",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/core/success.response.ts:CreatedResponse",
+      "type": "class",
+      "name": "CreatedResponse",
+      "filePath": "src/core/success.response.ts",
+      "lineRange": [
+        40,
+        51
+      ],
+      "summary": "Class defining properties and methods for CreatedResponse within success.response.ts.",
+      "tags": [
+        "core",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/auth/controllers/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/auth/controllers/index.ts",
+      "summary": "Express controller handling HTTP requests and response formatting for the auth feature.",
+      "tags": [
+        "auth",
+        "controller",
+        "api-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/features/auth/controllers/index.ts:AuthController",
+      "type": "class",
+      "name": "AuthController",
+      "filePath": "src/features/auth/controllers/index.ts",
+      "lineRange": [
+        7,
+        39
+      ],
+      "summary": "Class defining properties and methods for AuthController within index.ts.",
+      "tags": [
+        "auth",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/auth/services/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/auth/services/index.ts",
+      "summary": "Service layer orchestrating the core business logic and database interactions for the auth feature.",
+      "tags": [
+        "auth",
+        "service",
+        "business-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/auth/services/index.ts:AuthService",
+      "type": "class",
+      "name": "AuthService",
+      "filePath": "src/features/auth/services/index.ts",
+      "lineRange": [
+        20,
+        184
+      ],
+      "summary": "Class defining properties and methods for AuthService within index.ts.",
+      "tags": [
+        "auth",
+        "class",
+        "oop"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/features/auth/utils/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/auth/utils/index.ts",
+      "summary": "Provides implementation details and structures for the index.ts module.",
+      "tags": [
+        "auth",
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/features/auth/utils/index.ts:createTokenPair",
+      "type": "function",
+      "name": "createTokenPair",
+      "filePath": "src/features/auth/utils/index.ts",
+      "lineRange": [
+        16,
+        44
+      ],
+      "summary": "Function executing operations for createTokenPair in index.ts.",
+      "tags": [
+        "auth",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/features/auth/utils/index.ts:verifyToken",
+      "type": "function",
+      "name": "verifyToken",
+      "filePath": "src/features/auth/utils/index.ts",
+      "lineRange": [
+        52,
+        54
+      ],
+      "summary": "Function executing operations for verifyToken in index.ts.",
+      "tags": [
+        "auth",
+        "function",
+        "handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/shop/controllers/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/shop/controllers/index.ts",
+      "summary": "Express controller handling HTTP requests and response formatting for the shop feature.",
+      "tags": [
+        "shop",
+        "controller",
+        "api-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/shop/models/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/shop/models/index.ts",
+      "summary": "Mongoose data models and schemas defining the MongoDB database structures for the shop feature.",
+      "tags": [
+        "shop",
+        "data-model",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/shop/services/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/shop/services/index.ts",
+      "summary": "Service layer orchestrating the core business logic and database interactions for the shop feature.",
+      "tags": [
+        "shop",
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/features/shop/services/index.ts:ShopService",
+      "type": "class",
+      "name": "ShopService",
+      "filePath": "src/features/shop/services/index.ts",
+      "lineRange": [
+        3,
+        49
+      ],
+      "summary": "Class defining properties and methods for ShopService within index.ts.",
+      "tags": [
+        "shop",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/discount/controller/discount.controller.ts",
+      "type": "file",
+      "name": "discount.controller.ts",
+      "filePath": "src/features/discount/controller/discount.controller.ts",
+      "summary": "Express controller handling HTTP requests and response formatting for the discount feature.",
+      "tags": [
+        "discount",
+        "controller",
+        "api-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/features/discount/controller/discount.controller.ts:DiscountController",
+      "type": "class",
+      "name": "DiscountController",
+      "filePath": "src/features/discount/controller/discount.controller.ts",
+      "lineRange": [
+        5,
+        33
+      ],
+      "summary": "Class defining properties and methods for DiscountController within discount.controller.ts.",
+      "tags": [
+        "discount",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/discount/dtos/create-discount.dto.ts",
+      "type": "file",
+      "name": "create-discount.dto.ts",
+      "filePath": "src/features/discount/dtos/create-discount.dto.ts",
+      "summary": "Data Transfer Objects (DTO) defining schemas and validation rules for discount requests.",
+      "tags": [
+        "discount",
+        "dto",
+        "validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/discount/dtos/create-discount.dto.ts:CreateDiscountDTO",
+      "type": "class",
+      "name": "CreateDiscountDTO",
+      "filePath": "src/features/discount/dtos/create-discount.dto.ts",
+      "lineRange": [
+        13,
+        73
+      ],
+      "summary": "Class defining properties and methods for CreateDiscountDTO within create-discount.dto.ts.",
+      "tags": [
+        "discount",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/discount/dtos/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/discount/dtos/index.ts",
+      "summary": "Data Transfer Objects (DTO) defining schemas and validation rules for discount requests.",
+      "tags": [
+        "discount",
+        "dto",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/discount/dtos/update-discount.dto.ts",
+      "type": "file",
+      "name": "update-discount.dto.ts",
+      "filePath": "src/features/discount/dtos/update-discount.dto.ts",
+      "summary": "Data Transfer Objects (DTO) defining schemas and validation rules for discount requests.",
+      "tags": [
+        "discount",
+        "dto",
+        "validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/discount/dtos/update-discount.dto.ts:UpdateDiscountDTO",
+      "type": "class",
+      "name": "UpdateDiscountDTO",
+      "filePath": "src/features/discount/dtos/update-discount.dto.ts",
+      "lineRange": [
+        13,
+        66
+      ],
+      "summary": "Class defining properties and methods for UpdateDiscountDTO within update-discount.dto.ts.",
+      "tags": [
+        "discount",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/discount/models/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/discount/models/index.ts",
+      "summary": "Mongoose data models and schemas defining the MongoDB database structures for the discount feature.",
+      "tags": [
+        "discount",
+        "data-model",
+        "database"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/discount/repository/discount.repository.ts",
+      "type": "file",
+      "name": "discount.repository.ts",
+      "filePath": "src/features/discount/repository/discount.repository.ts",
+      "summary": "Data access layer repository performing direct database queries and CRUD operations for discount.",
+      "tags": [
+        "discount",
+        "repository",
+        "database"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/discount/repository/discount.repository.ts:DiscountRepository",
+      "type": "class",
+      "name": "DiscountRepository",
+      "filePath": "src/features/discount/repository/discount.repository.ts",
+      "lineRange": [
+        5,
+        124
+      ],
+      "summary": "Class defining properties and methods for DiscountRepository within discount.repository.ts.",
+      "tags": [
+        "discount",
+        "class",
+        "oop"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/features/discount/routes/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/discount/routes/index.ts",
+      "summary": "Express API routes routing request endpoints to their respective controllers for discount.",
+      "tags": [
+        "discount",
+        "routing",
+        "endpoints"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/discount/services/discount.service.ts",
+      "type": "file",
+      "name": "discount.service.ts",
+      "filePath": "src/features/discount/services/discount.service.ts",
+      "summary": "Service layer orchestrating the core business logic and database interactions for the discount feature.",
+      "tags": [
+        "discount",
+        "service",
+        "business-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:src/features/discount/services/discount.service.ts:DiscountService",
+      "type": "class",
+      "name": "DiscountService",
+      "filePath": "src/features/discount/services/discount.service.ts",
+      "lineRange": [
+        17,
+        282
+      ],
+      "summary": "Class defining properties and methods for DiscountService within discount.service.ts.",
+      "tags": [
+        "discount",
+        "class",
+        "oop"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/middlewares/validation.middleware.ts",
+      "type": "file",
+      "name": "validation.middleware.ts",
+      "filePath": "src/middlewares/validation.middleware.ts",
+      "summary": "Express request validation middleware checking payloads against class-validator classes.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/middlewares/validation.middleware.ts:validationMiddleware",
+      "type": "function",
+      "name": "validationMiddleware",
+      "filePath": "src/middlewares/validation.middleware.ts",
+      "lineRange": [
+        6,
+        28
+      ],
+      "summary": "Function executing operations for validationMiddleware in validation.middleware.ts.",
+      "tags": [
+        "module",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/comments/application/interfaces/comment.repository.interface.ts",
+      "type": "file",
+      "name": "comment.repository.interface.ts",
+      "filePath": "src/features/comments/application/interfaces/comment.repository.interface.ts",
+      "summary": "Provides implementation details and structures for the comment.repository.interface.ts module.",
+      "tags": [
+        "comments",
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/comments/application/use-cases/comment.use-case.ts",
+      "type": "file",
+      "name": "comment.use-case.ts",
+      "filePath": "src/features/comments/application/use-cases/comment.use-case.ts",
+      "summary": "Provides implementation details and structures for the comment.use-case.ts module.",
+      "tags": [
+        "comments",
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/features/comments/application/use-cases/comment.use-case.ts:CommentUseCase",
+      "type": "class",
+      "name": "CommentUseCase",
+      "filePath": "src/features/comments/application/use-cases/comment.use-case.ts",
+      "lineRange": [
+        7,
+        41
+      ],
+      "summary": "Class defining properties and methods for CommentUseCase within comment.use-case.ts.",
+      "tags": [
+        "comments",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/comments/domain/entities/comment.entity.ts",
+      "type": "file",
+      "name": "comment.entity.ts",
+      "filePath": "src/features/comments/domain/entities/comment.entity.ts",
+      "summary": "Provides implementation details and structures for the comment.entity.ts module.",
+      "tags": [
+        "comments",
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/comments/infrastructure/database/models/comment.model.ts",
+      "type": "file",
+      "name": "comment.model.ts",
+      "filePath": "src/features/comments/infrastructure/database/models/comment.model.ts",
+      "summary": "Mongoose data models and schemas defining the MongoDB database structures for the comments feature.",
+      "tags": [
+        "comments",
+        "data-model",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/comments/infrastructure/repositories/comment.repository.ts",
+      "type": "file",
+      "name": "comment.repository.ts",
+      "filePath": "src/features/comments/infrastructure/repositories/comment.repository.ts",
+      "summary": "Data access layer repository performing direct database queries and CRUD operations for comments.",
+      "tags": [
+        "comments",
+        "repository",
+        "database"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/comments/infrastructure/repositories/comment.repository.ts:MongoCommentRepository",
+      "type": "class",
+      "name": "MongoCommentRepository",
+      "filePath": "src/features/comments/infrastructure/repositories/comment.repository.ts",
+      "lineRange": [
+        8,
+        70
+      ],
+      "summary": "Class defining properties and methods for MongoCommentRepository within comment.repository.ts.",
+      "tags": [
+        "comments",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/comments/presentation/controllers/comment.controller.ts",
+      "type": "file",
+      "name": "comment.controller.ts",
+      "filePath": "src/features/comments/presentation/controllers/comment.controller.ts",
+      "summary": "Express controller handling HTTP requests and response formatting for the comments feature.",
+      "tags": [
+        "comments",
+        "controller",
+        "api-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/features/comments/presentation/controllers/comment.controller.ts:CommentController",
+      "type": "class",
+      "name": "CommentController",
+      "filePath": "src/features/comments/presentation/controllers/comment.controller.ts",
+      "lineRange": [
+        5,
+        30
+      ],
+      "summary": "Class defining properties and methods for CommentController within comment.controller.ts.",
+      "tags": [
+        "comments",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/comments/presentation/routes/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/comments/presentation/routes/index.ts",
+      "summary": "Express API routes routing request endpoints to their respective controllers for comments.",
+      "tags": [
+        "comments",
+        "routing",
+        "endpoints"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/apiKey/models/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/apiKey/models/index.ts",
+      "summary": "Mongoose data models and schemas defining the MongoDB database structures for the apiKey feature.",
+      "tags": [
+        "apikey",
+        "data-model",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/apiKey/services/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/apiKey/services/index.ts",
+      "summary": "Service layer orchestrating the core business logic and database interactions for the apiKey feature.",
+      "tags": [
+        "apikey",
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/features/apiKey/services/index.ts:ApiKeyService",
+      "type": "class",
+      "name": "ApiKeyService",
+      "filePath": "src/features/apiKey/services/index.ts",
+      "lineRange": [
+        3,
+        8
+      ],
+      "summary": "Class defining properties and methods for ApiKeyService within index.ts.",
+      "tags": [
+        "apikey",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/auth/utils/checkAuth.ts",
+      "type": "file",
+      "name": "checkAuth.ts",
+      "filePath": "src/features/auth/utils/checkAuth.ts",
+      "summary": "Provides implementation details and structures for the checkAuth.ts module.",
+      "tags": [
+        "auth",
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/features/auth/utils/checkAuth.ts:apiKey",
+      "type": "function",
+      "name": "apiKey",
+      "filePath": "src/features/auth/utils/checkAuth.ts",
+      "lineRange": [
+        15,
+        36
+      ],
+      "summary": "Function executing operations for apiKey in checkAuth.ts.",
+      "tags": [
+        "auth",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/features/auth/utils/checkAuth.ts:permission",
+      "type": "function",
+      "name": "permission",
+      "filePath": "src/features/auth/utils/checkAuth.ts",
+      "lineRange": [
+        38,
+        56
+      ],
+      "summary": "Function executing operations for permission in checkAuth.ts.",
+      "tags": [
+        "auth",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/keyToken/models/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/keyToken/models/index.ts",
+      "summary": "Mongoose data models and schemas defining the MongoDB database structures for the keyToken feature.",
+      "tags": [
+        "keytoken",
+        "data-model",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/keyToken/services/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/keyToken/services/index.ts",
+      "summary": "Service layer orchestrating the core business logic and database interactions for the keyToken feature.",
+      "tags": [
+        "keytoken",
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/features/keyToken/services/index.ts:KeyTokenService",
+      "type": "class",
+      "name": "KeyTokenService",
+      "filePath": "src/features/keyToken/services/index.ts",
+      "lineRange": [
+        4,
+        49
+      ],
+      "summary": "Class defining properties and methods for KeyTokenService within index.ts.",
+      "tags": [
+        "keytoken",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/migrations/001_create_api_keys.ts",
+      "type": "file",
+      "name": "001_create_api_keys.ts",
+      "filePath": "src/migrations/001_create_api_keys.ts",
+      "summary": "Provides implementation details and structures for the 001_create_api_keys.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/migrations/001_create_api_keys.ts:migrate",
+      "type": "function",
+      "name": "migrate",
+      "filePath": "src/migrations/001_create_api_keys.ts",
+      "lineRange": [
+        55,
+        100
+      ],
+      "summary": "Function executing operations for migrate in 001_create_api_keys.ts.",
+      "tags": [
+        "module",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/cart/controller/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/cart/controller/index.ts",
+      "summary": "Express controller handling HTTP requests and response formatting for the cart feature.",
+      "tags": [
+        "cart",
+        "controller",
+        "api-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/cart/controller/index.ts:CartController",
+      "type": "class",
+      "name": "CartController",
+      "filePath": "src/features/cart/controller/index.ts",
+      "lineRange": [
+        5,
+        56
+      ],
+      "summary": "Class defining properties and methods for CartController within index.ts.",
+      "tags": [
+        "cart",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/cart/model/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/cart/model/index.ts",
+      "summary": "Mongoose data models and schemas defining the MongoDB database structures for the cart feature.",
+      "tags": [
+        "cart",
+        "data-model",
+        "database"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/cart/repository/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/cart/repository/index.ts",
+      "summary": "Data access layer repository performing direct database queries and CRUD operations for cart.",
+      "tags": [
+        "cart",
+        "repository",
+        "database"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/cart/repository/index.ts:CartRepository",
+      "type": "class",
+      "name": "CartRepository",
+      "filePath": "src/features/cart/repository/index.ts",
+      "lineRange": [
+        4,
+        143
+      ],
+      "summary": "Class defining properties and methods for CartRepository within index.ts.",
+      "tags": [
+        "cart",
+        "class",
+        "oop"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/features/cart/routes/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/cart/routes/index.ts",
+      "summary": "Express API routes routing request endpoints to their respective controllers for cart.",
+      "tags": [
+        "cart",
+        "routing",
+        "endpoints"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/cart/service/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/cart/service/index.ts",
+      "summary": "Service layer orchestrating the core business logic and database interactions for the cart feature.",
+      "tags": [
+        "cart",
+        "service",
+        "business-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/cart/service/index.ts:CartService",
+      "type": "class",
+      "name": "CartService",
+      "filePath": "src/features/cart/service/index.ts",
+      "lineRange": [
+        9,
+        190
+      ],
+      "summary": "Class defining properties and methods for CartService within index.ts.",
+      "tags": [
+        "cart",
+        "class",
+        "oop"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/features/checkout/controller/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/checkout/controller/index.ts",
+      "summary": "Express controller handling HTTP requests and response formatting for the checkout feature.",
+      "tags": [
+        "checkout",
+        "controller",
+        "api-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/checkout/routes/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/checkout/routes/index.ts",
+      "summary": "Express API routes routing request endpoints to their respective controllers for checkout.",
+      "tags": [
+        "checkout",
+        "routing",
+        "endpoints"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/checkout/service/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/checkout/service/index.ts",
+      "summary": "Service layer orchestrating the core business logic and database interactions for the checkout feature.",
+      "tags": [
+        "checkout",
+        "service",
+        "business-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/features/checkout/service/index.ts:CheckoutService",
+      "type": "class",
+      "name": "CheckoutService",
+      "filePath": "src/features/checkout/service/index.ts",
+      "lineRange": [
+        11,
+        157
+      ],
+      "summary": "Class defining properties and methods for CheckoutService within index.ts.",
+      "tags": [
+        "checkout",
+        "class",
+        "oop"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/features/order/types/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/order/types/index.ts",
+      "summary": "Provides implementation details and structures for the index.ts module.",
+      "tags": [
+        "order",
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/test/message_queue/kafka/consumer.ts",
+      "type": "file",
+      "name": "consumer.ts",
+      "filePath": "src/test/message_queue/kafka/consumer.ts",
+      "summary": "Kafka consumer client subscribing to topic queues and logging incoming messages.",
+      "tags": [
+        "test",
+        "message-queue",
+        "kafka",
+        "consumer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/test/message_queue/kafka/consumer.ts:runConsumer",
+      "type": "function",
+      "name": "runConsumer",
+      "filePath": "src/test/message_queue/kafka/consumer.ts",
+      "lineRange": [
+        3,
+        16
+      ],
+      "summary": "Function executing operations for runConsumer in consumer.ts.",
+      "tags": [
+        "test",
+        "function",
+        "handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/test/message_queue/kafka/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/test/message_queue/kafka/index.ts",
+      "summary": "Provides implementation details and structures for the index.ts module.",
+      "tags": [
+        "test",
+        "message-queue",
+        "kafka"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/test/message_queue/kafka/producer.ts",
+      "type": "file",
+      "name": "producer.ts",
+      "filePath": "src/test/message_queue/kafka/producer.ts",
+      "summary": "Kafka producer client publishing messages and logging partition assignments.",
+      "tags": [
+        "test",
+        "message-queue",
+        "kafka",
+        "producer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/test/message_queue/kafka/producer.ts:runProducer",
+      "type": "function",
+      "name": "runProducer",
+      "filePath": "src/test/message_queue/kafka/producer.ts",
+      "lineRange": [
+        3,
+        13
+      ],
+      "summary": "Function executing operations for runProducer in producer.ts.",
+      "tags": [
+        "test",
+        "function",
+        "handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:.dockerignore",
+      "type": "service",
+      "name": ".dockerignore",
+      "filePath": ".dockerignore",
+      "summary": "Specifies patterns and directories to ignore when building the Docker container.",
+      "tags": [
+        "infrastructure",
+        "module",
+        "ecommerce"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:docker-compose.yml",
+      "type": "service",
+      "name": "docker-compose.yml",
+      "filePath": "docker-compose.yml",
+      "summary": "Docker Compose orchestrator file to set up and run Kafka, RabbitMQ, and Mongo databases.",
+      "tags": [
+        "infrastructure",
+        "orchestration",
+        "docker"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "Dockerfile",
+      "summary": "Multi-stage Docker configuration to build and run the Node.js application.",
+      "tags": [
+        "infrastructure",
+        "containerization",
+        "module",
+        "ecommerce"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:Dockerfile:node",
+      "type": "service",
+      "name": "node",
+      "filePath": "Dockerfile",
+      "summary": "Service container node running in docker context.",
+      "tags": [
+        "docker",
+        "service",
+        "infra"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "Project documentation detailing installation steps, docker setups, and message queue consumer/producer tests.",
+      "tags": [
+        "documentation",
+        "module",
+        "ecommerce"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "package.json",
+      "summary": "Project manifest containing metadata, dependencies, scripts, and package settings.",
+      "tags": [
+        "configuration",
+        "npm",
+        "dependencies"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:pnpm-workspace.yaml",
+      "type": "config",
+      "name": "pnpm-workspace.yaml",
+      "filePath": "pnpm-workspace.yaml",
+      "summary": "Provides implementation details and structures for the pnpm-workspace.yaml module.",
+      "tags": [
+        "configuration",
+        "module",
+        "ecommerce"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tsconfig.json",
+      "type": "config",
+      "name": "tsconfig.json",
+      "filePath": "tsconfig.json",
+      "summary": "TypeScript compiler configuration settings for compiling the application code.",
+      "tags": [
+        "configuration",
+        "typescript",
+        "build"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.understand-anything/.understandignore",
+      "type": "file",
+      "name": ".understandignore",
+      "filePath": ".understand-anything/.understandignore",
+      "summary": "Configuration file specifying files and patterns to exclude from code architecture analysis.",
+      "tags": [
+        "module",
+        "ecommerce"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/tmp/ua-scan-files.json",
+      "type": "config",
+      "name": "ua-scan-files.json",
+      "filePath": ".understand-anything/tmp/ua-scan-files.json",
+      "summary": "Provides implementation details and structures for the ua-scan-files.json module.",
+      "tags": [
+        "configuration",
+        "module",
+        "ecommerce"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/constants/httpStatusCode/reasonPhrases.ts",
+      "type": "file",
+      "name": "reasonPhrases.ts",
+      "filePath": "src/constants/httpStatusCode/reasonPhrases.ts",
+      "summary": "Provides implementation details and structures for the reasonPhrases.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/constants/httpStatusCode/statusCodes.ts",
+      "type": "file",
+      "name": "statusCodes.ts",
+      "filePath": "src/constants/httpStatusCode/statusCodes.ts",
+      "summary": "Provides implementation details and structures for the statusCodes.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/dbs/init.mongodb.lv0.ts",
+      "type": "file",
+      "name": "init.mongodb.lv0.ts",
+      "filePath": "src/dbs/init.mongodb.lv0.ts",
+      "summary": "Provides implementation details and structures for the init.mongodb.lv0.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/design_patterns/method.factory.pattern.ts",
+      "type": "file",
+      "name": "method.factory.pattern.ts",
+      "filePath": "src/design_patterns/method.factory.pattern.ts",
+      "summary": "Provides implementation details and structures for the method.factory.pattern.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/design_patterns/method.factory.pattern.ts:ServiceLogistic",
+      "type": "class",
+      "name": "ServiceLogistic",
+      "filePath": "src/design_patterns/method.factory.pattern.ts",
+      "lineRange": [
+        1,
+        6
+      ],
+      "summary": "Class defining properties and methods for ServiceLogistic within method.factory.pattern.ts.",
+      "tags": [
+        "module",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:src/design_patterns/package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "src/design_patterns/package.json",
+      "summary": "Provides implementation details and structures for the package.json module.",
+      "tags": [
+        "configuration",
+        "npm",
+        "dependencies"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/design_patterns/simple.factory.pattern.ts",
+      "type": "file",
+      "name": "simple.factory.pattern.ts",
+      "filePath": "src/design_patterns/simple.factory.pattern.ts",
+      "summary": "Provides implementation details and structures for the simple.factory.pattern.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/design_patterns/simple.factory.pattern.ts:ServiceLogistic",
+      "type": "class",
+      "name": "ServiceLogistic",
+      "filePath": "src/design_patterns/simple.factory.pattern.ts",
+      "lineRange": [
+        34,
+        58
+      ],
+      "summary": "Class defining properties and methods for ServiceLogistic within simple.factory.pattern.ts.",
+      "tags": [
+        "module",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/design_patterns/simple.factory.pattern.ts:getTransport",
+      "type": "function",
+      "name": "getTransport",
+      "filePath": "src/design_patterns/simple.factory.pattern.ts",
+      "lineRange": [
+        3,
+        29
+      ],
+      "summary": "Function executing operations for getTransport in simple.factory.pattern.ts.",
+      "tags": [
+        "module",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/auth/dtos/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/auth/dtos/index.ts",
+      "summary": "Data Transfer Objects (DTO) defining schemas and validation rules for auth requests.",
+      "tags": [
+        "auth",
+        "dto",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/discount/dtos/apply-discount.dto.ts",
+      "type": "file",
+      "name": "apply-discount.dto.ts",
+      "filePath": "src/features/discount/dtos/apply-discount.dto.ts",
+      "summary": "Data Transfer Objects (DTO) defining schemas and validation rules for discount requests.",
+      "tags": [
+        "discount",
+        "dto",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/features/discount/dtos/apply-discount.dto.ts:ApplyDiscountDTO",
+      "type": "class",
+      "name": "ApplyDiscountDTO",
+      "filePath": "src/features/discount/dtos/apply-discount.dto.ts",
+      "lineRange": [
+        10,
+        26
+      ],
+      "summary": "Class defining properties and methods for ApplyDiscountDTO within apply-discount.dto.ts.",
+      "tags": [
+        "discount",
+        "class",
+        "oop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/discount/dtos/discount-response.dto.ts",
+      "type": "file",
+      "name": "discount-response.dto.ts",
+      "filePath": "src/features/discount/dtos/discount-response.dto.ts",
+      "summary": "Data Transfer Objects (DTO) defining schemas and validation rules for discount requests.",
+      "tags": [
+        "discount",
+        "dto",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/discount/dtos/query-discount.dto.ts",
+      "type": "file",
+      "name": "query-discount.dto.ts",
+      "filePath": "src/features/discount/dtos/query-discount.dto.ts",
+      "summary": "Data Transfer Objects (DTO) defining schemas and validation rules for discount requests.",
+      "tags": [
+        "discount",
+        "dto",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/features/discount/dtos/query-discount.dto.ts:QueryDiscountDTO",
+      "type": "class",
+      "name": "QueryDiscountDTO",
+      "filePath": "src/features/discount/dtos/query-discount.dto.ts",
+      "lineRange": [
+        10,
+        41
+      ],
+      "summary": "Class defining properties and methods for QueryDiscountDTO within query-discount.dto.ts.",
+      "tags": [
+        "discount",
+        "class",
+        "oop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/features/keyToken/controllers/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/keyToken/controllers/index.ts",
+      "summary": "Express controller handling HTTP requests and response formatting for the keyToken feature.",
+      "tags": [
+        "keytoken",
+        "controller",
+        "api-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/keyToken/dtos/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/keyToken/dtos/index.ts",
+      "summary": "Data Transfer Objects (DTO) defining schemas and validation rules for keyToken requests.",
+      "tags": [
+        "keytoken",
+        "dto",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/keyToken/routes/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/keyToken/routes/index.ts",
+      "summary": "Express API routes routing request endpoints to their respective controllers for keyToken.",
+      "tags": [
+        "keytoken",
+        "routing",
+        "endpoints"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:src/features/order/ORDER_CHECKOUT_GUIDE.md",
+      "type": "document",
+      "name": "ORDER_CHECKOUT_GUIDE.md",
+      "filePath": "src/features/order/ORDER_CHECKOUT_GUIDE.md",
+      "summary": "Provides implementation details and structures for the ORDER_CHECKOUT_GUIDE.md module.",
+      "tags": [
+        "documentation",
+        "order",
+        "module",
+        "ecommerce"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:src/features/product/PRODUCT_MODULE.md",
+      "type": "document",
+      "name": "PRODUCT_MODULE.md",
+      "filePath": "src/features/product/PRODUCT_MODULE.md",
+      "summary": "Provides implementation details and structures for the PRODUCT_MODULE.md module.",
+      "tags": [
+        "documentation",
+        "product",
+        "module",
+        "ecommerce"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/features/shop/dtos/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/features/shop/dtos/index.ts",
+      "summary": "Data Transfer Objects (DTO) defining schemas and validation rules for shop requests.",
+      "tags": [
+        "shop",
+        "dto",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/postman/auth/index.http",
+      "type": "file",
+      "name": "index.http",
+      "filePath": "src/postman/auth/index.http",
+      "summary": "Provides implementation details and structures for the index.http module.",
+      "tags": [
+        "module",
+        "ecommerce"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/postman/auth/post.http",
+      "type": "file",
+      "name": "post.http",
+      "filePath": "src/postman/auth/post.http",
+      "summary": "Provides implementation details and structures for the post.http module.",
+      "tags": [
+        "module",
+        "ecommerce"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/postman/shop/index.http",
+      "type": "file",
+      "name": "index.http",
+      "filePath": "src/postman/shop/index.http",
+      "summary": "Provides implementation details and structures for the index.http module.",
+      "tags": [
+        "module",
+        "ecommerce"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/test/message_queue/rabbitmq/consumer.ts",
+      "type": "file",
+      "name": "consumer.ts",
+      "filePath": "src/test/message_queue/rabbitmq/consumer.ts",
+      "summary": "Test worker consumer establishing connection to RabbitMQ, asserting queues, and consuming messages.",
+      "tags": [
+        "test",
+        "message-queue",
+        "rabbitmq",
+        "consumer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/test/message_queue/rabbitmq/consumer.ts:receiveMessage",
+      "type": "function",
+      "name": "receiveMessage",
+      "filePath": "src/test/message_queue/rabbitmq/consumer.ts",
+      "lineRange": [
+        3,
+        23
+      ],
+      "summary": "Function executing operations for receiveMessage in consumer.ts.",
+      "tags": [
+        "test",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/test/message_queue/rabbitmq/producer.ts",
+      "type": "file",
+      "name": "producer.ts",
+      "filePath": "src/test/message_queue/rabbitmq/producer.ts",
+      "summary": "Test worker producer connecting to RabbitMQ and publishing verification messages to queues.",
+      "tags": [
+        "test",
+        "message-queue",
+        "rabbitmq",
+        "producer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/test/message_queue/rabbitmq/producer.ts:sendMessage",
+      "type": "function",
+      "name": "sendMessage",
+      "filePath": "src/test/message_queue/rabbitmq/producer.ts",
+      "lineRange": [
+        3,
+        21
+      ],
+      "summary": "Function executing operations for sendMessage in producer.ts.",
+      "tags": [
+        "test",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/types/common.ts",
+      "type": "file",
+      "name": "common.ts",
+      "filePath": "src/types/common.ts",
+      "summary": "Provides implementation details and structures for the common.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/types/express.d.ts",
+      "type": "file",
+      "name": "express.d.ts",
+      "filePath": "src/types/express.d.ts",
+      "summary": "Provides implementation details and structures for the express.d.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/types/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/types/index.ts",
+      "summary": "Provides implementation details and structures for the index.ts module.",
+      "tags": [
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/utils/common.ts",
+      "type": "file",
+      "name": "common.ts",
+      "filePath": "src/utils/common.ts",
+      "summary": "Provides implementation details and structures for the common.ts module.",
+      "tags": [
+        "utility",
+        "module",
+        "ecommerce",
+        "typescript"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/utils/common.ts:getInfoData",
+      "type": "function",
+      "name": "getInfoData",
+      "filePath": "src/utils/common.ts",
+      "lineRange": [
+        5,
+        13
+      ],
+      "summary": "Function executing operations for getInfoData in common.ts.",
+      "tags": [
+        "utility",
+        "function",
+        "handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/utils/common.ts:asyncHandler",
+      "type": "function",
+      "name": "asyncHandler",
+      "filePath": "src/utils/common.ts",
+      "lineRange": [
+        15,
+        21
+      ],
+      "summary": "Function executing operations for asyncHandler in common.ts.",
+      "tags": [
+        "utility",
+        "function",
+        "handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/utils/common.ts:parsePagination",
+      "type": "function",
+      "name": "parsePagination",
+      "filePath": "src/utils/common.ts",
+      "lineRange": [
+        23,
+        36
+      ],
+      "summary": "Function executing operations for parsePagination in common.ts.",
+      "tags": [
+        "utility",
+        "function",
+        "handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/utils/common.ts:createPaginationResponse",
+      "type": "function",
+      "name": "createPaginationResponse",
+      "filePath": "src/utils/common.ts",
+      "lineRange": [
+        38,
+        58
+      ],
+      "summary": "Function executing operations for createPaginationResponse in common.ts.",
+      "tags": [
+        "utility",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/utils/common.ts:removeNullUndefinedObject",
+      "type": "function",
+      "name": "removeNullUndefinedObject",
+      "filePath": "src/utils/common.ts",
+      "lineRange": [
+        61,
+        68
+      ],
+      "summary": "Function executing operations for removeNullUndefinedObject in common.ts.",
+      "tags": [
+        "utility",
+        "function",
+        "handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/utils/common.ts:flattenObject",
+      "type": "function",
+      "name": "flattenObject",
+      "filePath": "src/utils/common.ts",
+      "lineRange": [
+        70,
+        90
+      ],
+      "summary": "Function executing operations for flattenObject in common.ts.",
+      "tags": [
+        "utility",
+        "function",
+        "handler"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:server.ts",
+      "target": "file:src/app.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:server.ts",
+      "target": "file:src/configs/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:server.ts",
+      "target": "file:src/dbs/init.mongodb.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:server.ts",
+      "target": "file:src/utils/redis.util.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app.ts",
+      "target": "file:src/dbs/init.mongodb.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app.ts",
+      "target": "file:src/features/auth/routes/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app.ts",
+      "target": "file:src/features/shop/routes/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app.ts",
+      "target": "file:src/helpers/check.connect.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app.ts",
+      "target": "file:src/routes/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/configs/default.ts",
+      "target": "file:src/configs/IConfig.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/configs/index.ts",
+      "target": "file:src/configs/default.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/configs/index.ts",
+      "target": "file:src/configs/IConfig.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/dbs/init.mongodb.ts",
+      "target": "class:src/dbs/init.mongodb.ts:Database",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/dbs/init.mongodb.ts",
+      "target": "file:src/configs/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/routes/index.ts",
+      "target": "file:src/features/auth/controllers/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/routes/index.ts",
+      "target": "file:src/features/auth/controllers/index.ts",
+      "type": "routes",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/features/auth/routes/index.ts",
+      "target": "file:src/features/auth/utils/checkAuth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/routes/index.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/shop/routes/index.ts",
+      "target": "file:src/features/shop/controllers/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/shop/routes/index.ts",
+      "target": "file:src/features/shop/controllers/index.ts",
+      "type": "routes",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/features/shop/routes/index.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/helpers/check.connect.ts",
+      "target": "function:src/helpers/check.connect.ts:getCountConnect",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/helpers/check.connect.ts",
+      "target": "function:src/helpers/check.connect.ts:getCountConnect",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/helpers/check.connect.ts",
+      "target": "function:src/helpers/check.connect.ts:checkOverload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/helpers/check.connect.ts",
+      "target": "function:src/helpers/check.connect.ts:checkOverload",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/routes/index.ts",
+      "target": "file:src/features/auth/routes/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/routes/index.ts",
+      "target": "file:src/features/auth/utils/checkAuth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/routes/index.ts",
+      "target": "file:src/features/cart/routes/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/routes/index.ts",
+      "target": "file:src/features/checkout/routes/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/routes/index.ts",
+      "target": "file:src/features/comments/presentation/routes/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/routes/index.ts",
+      "target": "file:src/features/discount/routes/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/routes/index.ts",
+      "target": "file:src/features/inventory/routes/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/routes/index.ts",
+      "target": "file:src/features/order/routes/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/routes/index.ts",
+      "target": "file:src/features/product/routes/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/routes/index.ts",
+      "target": "file:src/features/shop/routes/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/routes/index.ts",
+      "target": "file:src/routes/test.route.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/routes/test.route.ts",
+      "target": "file:src/services/pubsub.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/pubsub.service.ts",
+      "target": "class:src/services/pubsub.service.ts:PubSubService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/pubsub.service.ts",
+      "target": "file:src/utils/redis.util.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/utils/redis.util.ts",
+      "target": "function:src/utils/redis.util.ts:initRedis",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/utils/redis.util.ts",
+      "target": "function:src/utils/redis.util.ts:initRedis",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/utils/redis.util.ts",
+      "target": "function:src/utils/redis.util.ts:closeRedis",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/utils/redis.util.ts",
+      "target": "function:src/utils/redis.util.ts:closeRedis",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/inventory/controller/index.ts",
+      "target": "file:src/features/inventory/services/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/inventory/repository/index.ts",
+      "target": "function:src/features/inventory/repository/index.ts:insertInventory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/inventory/repository/index.ts",
+      "target": "function:src/features/inventory/repository/index.ts:insertInventory",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/inventory/repository/index.ts",
+      "target": "function:src/features/inventory/repository/index.ts:reserveInventory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/inventory/repository/index.ts",
+      "target": "function:src/features/inventory/repository/index.ts:reserveInventory",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/inventory/repository/index.ts",
+      "target": "function:src/features/inventory/repository/index.ts:releaseInventory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/inventory/repository/index.ts",
+      "target": "function:src/features/inventory/repository/index.ts:releaseInventory",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/inventory/repository/index.ts",
+      "target": "function:src/features/inventory/repository/index.ts:getInventoryByProductId",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/inventory/repository/index.ts",
+      "target": "function:src/features/inventory/repository/index.ts:getInventoryByProductId",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/inventory/repository/index.ts",
+      "target": "file:src/features/inventory/models/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/inventory/routes/index.ts",
+      "target": "file:src/features/inventory/controller/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/inventory/routes/index.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/inventory/services/index.ts",
+      "target": "class:src/features/inventory/services/index.ts:InventoryService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/inventory/services/index.ts",
+      "target": "class:src/features/inventory/services/index.ts:InventoryService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/inventory/services/index.ts",
+      "target": "file:src/features/inventory/repository/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/inventory/services/index.ts",
+      "target": "file:src/features/inventory/repository/index.ts",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/order/controller/index.ts",
+      "target": "class:src/features/order/controller/index.ts:OrderController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/order/controller/index.ts",
+      "target": "file:src/core/success.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/order/controller/index.ts",
+      "target": "file:src/features/order/service/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/order/repository/index.ts",
+      "target": "class:src/features/order/repository/index.ts:OrderRepository",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/order/repository/index.ts",
+      "target": "class:src/features/order/repository/index.ts:OrderRepository",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/order/repository/index.ts",
+      "target": "file:src/features/order/model/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/order/repository/index.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/order/routes/index.ts",
+      "target": "file:src/features/auth/utils/checkAuth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/order/routes/index.ts",
+      "target": "file:src/features/order/controller/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/order/routes/index.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/order/service/index.ts",
+      "target": "class:src/features/order/service/index.ts:OrderService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/order/service/index.ts",
+      "target": "class:src/features/order/service/index.ts:OrderService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/order/service/index.ts",
+      "target": "file:src/core/error.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/order/service/index.ts",
+      "target": "file:src/features/cart/service/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/order/service/index.ts",
+      "target": "file:src/features/checkout/service/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/order/service/index.ts",
+      "target": "file:src/features/inventory/repository/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/order/service/index.ts",
+      "target": "file:src/features/order/model/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/order/service/index.ts",
+      "target": "file:src/features/order/repository/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/controller/index.ts",
+      "target": "class:src/features/product/controller/index.ts:ProductController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/product/controller/index.ts",
+      "target": "file:src/core/error.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/controller/index.ts",
+      "target": "file:src/core/success.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/controller/index.ts",
+      "target": "file:src/features/product/dto/create.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/controller/index.ts",
+      "target": "file:src/features/product/service/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/repository/index.ts",
+      "target": "class:src/features/product/repository/index.ts:ProductRepository",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/product/repository/index.ts",
+      "target": "class:src/features/product/repository/index.ts:ProductRepository",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/product/repository/index.ts",
+      "target": "file:src/features/product/dto/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/repository/index.ts",
+      "target": "file:src/features/product/model/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/repository/index.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/routes/index.ts",
+      "target": "file:src/features/auth/utils/checkAuth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/routes/index.ts",
+      "target": "file:src/features/product/controller/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/routes/index.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/service/index.ts",
+      "target": "class:src/features/product/service/index.ts:ProductServiceFactory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/product/service/index.ts",
+      "target": "class:src/features/product/service/index.ts:ProductServiceFactory",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/product/service/index.ts",
+      "target": "class:src/features/product/service/index.ts:ClothingService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/product/service/index.ts",
+      "target": "class:src/features/product/service/index.ts:ClothingService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/product/service/index.ts",
+      "target": "class:src/features/product/service/index.ts:ElectronicService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/product/service/index.ts",
+      "target": "class:src/features/product/service/index.ts:ElectronicService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/product/service/index.ts",
+      "target": "file:src/constants/common/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/service/index.ts",
+      "target": "file:src/core/error.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/service/index.ts",
+      "target": "file:src/features/inventory/repository/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/service/index.ts",
+      "target": "file:src/features/product/dto/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/service/index.ts",
+      "target": "file:src/features/product/model/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/service/index.ts",
+      "target": "file:src/features/product/repository/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/product/service/index.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/core/error.response.ts",
+      "target": "class:src/core/error.response.ts:ConflictRequestError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/core/error.response.ts",
+      "target": "class:src/core/error.response.ts:ConflictRequestError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/core/error.response.ts",
+      "target": "class:src/core/error.response.ts:BadRequestError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/core/error.response.ts",
+      "target": "class:src/core/error.response.ts:BadRequestError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/core/error.response.ts",
+      "target": "class:src/core/error.response.ts:NotFoundError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/core/error.response.ts",
+      "target": "class:src/core/error.response.ts:NotFoundError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/core/error.response.ts",
+      "target": "class:src/core/error.response.ts:UnauthorizedError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/core/error.response.ts",
+      "target": "class:src/core/error.response.ts:UnauthorizedError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/core/error.response.ts",
+      "target": "class:src/core/error.response.ts:ForbiddenError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/core/error.response.ts",
+      "target": "class:src/core/error.response.ts:ForbiddenError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/core/error.response.ts",
+      "target": "class:src/core/error.response.ts:InternalServerError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/core/error.response.ts",
+      "target": "class:src/core/error.response.ts:InternalServerError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/core/error.response.ts",
+      "target": "file:src/constants/httpStatusCode/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/core/success.response.ts",
+      "target": "class:src/core/success.response.ts:SuccessResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/core/success.response.ts",
+      "target": "class:src/core/success.response.ts:OkResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/core/success.response.ts",
+      "target": "class:src/core/success.response.ts:OkResponse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/core/success.response.ts",
+      "target": "class:src/core/success.response.ts:CreatedResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/core/success.response.ts",
+      "target": "class:src/core/success.response.ts:CreatedResponse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/core/success.response.ts",
+      "target": "file:src/constants/httpStatusCode/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/controllers/index.ts",
+      "target": "class:src/features/auth/controllers/index.ts:AuthController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/auth/controllers/index.ts",
+      "target": "file:src/core/error.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/controllers/index.ts",
+      "target": "file:src/core/success.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/controllers/index.ts",
+      "target": "file:src/features/auth/services/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/controllers/index.ts",
+      "target": "file:src/features/auth/services/index.ts",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/auth/services/index.ts",
+      "target": "class:src/features/auth/services/index.ts:AuthService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/auth/services/index.ts",
+      "target": "file:src/core/error.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/services/index.ts",
+      "target": "file:src/features/auth/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/services/index.ts",
+      "target": "file:src/features/keyToken/services/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/services/index.ts",
+      "target": "file:src/features/shop/models/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/services/index.ts",
+      "target": "file:src/features/shop/services/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/services/index.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/utils/index.ts",
+      "target": "function:src/features/auth/utils/index.ts:createTokenPair",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/auth/utils/index.ts",
+      "target": "function:src/features/auth/utils/index.ts:createTokenPair",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/auth/utils/index.ts",
+      "target": "function:src/features/auth/utils/index.ts:verifyToken",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/auth/utils/index.ts",
+      "target": "function:src/features/auth/utils/index.ts:verifyToken",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/shop/controllers/index.ts",
+      "target": "file:src/core/success.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/shop/controllers/index.ts",
+      "target": "file:src/features/shop/services/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/shop/controllers/index.ts",
+      "target": "file:src/features/shop/services/index.ts",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/shop/services/index.ts",
+      "target": "class:src/features/shop/services/index.ts:ShopService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/shop/services/index.ts",
+      "target": "file:src/features/shop/models/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/controller/discount.controller.ts",
+      "target": "class:src/features/discount/controller/discount.controller.ts:DiscountController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/discount/controller/discount.controller.ts",
+      "target": "class:src/features/discount/controller/discount.controller.ts:DiscountController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/discount/controller/discount.controller.ts",
+      "target": "file:src/core/success.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/controller/discount.controller.ts",
+      "target": "file:src/features/discount/services/discount.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/dtos/create-discount.dto.ts",
+      "target": "class:src/features/discount/dtos/create-discount.dto.ts:CreateDiscountDTO",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/discount/dtos/create-discount.dto.ts",
+      "target": "class:src/features/discount/dtos/create-discount.dto.ts:CreateDiscountDTO",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/discount/dtos/update-discount.dto.ts",
+      "target": "class:src/features/discount/dtos/update-discount.dto.ts:UpdateDiscountDTO",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/discount/dtos/update-discount.dto.ts",
+      "target": "class:src/features/discount/dtos/update-discount.dto.ts:UpdateDiscountDTO",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/discount/dtos/update-discount.dto.ts",
+      "target": "file:src/features/discount/dtos/create-discount.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/repository/discount.repository.ts",
+      "target": "class:src/features/discount/repository/discount.repository.ts:DiscountRepository",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/discount/repository/discount.repository.ts",
+      "target": "file:src/features/discount/dtos/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/repository/discount.repository.ts",
+      "target": "file:src/features/discount/models/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/routes/index.ts",
+      "target": "file:src/features/auth/utils/checkAuth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/routes/index.ts",
+      "target": "file:src/features/discount/controller/discount.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/routes/index.ts",
+      "target": "file:src/features/discount/dtos/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/routes/index.ts",
+      "target": "file:src/middlewares/validation.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/routes/index.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/services/discount.service.ts",
+      "target": "class:src/features/discount/services/discount.service.ts:DiscountService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/discount/services/discount.service.ts",
+      "target": "class:src/features/discount/services/discount.service.ts:DiscountService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/discount/services/discount.service.ts",
+      "target": "file:src/core/error.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/services/discount.service.ts",
+      "target": "file:src/features/discount/dtos/create-discount.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/services/discount.service.ts",
+      "target": "file:src/features/discount/dtos/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/services/discount.service.ts",
+      "target": "file:src/features/discount/repository/discount.repository.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/discount/services/discount.service.ts",
+      "target": "file:src/features/discount/repository/discount.repository.ts",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/middlewares/validation.middleware.ts",
+      "target": "function:src/middlewares/validation.middleware.ts:validationMiddleware",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/middlewares/validation.middleware.ts",
+      "target": "function:src/middlewares/validation.middleware.ts:validationMiddleware",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/middlewares/validation.middleware.ts",
+      "target": "file:src/core/error.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/comments/application/interfaces/comment.repository.interface.ts",
+      "target": "file:src/features/comments/domain/entities/comment.entity.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/comments/application/use-cases/comment.use-case.ts",
+      "target": "class:src/features/comments/application/use-cases/comment.use-case.ts:CommentUseCase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/comments/application/use-cases/comment.use-case.ts",
+      "target": "class:src/features/comments/application/use-cases/comment.use-case.ts:CommentUseCase",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/comments/application/use-cases/comment.use-case.ts",
+      "target": "file:src/features/comments/application/interfaces/comment.repository.interface.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/comments/application/use-cases/comment.use-case.ts",
+      "target": "file:src/features/comments/domain/entities/comment.entity.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/comments/infrastructure/repositories/comment.repository.ts",
+      "target": "class:src/features/comments/infrastructure/repositories/comment.repository.ts:MongoCommentRepository",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/comments/infrastructure/repositories/comment.repository.ts",
+      "target": "class:src/features/comments/infrastructure/repositories/comment.repository.ts:MongoCommentRepository",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/comments/infrastructure/repositories/comment.repository.ts",
+      "target": "file:src/features/comments/application/interfaces/comment.repository.interface.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/comments/infrastructure/repositories/comment.repository.ts",
+      "target": "file:src/features/comments/domain/entities/comment.entity.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/comments/infrastructure/repositories/comment.repository.ts",
+      "target": "file:src/features/comments/infrastructure/database/models/comment.model.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/comments/presentation/controllers/comment.controller.ts",
+      "target": "class:src/features/comments/presentation/controllers/comment.controller.ts:CommentController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/comments/presentation/controllers/comment.controller.ts",
+      "target": "class:src/features/comments/presentation/controllers/comment.controller.ts:CommentController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/comments/presentation/controllers/comment.controller.ts",
+      "target": "file:src/core/success.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/comments/presentation/controllers/comment.controller.ts",
+      "target": "file:src/features/comments/application/use-cases/comment.use-case.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/comments/presentation/routes/index.ts",
+      "target": "file:src/features/auth/utils/checkAuth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/comments/presentation/routes/index.ts",
+      "target": "file:src/features/comments/application/use-cases/comment.use-case.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/comments/presentation/routes/index.ts",
+      "target": "file:src/features/comments/infrastructure/repositories/comment.repository.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/comments/presentation/routes/index.ts",
+      "target": "file:src/features/comments/presentation/controllers/comment.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/comments/presentation/routes/index.ts",
+      "target": "file:src/features/comments/presentation/controllers/comment.controller.ts",
+      "type": "routes",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/features/comments/presentation/routes/index.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/apiKey/services/index.ts",
+      "target": "class:src/features/apiKey/services/index.ts:ApiKeyService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/apiKey/services/index.ts",
+      "target": "class:src/features/apiKey/services/index.ts:ApiKeyService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/apiKey/services/index.ts",
+      "target": "file:src/features/apiKey/models/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/utils/checkAuth.ts",
+      "target": "function:src/features/auth/utils/checkAuth.ts:apiKey",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/auth/utils/checkAuth.ts",
+      "target": "function:src/features/auth/utils/checkAuth.ts:apiKey",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/auth/utils/checkAuth.ts",
+      "target": "function:src/features/auth/utils/checkAuth.ts:permission",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/auth/utils/checkAuth.ts",
+      "target": "function:src/features/auth/utils/checkAuth.ts:permission",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/auth/utils/checkAuth.ts",
+      "target": "file:src/core/error.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/utils/checkAuth.ts",
+      "target": "file:src/features/apiKey/services/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/utils/checkAuth.ts",
+      "target": "file:src/features/keyToken/services/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/auth/utils/checkAuth.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/keyToken/services/index.ts",
+      "target": "class:src/features/keyToken/services/index.ts:KeyTokenService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/keyToken/services/index.ts",
+      "target": "file:src/features/keyToken/models/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/migrations/001_create_api_keys.ts",
+      "target": "function:src/migrations/001_create_api_keys.ts:migrate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/migrations/001_create_api_keys.ts",
+      "target": "file:src/features/apiKey/models/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/cart/controller/index.ts",
+      "target": "class:src/features/cart/controller/index.ts:CartController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/cart/controller/index.ts",
+      "target": "file:src/core/success.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/cart/controller/index.ts",
+      "target": "file:src/features/cart/service/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/cart/repository/index.ts",
+      "target": "class:src/features/cart/repository/index.ts:CartRepository",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/cart/repository/index.ts",
+      "target": "class:src/features/cart/repository/index.ts:CartRepository",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/cart/repository/index.ts",
+      "target": "file:src/features/cart/model/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/cart/routes/index.ts",
+      "target": "file:src/features/auth/utils/checkAuth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/cart/routes/index.ts",
+      "target": "file:src/features/cart/controller/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/cart/routes/index.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/cart/service/index.ts",
+      "target": "class:src/features/cart/service/index.ts:CartService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/cart/service/index.ts",
+      "target": "class:src/features/cart/service/index.ts:CartService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/cart/service/index.ts",
+      "target": "file:src/core/error.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/cart/service/index.ts",
+      "target": "file:src/features/cart/repository/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/cart/service/index.ts",
+      "target": "file:src/features/product/repository/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/checkout/controller/index.ts",
+      "target": "file:src/core/success.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/checkout/controller/index.ts",
+      "target": "file:src/features/checkout/service/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/checkout/routes/index.ts",
+      "target": "file:src/features/auth/utils/checkAuth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/checkout/routes/index.ts",
+      "target": "file:src/features/checkout/controller/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/checkout/routes/index.ts",
+      "target": "file:src/utils/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/checkout/service/index.ts",
+      "target": "class:src/features/checkout/service/index.ts:CheckoutService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/checkout/service/index.ts",
+      "target": "class:src/features/checkout/service/index.ts:CheckoutService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/checkout/service/index.ts",
+      "target": "file:src/core/error.response.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/checkout/service/index.ts",
+      "target": "file:src/features/discount/services/discount.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/checkout/service/index.ts",
+      "target": "file:src/features/order/types/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/features/checkout/service/index.ts",
+      "target": "file:src/features/product/repository/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/test/message_queue/kafka/consumer.ts",
+      "target": "function:src/test/message_queue/kafka/consumer.ts:runConsumer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/test/message_queue/kafka/consumer.ts",
+      "target": "function:src/test/message_queue/kafka/consumer.ts:runConsumer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/test/message_queue/kafka/consumer.ts",
+      "target": "file:src/test/message_queue/kafka/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/test/message_queue/kafka/consumer.ts",
+      "target": "file:src/test/message_queue/kafka/producer.ts",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/test/message_queue/kafka/producer.ts",
+      "target": "function:src/test/message_queue/kafka/producer.ts:runProducer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/test/message_queue/kafka/producer.ts",
+      "target": "function:src/test/message_queue/kafka/producer.ts:runProducer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/test/message_queue/kafka/producer.ts",
+      "target": "file:src/test/message_queue/kafka/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:docker-compose.yml",
+      "target": "service:Dockerfile",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:Dockerfile",
+      "target": "service:Dockerfile:node",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "service:Dockerfile",
+      "target": "file:server.ts",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:server.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:package.json",
+      "target": "file:server.ts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:package.json",
+      "target": "file:src/app.ts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tsconfig.json",
+      "target": "file:server.ts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tsconfig.json",
+      "target": "file:src/app.ts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/design_patterns/method.factory.pattern.ts",
+      "target": "class:src/design_patterns/method.factory.pattern.ts:ServiceLogistic",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/design_patterns/method.factory.pattern.ts",
+      "target": "class:src/design_patterns/method.factory.pattern.ts:ServiceLogistic",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/design_patterns/simple.factory.pattern.ts",
+      "target": "class:src/design_patterns/simple.factory.pattern.ts:ServiceLogistic",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/design_patterns/simple.factory.pattern.ts",
+      "target": "class:src/design_patterns/simple.factory.pattern.ts:ServiceLogistic",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/design_patterns/simple.factory.pattern.ts",
+      "target": "function:src/design_patterns/simple.factory.pattern.ts:getTransport",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/discount/dtos/apply-discount.dto.ts",
+      "target": "class:src/features/discount/dtos/apply-discount.dto.ts:ApplyDiscountDTO",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/discount/dtos/apply-discount.dto.ts",
+      "target": "class:src/features/discount/dtos/apply-discount.dto.ts:ApplyDiscountDTO",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/features/discount/dtos/query-discount.dto.ts",
+      "target": "class:src/features/discount/dtos/query-discount.dto.ts:QueryDiscountDTO",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/features/discount/dtos/query-discount.dto.ts",
+      "target": "class:src/features/discount/dtos/query-discount.dto.ts:QueryDiscountDTO",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/test/message_queue/rabbitmq/consumer.ts",
+      "target": "function:src/test/message_queue/rabbitmq/consumer.ts:receiveMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/test/message_queue/rabbitmq/consumer.ts",
+      "target": "file:src/test/message_queue/rabbitmq/producer.ts",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/test/message_queue/rabbitmq/producer.ts",
+      "target": "function:src/test/message_queue/rabbitmq/producer.ts:sendMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/utils/common.ts",
+      "target": "function:src/utils/common.ts:getInfoData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/utils/common.ts",
+      "target": "function:src/utils/common.ts:getInfoData",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/utils/common.ts",
+      "target": "function:src/utils/common.ts:asyncHandler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/utils/common.ts",
+      "target": "function:src/utils/common.ts:asyncHandler",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/utils/common.ts",
+      "target": "function:src/utils/common.ts:parsePagination",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/utils/common.ts",
+      "target": "function:src/utils/common.ts:parsePagination",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/utils/common.ts",
+      "target": "function:src/utils/common.ts:createPaginationResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/utils/common.ts",
+      "target": "function:src/utils/common.ts:createPaginationResponse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/utils/common.ts",
+      "target": "function:src/utils/common.ts:removeNullUndefinedObject",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/utils/common.ts",
+      "target": "function:src/utils/common.ts:removeNullUndefinedObject",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/utils/common.ts",
+      "target": "function:src/utils/common.ts:flattenObject",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/utils/common.ts",
+      "target": "function:src/utils/common.ts:flattenObject",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/utils/common.ts",
+      "target": "file:src/types/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:api",
+      "name": "API Layer",
+      "description": "HTTP routers, controllers, API routing endpoints, request handlers, and middleware.",
+      "nodeIds": [
+        "file:src/app.ts",
+        "file:src/features/auth/routes/index.ts",
+        "file:src/features/shop/routes/index.ts",
+        "file:src/routes/index.ts",
+        "file:src/routes/test.route.ts",
+        "file:src/features/inventory/controller/index.ts",
+        "file:src/features/inventory/routes/index.ts",
+        "file:src/features/order/controller/index.ts",
+        "file:src/features/order/routes/index.ts",
+        "file:src/features/product/controller/index.ts",
+        "file:src/features/product/routes/index.ts",
+        "file:src/features/auth/controllers/index.ts",
+        "file:src/features/shop/controllers/index.ts",
+        "file:src/features/discount/controller/discount.controller.ts",
+        "file:src/features/discount/routes/index.ts",
+        "file:src/middlewares/validation.middleware.ts",
+        "file:src/features/comments/presentation/controllers/comment.controller.ts",
+        "file:src/features/comments/presentation/routes/index.ts",
+        "file:src/features/cart/controller/index.ts",
+        "file:src/features/cart/routes/index.ts",
+        "file:src/features/checkout/controller/index.ts",
+        "file:src/features/checkout/routes/index.ts",
+        "file:src/features/keyToken/controllers/index.ts",
+        "file:src/features/keyToken/routes/index.ts"
+      ]
+    },
+    {
+      "id": "layer:service",
+      "name": "Service Layer",
+      "description": "Core service factories and feature orchestrators containing the business logic rules.",
+      "nodeIds": [
+        "file:src/services/pubsub.service.ts",
+        "file:src/features/inventory/services/index.ts",
+        "file:src/features/order/service/index.ts",
+        "file:src/features/product/service/index.ts",
+        "file:src/features/auth/services/index.ts",
+        "file:src/features/shop/services/index.ts",
+        "file:src/features/discount/services/discount.service.ts",
+        "file:src/features/apiKey/services/index.ts",
+        "file:src/features/keyToken/services/index.ts",
+        "file:src/features/cart/service/index.ts",
+        "file:src/features/checkout/service/index.ts"
+      ]
+    },
+    {
+      "id": "layer:data",
+      "name": "Data Layer",
+      "description": "Mongoose database adapters, repositories, query builders, and collection models.",
+      "nodeIds": [
+        "file:src/dbs/init.mongodb.ts",
+        "file:src/features/inventory/models/index.ts",
+        "file:src/features/inventory/repository/index.ts",
+        "file:src/features/order/model/index.ts",
+        "file:src/features/order/repository/index.ts",
+        "file:src/features/product/model/index.ts",
+        "file:src/features/product/repository/index.ts",
+        "file:src/features/shop/models/index.ts",
+        "file:src/features/discount/models/index.ts",
+        "file:src/features/discount/repository/discount.repository.ts",
+        "file:src/features/comments/infrastructure/database/models/comment.model.ts",
+        "file:src/features/comments/infrastructure/repositories/comment.repository.ts",
+        "file:src/features/apiKey/models/index.ts",
+        "file:src/features/keyToken/models/index.ts",
+        "file:src/migrations/001_create_api_keys.ts",
+        "file:src/features/cart/model/index.ts",
+        "file:src/features/cart/repository/index.ts",
+        "file:src/dbs/init.mongodb.lv0.ts"
+      ]
+    },
+    {
+      "id": "layer:utility",
+      "name": "Utility & Configuration Layer",
+      "description": "Static constant configs, error wrappers, helpers, and common utilities.",
+      "nodeIds": [
+        "file:server.ts",
+        "file:src/configs/IConfig.ts",
+        "file:src/configs/default.ts",
+        "file:src/configs/index.ts",
+        "file:src/helpers/check.connect.ts",
+        "file:src/utils/redis.util.ts",
+        "file:src/constants/common/index.ts",
+        "file:src/features/product/dto/create.dto.ts",
+        "file:src/features/product/dto/index.ts",
+        "file:src/utils/index.ts",
+        "file:src/constants/httpStatusCode/index.ts",
+        "file:src/core/error.response.ts",
+        "file:src/core/success.response.ts",
+        "file:src/features/auth/utils/index.ts",
+        "file:src/features/discount/dtos/create-discount.dto.ts",
+        "file:src/features/discount/dtos/index.ts",
+        "file:src/features/discount/dtos/update-discount.dto.ts",
+        "file:src/features/comments/application/interfaces/comment.repository.interface.ts",
+        "file:src/features/comments/application/use-cases/comment.use-case.ts",
+        "file:src/features/comments/domain/entities/comment.entity.ts",
+        "file:src/features/auth/utils/checkAuth.ts",
+        "file:src/features/order/types/index.ts",
+        "config:package.json",
+        "config:pnpm-workspace.yaml",
+        "config:tsconfig.json",
+        "file:.understand-anything/.understandignore",
+        "config:.understand-anything/tmp/ua-scan-files.json",
+        "file:src/constants/httpStatusCode/reasonPhrases.ts",
+        "file:src/constants/httpStatusCode/statusCodes.ts",
+        "file:src/design_patterns/method.factory.pattern.ts",
+        "config:src/design_patterns/package.json",
+        "file:src/design_patterns/simple.factory.pattern.ts",
+        "file:src/features/auth/dtos/index.ts",
+        "file:src/features/discount/dtos/apply-discount.dto.ts",
+        "file:src/features/discount/dtos/discount-response.dto.ts",
+        "file:src/features/discount/dtos/query-discount.dto.ts",
+        "file:src/features/keyToken/dtos/index.ts",
+        "file:src/features/shop/dtos/index.ts",
+        "file:src/postman/auth/index.http",
+        "file:src/postman/auth/post.http",
+        "file:src/postman/shop/index.http",
+        "file:src/types/common.ts",
+        "file:src/types/express.d.ts",
+        "file:src/types/index.ts",
+        "file:src/utils/common.ts"
+      ]
+    },
+    {
+      "id": "layer:test",
+      "name": "Test Suite",
+      "description": "Local testing suites, message queue mock scripts, and producer/consumer verification scripts.",
+      "nodeIds": [
+        "file:src/test/message_queue/kafka/consumer.ts",
+        "file:src/test/message_queue/kafka/index.ts",
+        "file:src/test/message_queue/kafka/producer.ts",
+        "file:src/test/message_queue/rabbitmq/consumer.ts",
+        "file:src/test/message_queue/rabbitmq/producer.ts"
+      ]
+    },
+    {
+      "id": "layer:infrastructure",
+      "name": "Infrastructure & Deployment",
+      "description": "Docker, Docker Compose configuration settings, and deployment manifests.",
+      "nodeIds": [
+        "service:.dockerignore",
+        "service:docker-compose.yml",
+        "service:Dockerfile",
+        "service:Dockerfile:node"
+      ]
+    },
+    {
+      "id": "layer:documentation",
+      "name": "Documentation",
+      "description": "Project setup files, markdown wikis, and design architecture guidelines.",
+      "nodeIds": [
+        "document:README.md",
+        "document:src/features/order/ORDER_CHECKOUT_GUIDE.md",
+        "document:src/features/product/PRODUCT_MODULE.md"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Project Overview",
+      "description": "Start with README.md to understand the project's design objectives, message queue setups, and local dev environments.",
+      "nodeIds": [
+        "document:README.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Server Bootstrapping",
+      "description": "The main server entry points boot up the HTTP connection, configure cross-cutting middlewares, and register route controllers.",
+      "nodeIds": [
+        "file:server.ts",
+        "file:src/app.ts"
+      ],
+      "languageLesson": "TypeScript environment setup starting up Express and loading process.env configs clean."
+    },
+    {
+      "order": 3,
+      "title": "Configuration & Database Adapters",
+      "description": "Initializes Mongoose adapters for MongoDB connection pools and loads configurations.",
+      "nodeIds": [
+        "file:src/dbs/init.mongodb.ts",
+        "file:src/configs/index.ts"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "API Routing Gateway",
+      "description": "Acts as the central API gateway routing public and private requests to specific feature modules.",
+      "nodeIds": [
+        "file:src/routes/index.ts",
+        "file:src/features/auth/routes/index.ts"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Authentication Services",
+      "description": "Handles JWT pair generation, token verification, permissions checking, and security keys storage.",
+      "nodeIds": [
+        "file:src/features/auth/controllers/index.ts",
+        "file:src/features/auth/services/index.ts"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "Product Factory & Inventory",
+      "description": "Utilizes the Factory pattern to handle custom product types (clothing, electronics) and registers initial warehouse inventory.",
+      "nodeIds": [
+        "file:src/features/product/controller/index.ts",
+        "file:src/features/product/service/index.ts",
+        "file:src/features/product/model/index.ts"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "Discount & Coupon Engine",
+      "description": "Manages discounts, verifies coupon eligibility, and applies promo codes to cart prices.",
+      "nodeIds": [
+        "file:src/features/discount/controller/discount.controller.ts",
+        "file:src/features/discount/services/discount.service.ts"
+      ]
+    },
+    {
+      "order": 8,
+      "title": "Shopping Cart Operations",
+      "description": "Orchestrates user carts, tracking product states, and calculating current totals.",
+      "nodeIds": [
+        "file:src/features/cart/controller/index.ts",
+        "file:src/features/cart/service/index.ts"
+      ]
+    },
+    {
+      "order": 9,
+      "title": "Checkout & Order Flow",
+      "description": "Processes checkouts, reserves product stock, checks discounts, and writes order histories.",
+      "nodeIds": [
+        "file:src/features/order/controller/index.ts",
+        "file:src/features/order/service/index.ts"
+      ]
+    },
+    {
+      "order": 10,
+      "title": "Event-Driven Message Queues",
+      "description": "Asynchronous integration tests using Kafka and RabbitMQ to process tasks in background workers.",
+      "nodeIds": [
+        "file:src/test/message_queue/rabbitmq/consumer.ts",
+        "file:src/test/message_queue/kafka/consumer.ts"
+      ]
+    },
+    {
+      "order": 11,
+      "title": "Deployment & Containers",
+      "description": "Docker and Docker Compose settings defining how all databases, queue workers, and servers run locally.",
+      "nodeIds": [
+        "service:Dockerfile",
+        "service:docker-compose.yml"
+      ],
+      "languageLesson": "Multi-stage builds allow building the TS project in a builder node, leaving the minimal runner with no build overhead."
+    }
+  ]
+}
