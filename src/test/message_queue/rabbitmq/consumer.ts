@@ -3,7 +3,7 @@ import * as amqp from 'amqplib'
 async function receiveMessage() {
   const queue = 'hello'
 
-  const connection = await amqp.connect('amqp://myuser:mypassword@localhost')
+  const connection = await amqp.connect('amqp://guest:guest@localhost:5672')
   const channel = await connection.createChannel()
 
   await channel.assertQueue(queue, { durable: true })
