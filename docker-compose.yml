@@ -38,7 +38,29 @@ services:
       - redis_data:/data
     restart: unless-stopped
 
+  mysql-master:
+    image: mysql:8
+    container_name: mysql_master
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '8811:3306'
+    volumes:
+      - ./docker/mysql/master/my.cnf:/etc/mysql/conf.d/my.cnf
+
+  mysql-slave:
+    image: mysql:8
+    container_name: mysql_slave
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '8822:3306'
+    volumes:
+      - ./docker/mysql/slave/my.cnf:/etc/mysql/conf.d/my.cnf
+
 volumes:
   app_node_modules:
   mongo_data:
   redis_data:
+  master_data:
+  slave_data:
