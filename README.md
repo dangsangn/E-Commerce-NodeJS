@@ -23,3 +23,36 @@
   -e RABBITMQ_DEFAULT_USER=myuser \
   -e RABBITMQ_DEFAULT_PASS=mypassword \
   rabbitmq:management
+
+### Setup mysql master slave replica
+
+1. run mysql in master
+
+- docker exec -it mysql_master mysql -uroot -proot
+- CREATE USER 'replicator'@'%' IDENTIFIED BY 'replicator123';
+  GRANT REPLICATION SLAVE ON _._ TO 'replicator'@'%';
+  FLUSH PRIVILEGES;
+- check user created is right.
+  SELECT user, host, plugin FROM mysql.user WHERE user = 'replicator';
+- check master info
+  SHOW BINARY LOG STATUS;
+  SHOW BINARY LOGS;
+
+2. run mysql in slave
+
+- docker exec -it mysql_slave mysql -uroot -proot
+- Reset the slave completely and reconfigure with fresh values:
+- example:
+  STOP REPLICA;
+  RESET REPLICA ALL;
+
+  CHANGE REPLICATION SOURCE TO
+  SOURCE_HOST='mysql_master',
+  SOURCE_USER='replicator',
+  SOURCE_PASSWORD='replicator123',
+  SOURCE_LOG_FILE='binlog.000004',
+  SOURCE_LOG_POS=870,
+  GET_SOURCE_PUBLIC_KEY=1;
+
+  START REPLICA;
+  SHOW REPLICA STATUS\G
