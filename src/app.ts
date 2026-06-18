@@ -1,11 +1,8 @@
-import express, { NextFunction, Request, Response } from 'express'
 import compression from 'compression'
+import express, { NextFunction, Request, Response } from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import instanceMongoDB from './dbs/init.mongodb'
-import { checkOverload } from './helpers/check.connect'
-import shopRouter from './features/shop/routes'
-import authRouter from './features/auth/routes'
 import router from './routes'
 
 const app = express()
