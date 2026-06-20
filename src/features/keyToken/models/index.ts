@@ -8,7 +8,7 @@ const keyTokenSchema = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: 'Shop',
+      ref: 'User',
     },
     secretKey: {
       type: String,
@@ -26,7 +26,7 @@ const keyTokenSchema = new Schema(
   {
     timestamps: true,
     collection: COLLECTION_NAME,
-  }
+  },
 )
 
 export const KeyTokenModel = model(DOCUMENT_NAME, keyTokenSchema)

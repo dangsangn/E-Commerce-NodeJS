@@ -11,11 +11,12 @@ import jwt from 'jsonwebtoken'
 export type TokenPayload = {
   userId: string
   email: string
+  roles: string[]
 }
 
 export const createTokenPair = async (
   payload: TokenPayload,
-  secretKey: string
+  secretKey: string,
 ) => {
   try {
     const accessToken = jwt.sign(payload, secretKey, {

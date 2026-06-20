@@ -16,7 +16,7 @@ const orderSchema = new Schema(
   {
     order_userId: {
       type: Schema.Types.ObjectId,
-      ref: 'Shop', // temporarily using Shop as User
+      ref: 'User', // temporarily using Shop as User
       required: true,
     },
     /*

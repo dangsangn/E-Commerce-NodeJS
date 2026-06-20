@@ -12,6 +12,9 @@ dotenv.config({
 const environmentConfig: Partial<IConfig> = {
   port: Number(process.env.PORT) || 3000,
   dbUrl: process.env.MONGODB_URI || '',
+  cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
+  cloudinaryApiKey: process.env.CLOUDINARY_API_KEY || '',
+  cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET || '',
 }
 
 const config = { ...defaultConfig, ...environmentConfig } as IConfig

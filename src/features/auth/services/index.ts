@@ -1,14 +1,14 @@
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
-import { ShopModel } from '../../shop/models'
-import KeyTokenService from '../../keyToken/services'
-import { createTokenPair, TokenPayload, verifyToken } from '../utils'
-import { getInfoData } from '../../../utils'
 import {
   BadRequestError,
   UnauthorizedError,
 } from '../../../core/error.response'
-import ShopService from '../../shop/services'
+import { getInfoData } from '../../../utils'
+import KeyTokenService from '../../keyToken/services'
+import { ROLE_NAME, RoleModel } from '../../rbac/models/role.model'
+import { UserModel } from '../../user/models'
+import { createTokenPair, TokenPayload } from '../utils'
 
 export const ROLES = {
   SHOP: 'shop',
@@ -25,30 +25,35 @@ class AuthService {
     email: string
     password: string
   }) => {
-    const shop = await ShopService.findByEmail({ email })
-    if (!shop) {
-      throw new BadRequestError('Shop not found')
+    const user = await UserModel.findOne({ usr_email: email })
+      .select('+usr_password')
+      .populate({
+        path: 'usr_roles',
+        select: 'rol_name',
+      })
+      .lean()
+    if (!user) {
+      throw new BadRequestError('User not found')
     }
 
-    const isMatchPassword = await bcrypt.compare(password, shop.password)
+    const isMatchPassword = await bcrypt.compare(password, user.usr_password!)
     if (!isMatchPassword) {
       throw new UnauthorizedError('Invalid password')
     }
+    const roles = (user.usr_roles as any[]).map((r) => r.rol_name)
 
     // Generate secret key for HS256 (symmetric encryption)
     const secretKey = crypto.randomBytes(64).toString('hex')
-
-    const tokens = await createTokenPair(
-      {
-        userId: String(shop._id),
-        email,
-      },
-      secretKey
-    )
+    const payload: TokenPayload = {
+      userId: String(user._id),
+      email,
+      roles,
+    }
+    const tokens = await createTokenPair(payload, secretKey)
 
     // Store key in database (for token refresh/revocation)
     const keyToken = await KeyTokenService.createKeyToken({
-      userId: String(shop._id),
+      userId: String(user._id),
       secretKey,
       refreshToken: tokens.refreshToken,
     })
@@ -58,9 +63,9 @@ class AuthService {
     }
 
     return {
-      shop: getInfoData({
+      user: getInfoData({
         fields: ['_id', 'email', 'name'],
-        object: shop,
+        object: user,
       }),
       tokens,
     }
@@ -75,66 +80,56 @@ class AuthService {
     password: string
     name: string
   }) => {
-    const existingShop = await ShopModel.findOne({ email }).lean()
+    const existing = await UserModel.findOne({ usr_email: email }).lean()
 
-    if (existingShop) {
-      throw new BadRequestError('Shop already exists')
+    if (existing) {
+      throw new BadRequestError('User already exists')
     }
 
+    const userRole = await RoleModel.findOne({
+      rol_name: ROLE_NAME.USER,
+    }).lean()
+
+    if (!userRole) {
+      throw new BadRequestError('Default role not be set')
+    }
     // salt and hash password
     const salt = await bcrypt.genSalt(10)
     const hashPassword = await bcrypt.hash(password, salt)
-    const newShop = await ShopModel.create({
-      email,
-      password: hashPassword,
-      name,
-      roles: [ROLES.SHOP],
+    const newUser = await UserModel.create({
+      usr_email: email,
+      usr_password: hashPassword,
+      usr_name: name,
+      usr_roles: [userRole._id],
     })
 
-    if (newShop) {
-      // create private key and public key
-      // const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
-      //   modulusLength: 4096,
-      //   publicKeyEncoding: {
-      //     type: 'pkcs1',
-      //     format: 'pem',
-      //   },
-      //   privateKeyEncoding: {
-      //     type: 'pkcs1',
-      //     format: 'pem',
-      //   },
-      // })
-
-      // Generate secret key for HS256 (symmetric encryption)
-      const secretKey = crypto.randomBytes(64).toString('hex')
-
-      const keyToken = await KeyTokenService.createKeyToken({
-        userId: String(newShop._id),
-        secretKey,
-      })
-
-      if (!keyToken) {
-        throw new BadRequestError('Create key token failed')
-      }
-
-      const tokens = await createTokenPair(
-        {
-          userId: String(newShop._id),
-          email,
-        },
-        secretKey
-      )
-
-      return {
-        shop: getInfoData({
-          fields: ['_id', 'email', 'name'],
-          object: newShop,
-        }),
-        tokens,
-      }
+    // Generate secret key for HS256 (symmetric encryption)
+    const secretKey = crypto.randomBytes(64).toString('hex')
+    const payload: TokenPayload = {
+      userId: String(newUser._id),
+      email,
+      roles: [userRole.rol_name],
     }
 
-    return null
+    const tokens = await createTokenPair(payload, secretKey)
+
+    const keyToken = await KeyTokenService.createKeyToken({
+      userId: String(newUser._id),
+      secretKey,
+      refreshToken: tokens.refreshToken,
+    })
+
+    if (!keyToken) {
+      throw new BadRequestError('Create key token failed')
+    }
+
+    return {
+      user: getInfoData({
+        fields: ['_id', 'usr_email', 'usr_name'],
+        object: newUser,
+      }),
+      tokens,
+    }
   }
 
   static logout = async ({ userId }: { userId: string }) => {
@@ -148,9 +143,8 @@ class AuthService {
     refreshToken: string
     userInfo: TokenPayload
   }) => {
-    const foundToken = await KeyTokenService.findByRefreshTokenUsed(
-      refreshToken
-    )
+    const foundToken =
+      await KeyTokenService.findByRefreshTokenUsed(refreshToken)
     if (foundToken) {
       await KeyTokenService.deleteKeyTokenByRefreshToken(refreshToken)
       throw new BadRequestError('Refresh token is used. Please login again.')
@@ -161,10 +155,7 @@ class AuthService {
       throw new BadRequestError('Refresh token is invalid')
     }
 
-    const newAccessToken = await createTokenPair(
-      { userId: userInfo.userId, email: userInfo.email },
-      holdToken.secretKey
-    )
+    const newAccessToken = await createTokenPair(userInfo, holdToken.secretKey)
 
     //update token
     await holdToken.updateOne({

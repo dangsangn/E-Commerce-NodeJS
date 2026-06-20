@@ -4,6 +4,7 @@ import { ProductServiceFactory } from '../service'
 import { validate } from 'class-validator'
 import { createProductSchema } from '../dto/create.dto'
 import { BadRequestError } from '../../../core/error.response'
+import { UploadService } from '../../upload/services'
 
 class ProductController {
   createProduct = async (req: Request, res: Response) => {
@@ -72,6 +73,14 @@ class ProductController {
     const data = await ProductServiceFactory.updateProduct({
       product_id: req.params.id as string,
       payload: req.body,
+    })
+    return OkResponse.send(res, { data })
+  }
+  uploadProductImageByLink = async (req: Request, res: Response) => {
+    const { url } = req.body
+    const { shopId } = req.params
+    const data = await UploadService.uploadFromUrl(url, {
+      folder: `products/${shopId}`,
     })
     return OkResponse.send(res, { data })
   }

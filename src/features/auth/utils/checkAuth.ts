@@ -21,12 +21,12 @@ export const apiKey = async (
     const key = req.headers[HEADER.API_KEY]?.toString() as string
     console.log('🚀 ~ key:', key)
     if (!key) {
-      throw new ForbiddenError('Forbidden')
+      throw new ForbiddenError('Key is empty')
     }
     const objectKey = await ApiKeyService.findByApiKey(key)
     console.log('🚀 ~ objectKey:', objectKey)
     if (!objectKey) {
-      throw new ForbiddenError('Forbidden')
+      throw new ForbiddenError('Key not found')
     }
     req.objKey = objectKey
     return next()

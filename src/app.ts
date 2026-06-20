@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }))
 instanceMongoDB
 
 // checkOverload()
-app.get('/health', (req: Request, res: Response) => {
+app.get('', (req: Request, res: Response) => {
   return res.status(200).json({ message: 'OK' })
 })
 

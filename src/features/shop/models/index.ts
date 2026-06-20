@@ -1,35 +1,38 @@
 import { Schema, model } from 'mongoose'
+import { required } from 'zod/mini'
 
 const DOCUMENT_NAME = 'Shop'
 const COLLECTION_NAME = 'Shops'
 
+export const SHOP_STATUS = Object.freeze({
+  ACTIVE: 'active',
+  INACTIVE: 'inactive',
+})
+
 const shopSchema = new Schema(
   {
-    name: {
+    shop_owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    shop_name: {
       type: String,
       trim: true,
       maxLength: 150,
     },
-    email: {
+    shop_description: {
       type: String,
-      unique: true,
-      trim: true,
+      default: '',
     },
-    password: {
+    shop_logo: {
       type: String,
-      required: true,
+      default: '',
     },
-    status: {
+    shop_status: {
       type: String,
-      enum: ['active', 'inactive'],
-    },
-    verify: {
-      type: Schema.Types.Boolean,
-      default: false,
-    },
-    roles: {
-      type: Array,
-      default: [],
+      enum: Object.values(SHOP_STATUS),
+      default: SHOP_STATUS.ACTIVE,
     },
   },
   {

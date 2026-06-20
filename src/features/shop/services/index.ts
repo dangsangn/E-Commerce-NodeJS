@@ -1,22 +1,38 @@
+import { UserModel } from '../../user/models'
 import { ShopModel } from '../models'
 
 export default class ShopService {
   static findByEmail = async ({
     email,
-    select = {
-      email: 1,
-      name: 1,
-      status: 1,
-      verify: 1,
-      roles: 1,
-      password: 1,
-    },
   }: {
     email: string
     select?: Record<string, number>
   }) => {
-    const newShop = await ShopModel.findOne({ email }).select(select).lean()
-    return newShop
+    return ShopModel.aggregate([
+      {
+        $lookup: {
+          from: 'Users',
+          localField: 'shop_owner',
+          foreignField: '_id',
+          as: 'owner',
+        },
+      },
+      {
+        $unwind: '$owner',
+      },
+      {
+        $match: { 'owner.usr_email': email },
+      },
+      {
+        $project: {
+          shop_name: 1,
+          shop_logo: 1,
+          shop_description: 1,
+          owner_email: '$owner.usr_email',
+          owner_name: '$owner.usr_name',
+        },
+      },
+    ])
   }
 
   static getShops = async ({
@@ -24,13 +40,6 @@ export default class ShopService {
     limit = 20,
     skip = 0,
     sort = { createdAt: -1 },
-    select = {
-      email: 1,
-      name: 1,
-      status: 1,
-      verify: 1,
-      roles: 1,
-    },
   }: {
     query: Record<string, unknown>
     limit?: number
@@ -39,10 +48,13 @@ export default class ShopService {
     select?: Record<string, number>
   }) => {
     const shops = await ShopModel.find(query)
-      .select(select)
       .sort(sort)
       .skip(skip)
       .limit(limit)
+      .populate({
+        path: 'shop_owner',
+        select: 'usr_email shop_name shop_logo shop_description',
+      })
       .lean()
     return shops
   }

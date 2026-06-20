@@ -7,6 +7,13 @@ class ShopController {
     const data = await ShopService.getShops({ query: {} })
     return OkResponse.send(res, { data })
   }
+
+  getShopByEmail = async (req: Request, res: Response) => {
+    const data = await ShopService.findByEmail({
+      email: req.body.email as string,
+    })
+    return OkResponse.send(res, { data })
+  }
 }
 
 export default new ShopController()

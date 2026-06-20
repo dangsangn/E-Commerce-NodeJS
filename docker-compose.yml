@@ -15,7 +15,8 @@ services:
       - .:/app
       - app_node_modules:/app/node_modules
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
     command: pnpm run dev
     restart: unless-stopped
 
@@ -28,6 +29,35 @@ services:
     volumes:
       - mongo_data:/data/db
     restart: unless-stopped
+    healthcheck:
+      test: |
+        mongosh --quiet --eval '
+          const want = "mongodb:27017";
+          try {
+            // Already a healthy member? Make sure the host is correct.
+            rs.status();
+            const cfg = rs.conf();
+            if (cfg.members[0].host !== want) {
+              cfg.members[0].host = want;
+              rs.reconfig(cfg, {force: true});
+            }
+          } catch (e) {
+            try {
+              rs.initiate({_id: "rs0", members: [{_id: 0, host: want}]});
+            } catch (e2) {
+              // Already initialized but config is invalid (e.g. stale host) -> force fix.
+              const cfg = rs.conf();
+              cfg.members[0].host = want;
+              rs.reconfig(cfg, {force: true});
+            }
+          }
+          // Only report healthy once a PRIMARY exists.
+          quit(rs.status().myState === 1 ? 0 : 1);
+        '
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
 
   redis:
     image: redis:7-alpine
