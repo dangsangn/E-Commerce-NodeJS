@@ -27,3 +27,10 @@ export const grantAccess = (action: ActionScope, resource: string) => {
     },
   )
 }
+
+export const protect = (resource: string) => ({
+  create: grantAccess('create', resource),
+  read: grantAccess('read', resource),
+  update: grantAccess('update', resource),
+  delete: grantAccess('delete', resource),
+})

@@ -2,36 +2,41 @@ import express from 'express'
 import ProductController from '../controller'
 import { asyncHandler } from '../../../utils'
 import { authentication } from '../../auth/utils/checkAuth'
-import { grantAccess } from '../../auth/utils/rbac'
+import { grantAccess, protect } from '../../auth/utils/rbac'
 
 const router = express.Router()
+const can = protect('product')
 
 router.get('/', asyncHandler(ProductController.searchProducts))
 router.get('/:id', asyncHandler(ProductController.getDetailProduct))
 
 router.use(authentication)
 
-router.post(
-  '/',
-  grantAccess('create', 'product'),
-  asyncHandler(ProductController.createProduct),
+router.post('/', can.create, asyncHandler(ProductController.createProduct))
+router.get(
+  '/list/draft',
+  can.read,
+  asyncHandler(ProductController.getDraftProductByShop),
 )
-router.get('/list/draft', asyncHandler(ProductController.getDraftProductByShop))
 router.get(
   '/list/published',
+  can.read,
   asyncHandler(ProductController.getPublishedProductByShop),
 )
 router.patch('/:id', asyncHandler(ProductController.updateProduct))
 router.patch(
   '/published/:id',
+  can.update,
   asyncHandler(ProductController.setPublishedProductByShop),
 )
 router.patch(
   '/draft/:id',
+  can.update,
   asyncHandler(ProductController.setDraftProductByShop),
 )
 router.post(
   '/upload/link/:shopId',
+  can.create,
   asyncHandler(ProductController.uploadProductImageByLink),
 )
 

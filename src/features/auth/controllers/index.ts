@@ -3,6 +3,8 @@ import { Request, Response } from 'express'
 import AuthService from '../services'
 import { CreatedResponse, OkResponse } from '../../../core/success.response'
 import { NotFoundError } from '../../../core/error.response'
+import { pick } from 'lodash'
+import { TokenPayload } from '../utils'
 
 class AuthController {
   signup = async (req: Request, res: Response) => {
@@ -32,7 +34,7 @@ class AuthController {
     const refreshToken = req.refreshToken as string
     const data = await AuthService.refreshToken({
       refreshToken,
-      userInfo: req.user,
+      userInfo: pick(req.user, ['userId', 'email', 'roles']),
     })
     return OkResponse.send(res, { data })
   }

@@ -18,6 +18,8 @@ export const createTokenPair = async (
   payload: TokenPayload,
   secretKey: string,
 ) => {
+  console.log('🚀 ~ secretKey:', secretKey)
+  console.log('🚀 ~ payload:', payload)
   try {
     const accessToken = jwt.sign(payload, secretKey, {
       expiresIn: '2 days',

@@ -42,26 +42,12 @@ class AuthService {
     }
     const roles = (user.usr_roles as any[]).map((r) => r.rol_name)
 
-    // Generate secret key for HS256 (symmetric encryption)
-    const secretKey = crypto.randomBytes(64).toString('hex')
     const payload: TokenPayload = {
       userId: String(user._id),
       email,
       roles,
     }
-    const tokens = await createTokenPair(payload, secretKey)
-
-    // Store key in database (for token refresh/revocation)
-    const keyToken = await KeyTokenService.createKeyToken({
-      userId: String(user._id),
-      secretKey,
-      refreshToken: tokens.refreshToken,
-    })
-
-    if (!keyToken) {
-      throw new BadRequestError('Create key token failed')
-    }
-
+    const tokens = await this.reissueTokens(payload)
     return {
       user: getInfoData({
         fields: ['_id', 'email', 'name'],
@@ -103,25 +89,12 @@ class AuthService {
       usr_roles: [userRole._id],
     })
 
-    // Generate secret key for HS256 (symmetric encryption)
-    const secretKey = crypto.randomBytes(64).toString('hex')
     const payload: TokenPayload = {
       userId: String(newUser._id),
       email,
       roles: [userRole.rol_name],
     }
-
-    const tokens = await createTokenPair(payload, secretKey)
-
-    const keyToken = await KeyTokenService.createKeyToken({
-      userId: String(newUser._id),
-      secretKey,
-      refreshToken: tokens.refreshToken,
-    })
-
-    if (!keyToken) {
-      throw new BadRequestError('Create key token failed')
-    }
+    const tokens = await this.reissueTokens(payload)
 
     return {
       user: getInfoData({
@@ -145,6 +118,7 @@ class AuthService {
   }) => {
     const foundToken =
       await KeyTokenService.findByRefreshTokenUsed(refreshToken)
+    console.log('🚀 ~ foundToken:', foundToken)
     if (foundToken) {
       await KeyTokenService.deleteKeyTokenByRefreshToken(refreshToken)
       throw new BadRequestError('Refresh token is used. Please login again.')
@@ -171,6 +145,17 @@ class AuthService {
       tokens: newAccessToken,
       shop: userInfo,
     }
+  }
+
+  static reissueTokens = async (payload: TokenPayload) => {
+    const secretKey = crypto.randomBytes(64).toString('hex')
+    const tokens = await createTokenPair(payload, secretKey)
+    await KeyTokenService.createKeyToken({
+      userId: payload.userId,
+      secretKey,
+      refreshToken: tokens.refreshToken,
+    })
+    return tokens
   }
 }
 

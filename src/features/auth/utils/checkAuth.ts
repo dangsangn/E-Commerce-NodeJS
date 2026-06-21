@@ -19,12 +19,10 @@ export const apiKey = async (
 ) => {
   try {
     const key = req.headers[HEADER.API_KEY]?.toString() as string
-    console.log('🚀 ~ key:', key)
     if (!key) {
       throw new ForbiddenError('Key is empty')
     }
     const objectKey = await ApiKeyService.findByApiKey(key)
-    console.log('🚀 ~ objectKey:', objectKey)
     if (!objectKey) {
       throw new ForbiddenError('Key not found')
     }
@@ -57,14 +55,13 @@ export const permission = (permission: string[]) => {
 
 export const authentication = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const refreshToken = req.headers[HEADER.REFRESH_TOKEN]?.toString()
-
     const userId = req.headers[HEADER.CLIENT_ID]?.toString()
     if (!userId) throw new ForbiddenError('Forbidden')
 
     const keyToken = await KeyTokenService.findByUserId(userId)
     if (!keyToken) throw new ForbiddenError('Forbidden')
 
+    const refreshToken = req.headers[HEADER.REFRESH_TOKEN]?.toString()
     if (refreshToken) {
       const decoded = verifyToken(
         refreshToken,
