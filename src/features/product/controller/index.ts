@@ -5,13 +5,16 @@ import { validate } from 'class-validator'
 import { createProductSchema } from '../dto/create.dto'
 import { BadRequestError } from '../../../core/error.response'
 import { UploadService } from '../../upload/services'
+import { updateProductSchema } from '../dto/update.dto'
 
 class ProductController {
   createProduct = async (req: Request, res: Response) => {
     // validate req.body
-    const validated = validate(createProductSchema, req.body)
-    if (!validated) {
-      throw new BadRequestError('Invalid product data')
+    const parsed = createProductSchema.safeParse(req.body)
+    if (!parsed.success) {
+      throw new BadRequestError(
+        parsed.error.issues.map((i) => i.message).join(', '),
+      )
     }
     const data = await ProductServiceFactory.createProduct({
       ...req.body,
@@ -21,10 +24,11 @@ class ProductController {
   }
 
   searchProducts = async (req: Request, res: Response) => {
+    const { page, limit, ...filters } = req.query
     const data = await ProductServiceFactory.searchProducts({
-      query: req.params,
-      page: req.query.page as unknown as number,
-      limit: req.query.limit as unknown as number,
+      query: filters,
+      page: Number(page) || 1,
+      limit: Number(limit) || undefined,
     })
     return OkResponse.send(res, { data })
   }
@@ -70,8 +74,15 @@ class ProductController {
     return OkResponse.send(res, { data })
   }
   updateProduct = async (req: Request, res: Response) => {
+    const parsed = updateProductSchema.safeParse(req.body)
+    if (!parsed.success) {
+      throw new BadRequestError(
+        parsed.error.issues.map((i) => i.message).join(', '),
+      )
+    }
     const data = await ProductServiceFactory.updateProduct({
       product_id: req.params.id as string,
+      product_shop: req.user?.userId,
       payload: req.body,
     })
     return OkResponse.send(res, { data })

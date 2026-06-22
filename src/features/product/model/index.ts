@@ -28,7 +28,7 @@ const productSchema = new Schema(
       type: String,
     },
     product_price: {
-      type: Number,
+      type: Schema.Types.Decimal128,
       required: true,
     },
     product_quantity: {
@@ -71,11 +71,17 @@ const productSchema = new Schema(
       index: true,
       select: false,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+      index: true,
+    },
+    deletedAt: { type: Date, default: null },
   },
   {
     timestamps: true,
     collection: COLLECTION_NAME,
-  }
+  },
 )
 
 // create index for search
@@ -110,7 +116,7 @@ export const clothingSchema = new Schema(
   {
     collection: 'clothes',
     timestamps: true,
-  }
+  },
 )
 
 export const electronicSchema = new Schema(
@@ -130,7 +136,7 @@ export const electronicSchema = new Schema(
   {
     collection: 'electronics',
     timestamps: true,
-  }
+  },
 )
 
 export const ProductModel = model(DOCUMENT_NAME, productSchema)

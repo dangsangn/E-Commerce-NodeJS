@@ -23,7 +23,7 @@ router.get(
   can.read,
   asyncHandler(ProductController.getPublishedProductByShop),
 )
-router.patch('/:id', asyncHandler(ProductController.updateProduct))
+router.patch('/:id', can.update, asyncHandler(ProductController.updateProduct))
 router.patch(
   '/published/:id',
   can.update,

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import {
   BadRequestError,
+  ForbiddenError,
   InternalServerError,
 } from '../../../core/error.response'
 import {
@@ -116,13 +117,18 @@ export class ProductServiceFactory {
 
   static updateProduct = async ({
     product_id,
+    product_shop,
     payload,
   }: {
     product_id: string
+    product_shop: string
     payload: FindAndUpdateProductPayload
   }) => {
     const product = await ProductRepository.getDetailProduct({ product_id })
     if (!product) throw new BadRequestError('Product not found')
+    if (String(product.product_shop) !== String(product_shop))
+      throw new ForbiddenError('Not your product')
+
     const type = product.product_type
 
     const ProductClass =

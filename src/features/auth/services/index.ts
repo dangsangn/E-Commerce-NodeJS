@@ -118,9 +118,8 @@ class AuthService {
   }) => {
     const foundToken =
       await KeyTokenService.findByRefreshTokenUsed(refreshToken)
-    console.log('🚀 ~ foundToken:', foundToken)
     if (foundToken) {
-      await KeyTokenService.deleteKeyTokenByRefreshToken(refreshToken)
+      await KeyTokenService.deleteKeyToken(userInfo.userId)
       throw new BadRequestError('Refresh token is used. Please login again.')
     }
 

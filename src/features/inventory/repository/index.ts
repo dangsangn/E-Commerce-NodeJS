@@ -21,11 +21,8 @@ export const insertInventory = async ({
     inven_location: location,
   }
   if (session) {
-    return (
-      await InventoryModel.create(
-        await InventoryModel.create([payload], { session }),
-      )
-    )[0]
+    const [doc] = await InventoryModel.create([payload], { session })
+    return doc
   }
   return await InventoryModel.create(payload)
 }

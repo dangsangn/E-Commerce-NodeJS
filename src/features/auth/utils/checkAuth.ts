@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { TokenPayload, verifyToken } from '.'
+import { TokenPayload, TYPE_TOKEN, verifyToken } from '.'
 import { ForbiddenError, UnauthorizedError } from '../../../core/error.response'
 import { asyncHandler } from '../../../utils'
 import { ApiKeyService } from '../../apiKey/services'
@@ -67,6 +67,8 @@ export const authentication = asyncHandler(
         refreshToken,
         keyToken.secretKey,
       ) as TokenPayload
+      if (decoded.type !== TYPE_TOKEN.REFRESH)
+        throw new UnauthorizedError('Not a refresh token')
       if (decoded.userId !== userId) throw new UnauthorizedError('Unauthorized')
       req.user = decoded
       req.keyToken = keyToken
@@ -76,8 +78,9 @@ export const authentication = asyncHandler(
 
     const accessToken = req.headers[HEADER.AUTHORIZATION]?.toString()
     if (!accessToken) throw new UnauthorizedError('Unauthorized')
-
     const decoded = verifyToken(accessToken, keyToken.secretKey) as TokenPayload
+    if (decoded.type !== TYPE_TOKEN.ACCESS)
+      throw new UnauthorizedError('Not an access token')
     if (decoded.userId !== userId) throw new UnauthorizedError('Unauthorized')
     req.keyToken = keyToken
     req.user = decoded

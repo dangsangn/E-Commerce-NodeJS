@@ -14,7 +14,7 @@ class KeyTokenService {
     const filter = { user: userId }
     const update = {
       secretKey,
-      refreshTokensUsed: [],
+      refreshTokensUsed: [], // because call this function when logic/register
       refreshToken: refreshToken,
     }
     const options = {

@@ -12,33 +12,45 @@ export type TokenPayload = {
   userId: string
   email: string
   roles: string[]
+  type?: string
+}
+
+export const TYPE_TOKEN = {
+  ACCESS: 'access',
+  REFRESH: 'refresh',
 }
 
 export const createTokenPair = async (
   payload: TokenPayload,
   secretKey: string,
 ) => {
-  console.log('🚀 ~ secretKey:', secretKey)
-  console.log('🚀 ~ payload:', payload)
   try {
-    const accessToken = jwt.sign(payload, secretKey, {
-      expiresIn: '2 days',
-      algorithm: 'HS256',
-    })
+    const accessToken = jwt.sign(
+      { ...payload, type: TYPE_TOKEN.ACCESS },
+      secretKey,
+      {
+        expiresIn: '2 days',
+        algorithm: 'HS256',
+      },
+    )
 
-    const refreshToken = jwt.sign(payload, secretKey, {
-      expiresIn: '7 days',
-      algorithm: 'HS256',
-    })
+    const refreshToken = jwt.sign(
+      { ...payload, type: TYPE_TOKEN.REFRESH },
+      secretKey,
+      {
+        expiresIn: '7 days',
+        algorithm: 'HS256',
+      },
+    )
 
     // Optional: Verify token was created correctly (for debugging)
-    try {
-      const decoded = jwt.verify(accessToken, secretKey)
-      console.log('✓ Access token created and verified:', decoded)
-    } catch (err) {
-      console.error('✗ Token verification failed:', err)
-      throw new Error('Failed to create valid token')
-    }
+    // try {
+    //   const decoded = jwt.verify(accessToken, secretKey)
+    //   console.log('✓ Access token created and verified:', decoded)
+    // } catch (err) {
+    //   console.error('✗ Token verification failed:', err)
+    //   throw new Error('Failed to create valid token')
+    // }
 
     return { accessToken, refreshToken }
   } catch (error) {
@@ -53,5 +65,5 @@ export const createTokenPair = async (
  * @returns Decoded token payload or throws error
  */
 export const verifyToken = (token: string, secretKey: string) => {
-  return jwt.verify(token, secretKey)
+  return jwt.verify(token, secretKey, { algorithms: ['HS256'] })
 }
