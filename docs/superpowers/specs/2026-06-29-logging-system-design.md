@@ -230,7 +230,7 @@ No test framework is introduced. The guide doc includes a verification checklist
 
 ## 9. Documentation Deliverable
 
-`docs/7. logging-system-guide.md`, matching the existing bilingual senior-mentor doc style (What / Why / How / Trade-offs / Performance / Security / Production Experience / Best Practices / Related Concepts). Contents:
+`docs/7. logging-system-guide.md`, written via the project's **`senior-doc-writer` skill** (`.claude/skills/senior-doc-writer/SKILL.md`) — i.e. the full 15-section senior-mentor structure (Overview / Mental Model / First Principles / Internal Implementation / Step-by-Step Walkthrough / Practical Examples / Common Mistakes / Trade-offs / Performance / Security / Real Production Experience / Senior Engineer Notes / Interview Knowledge / Best Practices / Related Concepts), matching the existing bilingual doc style. Topic-specific contents:
 
 - Why structured logging & request correlation matter in production.
 - Architecture walkthrough (logger, formats, transports, AsyncLocalStorage context, middleware).
