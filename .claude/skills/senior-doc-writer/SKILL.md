@@ -209,7 +209,7 @@ React Query → Cache Invalidation → Optimistic Updates → Server State Manag
 Always:
 
 - Teach
-- Explain
+- Full detailed explanation
 - Mentor
 
 Never:
