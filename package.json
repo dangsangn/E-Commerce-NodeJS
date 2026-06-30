@@ -5,8 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.ts",
-    "migrate": "ts-node src/migrations/migrate.ts",
-    "migrate:rollback": "ts-node src/migrations/migrate.ts rollback",
+    "migrate": "ts-node -r tsconfig-paths/register src/migrations/migrate.ts",
+    "migrate:rollback": "ts-node -r tsconfig-paths/register src/migrations/migrate.ts rollback",
     "dev": "nodemon server.ts"
   },
   "keywords": [],
@@ -27,6 +27,7 @@
     "morgan": "^1.10.1",
     "nodemon": "^3.1.11",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {
@@ -48,6 +49,8 @@
     "mysql2": "^3.22.4",
     "redis": "^5.11.0",
     "slugify": "^1.6.6",
+    "winston": "^3.19.0",
+    "winston-daily-rotate-file": "^5.0.0",
     "zod": "^4.3.6"
   }
 }

@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml* ./
 
-RUN pnpm install
+RUN pnpm install --config.store-dir=/app/node_modules/.pnpm-store
 
 COPY . .
 

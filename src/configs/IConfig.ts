@@ -4,4 +4,11 @@ export interface IConfig {
   cloudinaryCloudName: string
   cloudinaryApiKey: string
   cloudinaryApiSecret: string
+  logging: {
+    level: string
+    dir: string
+    maxFiles: string
+    maxSize: string
+    toFile: boolean
+  }
 }

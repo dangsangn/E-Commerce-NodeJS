@@ -9,7 +9,11 @@
     "skipLibCheck": true,
     "typeRoots": ["./node_modules/@types"],
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    }
   },
   "include": ["src/**/*"]
 }
