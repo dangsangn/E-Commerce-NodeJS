@@ -52,7 +52,7 @@ const enrich = winston.format((info) => {
     if (ctx.userId) info.userId = ctx.userId
   }
 
-  // Hide the secrets for each meta field, leaving the standard Winston fields untouched.
+  // Hide the secrets for each meta field, keep the standard Winston fields.
   const STANDARD = new Set([
     'level',
     'message',
@@ -78,3 +78,27 @@ const enrich = winston.format((info) => {
  * errors() and timestamp() must run BEFORE enrich()/printf()/json()
  * so that when enrich/printf reads info.stack and info.timestamp, the data is already available.
  */
+export const devFormat = combine(
+  errors({ stack: true }),
+  timestamp(),
+  enrich({ format: 'YYY-MM-DD HH:mm:ss' }),
+  enrich(),
+  colorize({ level: true }),
+  printf((info) => {
+    const { level, message, timestamp, requestId, userId, stack, ...meta } =
+      info
+    const reqTag = requestId ? `[req: ${requestId}]` : ''
+    const userTag = userId ? `[user: ${userId}]` : ''
+    const metaKeys = Object.keys(meta)
+    const metaStr = metaKeys.length ? `${JSON.stringify(meta, null, 2)}` : ''
+    const stackStr = stack ? `\n${stack}` : ''
+    return `${timestamp} ${level} ${reqTag}${userTag} ${message}${metaStr}${stackStr}`
+  }),
+)
+
+export const prodFormat = combine(
+  errors({ stack: true }),
+  timestamp(),
+  enrich({ format: 'YYY-MM-DD HH:mm:ss' }),
+  json(),
+)
