@@ -3,3 +3,5 @@
 .env.development
 /.vscode
 .pnpm-store/
+/logs
+logs/

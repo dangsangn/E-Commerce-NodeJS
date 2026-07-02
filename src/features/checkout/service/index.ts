@@ -65,7 +65,7 @@ export class CheckoutService {
         }
 
         // Validate price: client price must equal server price
-        if (item.price !== product.product_price) {
+        if (item.price !== Number(product.product_price)) {
           throw new BadRequestError(
             `Product ${product.product_name} price has changed. Please refresh.`,
           )

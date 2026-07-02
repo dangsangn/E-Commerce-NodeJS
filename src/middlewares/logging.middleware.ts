@@ -28,14 +28,23 @@ export const loggingMiddleware = (
   res.on('finish', () => {
     // If the request is authenticated, assign the userId (req.user do middleware auth set).
     setUserId(req.user?.id)
+
     const duration = Number(process.hrtime.bigint() - start) / 1_000_000 // convert to milliseconds
-    logger.http('request finished', {
+    const meta = {
       method: req.method,
       url: req.originalUrl,
       ip: req.ip,
       statusCode: res.statusCode,
       duration: `${duration.toFixed(2)}ms`,
-    })
+    }
+
+    if (res.statusCode >= 500) {
+      logger.error('request finished', meta)
+    } else if (res.statusCode >= 400) {
+      logger.warn('request finished', meta)
+    } else {
+      logger.http('request finished', meta)
+    }
   })
 
   next()

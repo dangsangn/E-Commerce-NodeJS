@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import config from '../configs'
+import logger from '@/loggers/logger'
 
 const connectString = config.dbUrl
 // singleton pattern
@@ -16,8 +17,8 @@ class Database {
 
     mongoose
       .connect(connectString)
-      .then(() => console.log('Connected to MongoDB'))
-      .catch((err) => console.log(err))
+      .then(() => logger.info('Connected to MongoDB'))
+      .catch((err) => logger.error('Error connecting to MongoDB', { err }))
   }
 
   private static _instance: Database

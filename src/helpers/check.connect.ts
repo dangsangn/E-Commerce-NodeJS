@@ -1,3 +1,4 @@
+import logger from '@/loggers'
 import mongoose from 'mongoose'
 import os from 'os'
 
@@ -15,12 +16,17 @@ export const checkOverload = () => {
 
     // Example maximum number of connections based on the number of cores
     const maxConnections = numCores * 5
-    console.log(`Number of connections: ${numConnection}`)
-    console.log(`Number of cores: ${numCores}`)
-    console.log(`Memory usage: ${memoryUsage / 1024 / 1024} MB`)
+    logger.debug('Connection health', {
+      numConnection: numConnection,
+      cores: numCores,
+      memory: `${memoryUsage / 1024 / 1024} MB`,
+    })
 
     if (numConnection > maxConnections) {
-      console.log('Connection overload detected')
+      logger.warn('Connection overload detected', {
+        numConnection,
+        maxConnections,
+      })
     }
   }, TIME_CHECK_OVERLOAD)
 }

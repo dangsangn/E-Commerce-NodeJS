@@ -1,3 +1,4 @@
+import logger from '@/loggers'
 import { createClient } from 'redis'
 
 const redisConfig = {
@@ -7,12 +8,16 @@ const redisConfig = {
 const pubClient = createClient(redisConfig)
 const subClient = pubClient.duplicate()
 
-pubClient.on('error', (error) => console.log('Redis Publisher Error', error))
-subClient.on('error', (error) => console.log('Redis Subscriber Error', error))
+pubClient.on('error', (error) =>
+  logger.error('Redis Publisher Error', { err: error }),
+)
+subClient.on('error', (error) =>
+  logger.error('Redis Subscriber Error', { err: error }),
+)
 
 const initRedis = async () => {
   await Promise.all([pubClient.connect(), subClient.connect()])
-  console.log('Redis connect successfully')
+  logger.info('Redis connect successfully')
 }
 
 const closeRedis = async () => {
