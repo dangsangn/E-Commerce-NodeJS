@@ -26,6 +26,8 @@ Always assume the reader wants to become an expert.
 
 Every technical document MUST contain the following sections when applicable.
 
+Always create file doc in folder docs
+
 ## 1. Overview
 
 Explain the topic in simple language.
