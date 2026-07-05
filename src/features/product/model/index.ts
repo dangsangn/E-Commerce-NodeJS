@@ -11,6 +11,16 @@ export const productType = Object.freeze({
   OTHER: 'OTHER',
 })
 
+const imageSchema = new Schema(
+  {
+    url: { type: String, required: true },
+    public_id: { type: String, required: true },
+  },
+  {
+    _id: false,
+  },
+)
+
 const productSchema = new Schema(
   {
     product_name: {
@@ -20,6 +30,14 @@ const productSchema = new Schema(
     product_thumb: {
       type: String,
       required: true,
+    },
+    product_thumb_public_id: {
+      type: String,
+      required: true,
+    },
+    product_images: {
+      type: [imageSchema],
+      default: [], // gallery of images
     },
     product_slug: {
       type: String,
@@ -42,7 +60,7 @@ const productSchema = new Schema(
     },
     product_shop: {
       type: Schema.Types.ObjectId,
-      ref: 'Shop',
+      ref: 'User',
     },
     product_attributes: {
       type: Schema.Types.Mixed,

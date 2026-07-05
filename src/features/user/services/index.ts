@@ -1,7 +1,10 @@
+import multer from 'multer'
 import { BadRequestError } from '../../../core/error.response'
 import { ROLE_NAME, RoleModel } from '../../rbac/models/role.model'
 import { ShopModel } from '../../shop/models'
 import { UserModel } from '../models'
+import { validateImageBuffer } from '@/features/upload/validator/image.validator'
+import { UploadService } from '@/features/upload/services'
 
 export class UserService {
   static findByEmailWithPassword = async (email: string) => {
@@ -47,5 +50,21 @@ export class UserService {
 
     const roles = (user.usr_roles as any[]).map((r) => r.rol_name)
     return { user, roles }
+  }
+  static updateAvatar = async ({
+    file,
+    userId,
+  }: {
+    file: Express.Multer.File
+    userId: string
+  }) => {
+    const fileBuffer = file.buffer
+    validateImageBuffer(fileBuffer)
+
+    const user = await this.findById(userId)
+    if (!user) throw new BadRequestError('User not found')
+    const oldPublicId = user.usr_avatar_public_id
+
+    const result = await UploadService.uploadBuffer(fileBuffer)
   }
 }

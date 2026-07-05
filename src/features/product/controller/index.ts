@@ -6,15 +6,17 @@ import { createProductSchema } from '../dto/create.dto'
 import { BadRequestError } from '../../../core/error.response'
 import { UploadService } from '../../upload/services'
 import { updateProductSchema } from '../dto/update.dto'
+import logger from '@/loggers'
+import { validateImageBuffer } from '@/features/upload/validator/image.validator'
 
 class ProductController {
   createProduct = async (req: Request, res: Response) => {
     // validate req.body
     const parsed = createProductSchema.safeParse(req.body)
     if (!parsed.success) {
-      throw new BadRequestError(
-        parsed.error.issues.map((i) => i.message).join(', '),
-      )
+      const error = parsed.error.issues.map((i) => i.message).join(', ')
+      logger.error('Validation error:', { error: parsed.error })
+      throw new BadRequestError(error)
     }
     const data = await ProductServiceFactory.createProduct({
       ...req.body,
@@ -89,9 +91,37 @@ class ProductController {
   }
   uploadProductImageByLink = async (req: Request, res: Response) => {
     const { url } = req.body
-    const { shopId } = req.params
+    const userId = req.user?.userId
     const data = await UploadService.uploadFromUrl(url, {
-      folder: `products/${shopId}`,
+      folder: `products/${userId}`,
+    })
+    return OkResponse.send(res, { data })
+  }
+  prepareProductImages = async (req: Request, res: Response) => {
+    const userId = req.user?.userId
+    const files = req.files as Express.Multer.File[]
+    if (!files || files.length === 0) {
+      throw new BadRequestError('No files uploaded')
+    }
+
+    const data = await ProductServiceFactory.prepareImages({
+      shopId: userId,
+      files,
+    })
+    return OkResponse.send(res, { data })
+  }
+  updateProductImages = async (req: Request, res: Response) => {
+    const userId = req.user?.userId
+    const files = req.files as Express.Multer.File[]
+    const productId = req.params?.productId as string
+    if (!files || files.length === 0) {
+      throw new BadRequestError('No files uploaded')
+    }
+
+    const data = await ProductServiceFactory.attackProductImages({
+      shopId: userId,
+      files,
+      productId,
     })
     return OkResponse.send(res, { data })
   }

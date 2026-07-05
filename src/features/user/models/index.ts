@@ -20,6 +20,7 @@ const userSchema = new Schema(
     usr_salt: { type: String, default: '', select: false },
 
     usr_avatar: { type: String, default: '' },
+    usr_avatar_public_id: { type: String, default: '' },
     usr_sex: { type: String, default: '' },
     usr_date_of_birth: { type: Date, default: null },
 

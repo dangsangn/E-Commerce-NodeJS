@@ -151,4 +151,17 @@ export class ProductRepository {
       .lean()
       .exec()
   }
+
+  static getProductByIdOwner = async ({
+    productId,
+    userId,
+  }: {
+    productId: string
+    userId: string
+  }) => {
+    return ProductModel.findOne({
+      _id: productId,
+      product_shop: userId,
+    }).select({ __v: 0 })
+  }
 }

@@ -3,6 +3,7 @@ import ProductController from '../controller'
 import { asyncHandler } from '../../../utils'
 import { authentication } from '../../auth/utils/checkAuth'
 import { grantAccess, protect } from '../../auth/utils/rbac'
+import { uploadImage } from '@/middlewares/multer.middleware'
 
 const router = express.Router()
 const can = protect('product')
@@ -35,9 +36,21 @@ router.patch(
   asyncHandler(ProductController.setDraftProductByShop),
 )
 router.post(
-  '/upload/link/:shopId',
+  '/upload/link',
   can.create,
   asyncHandler(ProductController.uploadProductImageByLink),
+)
+router.post(
+  '/upload/prepare',
+  can.create,
+  uploadImage.array('images'),
+  asyncHandler(ProductController.prepareProductImages),
+)
+router.put(
+  '/upload/images/:productId',
+  can.create,
+  uploadImage.array('images'),
+  asyncHandler(ProductController.updateProductImages),
 )
 
 export default router

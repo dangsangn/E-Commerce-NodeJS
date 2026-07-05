@@ -15,6 +15,10 @@ import { PAGINATION_DEFAULT_LIMIT } from '../../../constants/common'
 import { FindAndUpdateProductPayload } from '../dto'
 import { flattenObject } from '../../../utils'
 import { insertInventory } from '../../inventory/repository'
+import { validateImageBuffer } from '@/features/upload/validator/image.validator'
+import { UploadService } from '@/features/upload/services'
+import logger from '@/loggers'
+import { ProductProps } from '../types'
 
 export class ProductServiceFactory {
   static productRegister: Record<string, any> = {} // key: product_type, value: Class
@@ -29,6 +33,16 @@ export class ProductServiceFactory {
     if (!ProductClass) {
       throw new BadRequestError('Invalid product type')
     }
+
+    const prefix = `products/${payload.product_shop}/${payload._id}`
+    const publicIds = [
+      payload.product_thumb_public_id,
+      ...(payload.product_images || []).map((img: any) => img.public_id),
+    ]
+    if (publicIds.some((id) => !id.startsWith(prefix))) {
+      throw new BadRequestError('Invalid public_id for product images')
+    }
+
     return new ProductClass(payload).createProduct()
   }
 
@@ -138,49 +152,103 @@ export class ProductServiceFactory {
     }
     return new ProductClass(product).updateProduct(product_id, payload)
   }
+
+  static prepareImages = async ({
+    shopId,
+    files,
+  }: {
+    shopId: string
+    files: Express.Multer.File[]
+  }) => {
+    files.forEach((file) => validateImageBuffer(file.buffer))
+
+    const productId = new mongoose.Types.ObjectId().toString()
+    const folder = `products/${shopId}/${productId}`
+
+    const settled = await Promise.allSettled(
+      files.map((f) => UploadService.uploadBuffer(f.buffer, { folder })),
+    )
+    const ok = settled
+      .filter((s) => s.status === 'fulfilled')
+      .map((s) => s.value)
+    const failed = settled.filter((s) => s.status === 'rejected')
+    if (failed.length > 0) {
+      await Promise.all(ok.map((r) => UploadService.destroy(r.publicId)))
+      throw new InternalServerError(
+        `Failed to upload some images: ${failed.length}/${files.length}`,
+      )
+    }
+    const images = ok.map((r) => ({
+      url: r.url,
+      public_id: r.publicId,
+    }))
+    return { productId, images, thumb: images[0] }
+  }
+
+  static attackProductImages = async ({
+    productId,
+    shopId,
+    files,
+  }: {
+    productId: string
+    shopId: string
+    files: Express.Multer.File[]
+  }) => {
+    const product = await ProductRepository.getProductByIdOwner({
+      productId,
+      userId: shopId,
+    })
+    if (!product) throw new BadRequestError('Product not found')
+    files.forEach((file) => validateImageBuffer(file.buffer))
+
+    const folder = `products/${shopId}/${productId}`
+    const settled = await Promise.allSettled(
+      files.map((f) => UploadService.uploadBuffer(f.buffer, { folder })),
+    )
+    const ok = settled
+      .filter((s) => s.status === 'fulfilled')
+      .map((s) => s.value)
+    const failed = settled.filter((s) => s.status === 'rejected')
+    if (failed.length) {
+      await Promise.all(ok.map((r) => UploadService.destroy(r.publicId)))
+      throw new InternalServerError(
+        `Failed to upload some images: ${failed.length}/${files.length}`,
+      )
+    }
+    const images = ok.map((r) => ({
+      url: r.url,
+      public_id: r.publicId,
+    }))
+    try {
+      product.product_images.push(...images)
+      await product.save()
+      return product.product_images
+    } catch (error) {
+      throw error
+    }
+  }
 }
 
-export abstract class ProductService {
-  product_name: string
-  product_thumb: string
+export abstract class ProductService implements ProductProps {
+  _id!: string
+  product_name!: string
+  product_thumb!: string
+  product_thumb_public_id!: string
   product_description?: string
-  product_price: number
-  product_quantity: number
-  product_type: string
-  product_shop: string
-  product_attributes: any
+  product_price!: number
+  product_quantity!: number
+  product_type!: string
+  product_shop!: string
+  product_attributes!: any
+  product_images?: { url: string; public_id: string }[]
 
-  constructor({
-    product_name,
-    product_thumb,
-    product_description,
-    product_price,
-    product_quantity,
-    product_type,
-    product_shop,
-    product_attributes,
-  }: {
-    product_name: string
-    product_thumb: string
-    product_description?: string
-    product_price: number
-    product_quantity: number
-    product_type: string
-    product_shop: string
-    product_attributes: any
-  }) {
-    this.product_name = product_name
-    this.product_thumb = product_thumb
-    this.product_description = product_description
-    this.product_price = product_price
-    this.product_quantity = product_quantity
-    this.product_type = product_type
-    this.product_shop = product_shop
-    this.product_attributes = product_attributes
+  constructor(props: ProductProps) {
+    Object.assign(this, props)
   }
 
   protected toProductObject() {
     return {
+      _id: this._id,
       product_name: this.product_name,
       product_thumb: this.product_thumb,
       product_description: this.product_description,
@@ -189,16 +257,15 @@ export abstract class ProductService {
       product_type: this.product_type,
       product_shop: this.product_shop,
       product_attributes: this.product_attributes,
+      product_thumb_public_id: this.product_thumb_public_id,
+      product_images: this.product_images,
     }
   }
 
-  async createProduct(
-    session: mongoose.mongo.ClientSession,
-    product_id: mongoose.Types.ObjectId,
-  ) {
+  async createProduct(session: mongoose.mongo.ClientSession) {
     const newProduct = (
       await ProductModel.create(
-        [{ ...this.toProductObject(), _id: product_id.toString() }],
+        [{ ...this.toProductObject(), _id: this._id }],
         { session },
       )
     )[0]
@@ -232,16 +299,19 @@ export class ClothingService extends ProductService {
     session.startTransaction()
     try {
       const createClothing = await ClothingModel.create(
-        [{ ...this.product_attributes, product_shop: this.product_shop }],
+        [
+          {
+            ...this.product_attributes,
+            product_shop: this.product_shop,
+            _id: this._id,
+          },
+        ],
         {
           session,
         },
       )
       if (!createClothing) throw new BadRequestError('Create clothing failed')
-      const newProduct = await super.createProduct(
-        session,
-        createClothing[0]._id,
-      )
+      const newProduct = await super.createProduct(session)
       if (!newProduct) throw new BadRequestError('Create product failed')
       await session.commitTransaction()
       return newProduct
@@ -284,17 +354,20 @@ export class ElectronicService extends ProductService {
 
     try {
       const createElectronic = await ElectronicModel.create(
-        [{ ...this.product_attributes, product_shop: this.product_shop }],
+        [
+          {
+            ...this.product_attributes,
+            product_shop: this.product_shop,
+            _id: this._id,
+          },
+        ],
         {
           session,
         },
       )
       if (!createElectronic)
         throw new BadRequestError('Create electronic failed')
-      const newProduct = await super.createProduct(
-        session,
-        createElectronic[0]._id,
-      )
+      const newProduct = await super.createProduct(session)
       if (!newProduct) throw new BadRequestError('Create product failed')
       await session.commitTransaction()
       return newProduct
