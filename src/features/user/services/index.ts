@@ -15,9 +15,7 @@ export class UserService {
   }
 
   static findById = async (id: string) =>
-    UserModel.findById(id)
-      .populate({ path: 'usr_roles', select: 'rol_name' })
-      .lean()
+    UserModel.findById(id).populate({ path: 'usr_roles', select: 'rol_name' })
 
   static createUser = async (payload: any) => UserModel.create(payload)
 
@@ -65,6 +63,18 @@ export class UserService {
     if (!user) throw new BadRequestError('User not found')
     const oldPublicId = user.usr_avatar_public_id
 
-    const result = await UploadService.uploadBuffer(fileBuffer)
+    const result = await UploadService.uploadBuffer(fileBuffer, {
+      folder: `users/${userId}/avatar`,
+      transformation: [
+        { width: 400, height: 400, crop: 'fill', gravity: 'face' },
+      ],
+    })
+    user.usr_avatar = result.url
+    user.usr_avatar_public_id = result.publicId
+    await user.save()
+
+    if (oldPublicId) await UploadService.destroy(oldPublicId)
+
+    return { avatar: result.url }
   }
 }
