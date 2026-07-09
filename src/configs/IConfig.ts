@@ -11,4 +11,12 @@ export interface IConfig {
     maxSize: string
     toFile: boolean
   }
+  mailer: {
+    from: string
+    host: string
+    port: number
+    secure: boolean
+    user: string
+    pass: string
+  }
 }

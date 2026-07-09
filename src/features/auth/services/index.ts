@@ -7,8 +7,11 @@ import {
 import { getInfoData } from '../../../utils'
 import KeyTokenService from '../../keyToken/services'
 import { ROLE_NAME, RoleModel } from '../../rbac/models/role.model'
-import { UserModel } from '../../user/models'
+import { USER_STATUS, UserModel } from '../../user/models'
 import { createTokenPair, TokenPayload } from '../utils'
+import OtpService from './otp.service'
+import EmailService from '@/services/email.service'
+import logger from '@/loggers'
 
 export const ROLES = {
   SHOP: 'shop',
@@ -35,6 +38,12 @@ class AuthService {
     if (!user) {
       throw new BadRequestError('User not found')
     }
+
+    if (user.usr_status === USER_STATUS.PENDING)
+      throw new UnauthorizedError('Please verify your email first')
+
+    if (user.usr_status === USER_STATUS.BLOCK)
+      throw new UnauthorizedError('Account has been blocked')
 
     const isMatchPassword = await bcrypt.compare(password, user.usr_password!)
     if (!isMatchPassword) {
@@ -69,7 +78,11 @@ class AuthService {
     const existing = await UserModel.findOne({ usr_email: email }).lean()
 
     if (existing) {
-      throw new BadRequestError('User already exists')
+      if (existing.usr_status === USER_STATUS.ACTIVE) {
+        throw new BadRequestError('User already exists')
+      }
+      // User pending signup → treated as resend, no duplicate record created.
+      this.sendEmailOtp(email)
     }
 
     const userRole = await RoleModel.findOne({
@@ -82,27 +95,66 @@ class AuthService {
     // salt and hash password
     const salt = await bcrypt.genSalt(10)
     const hashPassword = await bcrypt.hash(password, salt)
-    const newUser = await UserModel.create({
+
+    await UserModel.create({
       usr_email: email,
       usr_password: hashPassword,
       usr_name: name,
       usr_roles: [userRole._id],
+      usr_status: USER_STATUS.PENDING,
+      usr_verified: false,
     })
 
-    const payload: TokenPayload = {
-      userId: String(newUser._id),
-      email,
-      roles: [userRole.rol_name],
-    }
-    const tokens = await this.reissueTokens(payload)
+    // const payload: TokenPayload = {
+    //   userId: String(newUser._id),
+    //   email,
+    //   roles: [userRole.rol_name],
+    // }
+    // const tokens = await this.reissueTokens(payload)
+    this.sendEmailOtp(email)
+  }
 
+  static verifyOtp = async ({ email, otp }: { email: string; otp: string }) => {
+    const valid = await OtpService.verify(email, otp)
+    if (!valid) throw new BadRequestError('Invalid or expired OTP')
+
+    const user = await UserModel.findOneAndUpdate(
+      {
+        usr_email: email,
+        usr_status: USER_STATUS.PENDING,
+      },
+      {
+        usr_status: USER_STATUS.ACTIVE,
+        usr_verified: true,
+      },
+      { new: true },
+    ).populate({ path: 'usr_roles', select: 'rol_name' })
+    if (!user) throw new BadRequestError('User not found or already verified')
+
+    const roles = (user.usr_roles as any[]).map((r) => r.rol_name)
+    const tokens = await this.reissueTokens({
+      userId: String(user._id),
+      email,
+      roles,
+    })
     return {
       user: getInfoData({
         fields: ['_id', 'usr_email', 'usr_name'],
-        object: newUser,
+        object: user,
       }),
       tokens,
     }
+  }
+
+  static async sendEmailOtp(email: string) {
+    const canSendOtp = await OtpService.canResend(email)
+    if (canSendOtp) {
+      const otp = await OtpService.generate(email)
+      EmailService.sendOtpMail(email, otp).catch((error) => {
+        logger.error('Send OTP mail failed', { error, email })
+      })
+    }
+    return { message: 'OTP has been sent to your email', email }
   }
 
   static logout = async ({ userId }: { userId: string }) => {

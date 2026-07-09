@@ -24,6 +24,14 @@ const environmentConfig: Partial<IConfig> = {
     maxSize: process.env.LOG_MAX_SIZE || '20m',
     toFile: (process.env.LOG_TO_FILE || 'true') === 'true',
   },
+  mailer: {
+    from: process.env.SMTP_FROM!,
+    host: process.env.SMTP_HOST!,
+    port: Number(process.env.SMTP_PORT) || 587,
+    secure: process.env.SMTP_SECURE === 'true',
+    user: process.env.SMTP_USER!,
+    pass: process.env.SMTP_PASS!,
+  },
 }
 
 const config = { ...defaultConfig, ...environmentConfig } as IConfig

@@ -38,6 +38,19 @@ class AuthController {
     })
     return OkResponse.send(res, { data })
   }
+
+  verifyOtp = async (req: Request, res: Response) => {
+    const data = await AuthService.verifyOtp({
+      email: req.body.email,
+      otp: req.body.otp,
+    })
+    return OkResponse.send(res, { data })
+  }
+
+  resendOtp = async (req: Request, res: Response) => {
+    const data = await AuthService.sendEmailOtp(req.body.email)
+    return OkResponse.send(res, { data })
+  }
 }
 
 export default new AuthController()
