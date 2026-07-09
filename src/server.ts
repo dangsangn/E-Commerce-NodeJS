@@ -1,8 +1,8 @@
-import app from './src/app'
-import config from './src/configs'
-import instanceMongoDB from './src/dbs/init.mongodb'
-import logger from './src/loggers'
-import { initRedis } from './src/utils/redis.util'
+import app from './app'
+import config from './configs'
+import instanceMongoDB from './dbs/init.mongodb'
+import logger from './loggers'
+import { initRedis } from './utils/redis.util'
 
 const PORT = config.port
 
