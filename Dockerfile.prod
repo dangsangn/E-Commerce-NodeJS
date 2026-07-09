@@ -1,0 +1,41 @@
+# ─────────────────────────────────────────────────────────────
+# STAGE 1 — builder: cài full deps, compile TS → JS, rewrite alias
+# ─────────────────────────────────────────────────────────────
+FROM node:20-alpine AS builder
+
+RUN corepack enable && corepack prepare pnpm@latest --activate
+WORKDIR /app
+
+# Copy manifest trước để tận dụng Docker layer cache:
+# chỉ cài lại deps khi package.json / lockfile đổi.
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml* ./
+RUN pnpm install --frozen-lockfile
+
+# Copy source rồi build. dist/ được tạo bởi `tsc && tsc-alias`.
+COPY . .
+RUN pnpm build
+
+# Loại devDependencies khỏi node_modules để bê sang runtime cho gọn.
+RUN pnpm prune --prod
+
+# ─────────────────────────────────────────────────────────────
+# STAGE 2 — runtime: image tối giản, chỉ JS đã compile + prod deps
+# ─────────────────────────────────────────────────────────────
+FROM node:20-alpine AS runtime
+
+WORKDIR /app
+ENV NODE_ENV=production
+
+# Chỉ copy thứ cần để CHẠY — không có TS, không có devDependencies,
+# không có source .ts. Image nhỏ hơn, ít bề mặt tấn công hơn.
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package.json ./package.json
+
+# Chạy dưới user không phải root (node-alpine có sẵn user `node`).
+USER node
+
+# Render/Koyeb sẽ inject PORT qua env; code đọc process.env.PORT.
+EXPOSE 5000
+
+CMD ["node", "dist/server.js"]

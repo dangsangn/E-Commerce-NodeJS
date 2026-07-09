@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/server.ts",
+    "start": "node dist/server.js",
     "migrate": "ts-node -r tsconfig-paths/register src/migrations/migrate.ts",
     "migrate:rollback": "ts-node -r tsconfig-paths/register src/migrations/migrate.ts rollback",
     "dev": "nodemon src/server.ts",
