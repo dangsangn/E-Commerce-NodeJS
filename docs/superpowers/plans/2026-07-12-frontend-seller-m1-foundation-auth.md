@@ -28,9 +28,10 @@
 
 **Files:**
 - Modify: `e-commerce-nextjs/package.json` (scripts)
+- Modify: `e-commerce-nextjs/.gitignore` (un-ignore `.env.example`)
 - Create: `e-commerce-nextjs/vitest.config.ts`
 - Create: `e-commerce-nextjs/.env.example`
-- Create: `e-commerce-nextjs/.env.local` (không commit — nằm trong .gitignore mặc định của Next)
+- Create: `e-commerce-nextjs/.env.local` (không commit — `.gitignore` giữ `.env*`)
 - Create: `e-commerce-nextjs/lib/__tests__/smoke.test.ts`
 
 **Interfaces:**
@@ -74,7 +75,14 @@ export default defineConfig({
 })
 ```
 
-- [ ] **Step 4: Tạo `.env.example` và `.env.local`**
+- [ ] **Step 4: Un-ignore `.env.example`, tạo `.env.example` và `.env.local`**
+
+`e-commerce-nextjs/.gitignore` hiện có dòng `.env*` (ignore mọi env file). Thêm ngoại lệ để commit được `.env.example` — thêm ngay dưới dòng `.env*`:
+```
+# env files (can opt-in for committing if needed)
+.env*
+!.env.example
+```
 
 `.env.example`:
 ```
@@ -83,7 +91,7 @@ BACKEND_URL=http://localhost:5000
 # API key hợp lệ đã seed trong DB backend (permission phải chứa 0000)
 API_KEY=
 ```
-`.env.local` (điền giá trị thật để chạy dev):
+`.env.local` (điền giá trị thật để chạy dev — KHÔNG commit, vẫn bị `.env*` ignore):
 ```
 BACKEND_URL=http://localhost:5000
 API_KEY=<dán-api-key-thật>
@@ -110,9 +118,10 @@ Expected: 1 test passed.
 - [ ] **Step 7: Commit**
 
 ```bash
-git add e-commerce-nextjs/package.json e-commerce-nextjs/vitest.config.ts e-commerce-nextjs/.env.example e-commerce-nextjs/lib/__tests__/smoke.test.ts
+git add e-commerce-nextjs/package.json e-commerce-nextjs/.gitignore e-commerce-nextjs/vitest.config.ts e-commerce-nextjs/.env.example e-commerce-nextjs/lib/__tests__/smoke.test.ts
 git commit -m "chore(fe): add zod, vitest test infra, env template"
 ```
+(Nếu `.env.example` vẫn báo ignore, dùng `git add -f e-commerce-nextjs/.env.example`.)
 
 ---
 
