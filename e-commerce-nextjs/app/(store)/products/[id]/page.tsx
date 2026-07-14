@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { apiFetch } from '@/lib/api/server-client'
 import { toPriceString } from '@/lib/products/price'
 import { Badge } from '@/components/ui/badge'
+import { AddToCart } from '@/components/store/add-to-cart'
 import type { Product } from '@/types/product'
 
 export default async function ProductDetailPage({
@@ -60,6 +61,7 @@ export default async function ProductDetailPage({
               ))}
             </dl>
           ) : null}
+          <AddToCart productId={product._id} max={product.product_quantity} />
         </div>
       </div>
     </div>

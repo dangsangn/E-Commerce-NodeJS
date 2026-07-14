@@ -11,3 +11,14 @@ export function toPriceString(value: Decimal): string {
   else n = NaN
   return (Number.isFinite(n) ? n : 0).toFixed(2)
 }
+
+// Numeric coercion for math (line totals, subtotals). Mirrors toPriceString's parsing.
+export function toPriceNumber(value: Decimal): number {
+  let n: number
+  if (typeof value === 'number') n = value
+  else if (typeof value === 'string') n = Number(value)
+  else if (value && typeof value === 'object' && '$numberDecimal' in value)
+    n = Number(value.$numberDecimal)
+  else n = NaN
+  return Number.isFinite(n) ? n : 0
+}

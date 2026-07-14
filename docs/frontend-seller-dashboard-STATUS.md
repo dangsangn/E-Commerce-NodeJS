@@ -29,7 +29,7 @@ Xây frontend chuẩn best-practice cho toàn bộ tính năng backend. **Seller
 | Milestone | Nội dung | Trạng thái |
 |---|---|---|
 | **U1** | Nền tảng store (layout public) + duyệt: catalog (search + phân trang) + trang chi tiết SP | ✅ **Xong** (typecheck/lint/build sạch) |
-| **U2** | Giỏ hàng (cart): thêm/sửa số lượng/xoá | ⏳ Chưa làm |
+| **U2** | Giỏ hàng (cart): thêm/sửa số lượng/xoá | ✅ **Xong** (typecheck/lint/build sạch) |
 | **U3** | Checkout review + đặt hàng + lịch sử đơn + huỷ đơn | ⏳ Chưa làm |
 | **U4** | Đánh giá sản phẩm (comments/reviews) | ⏳ Chưa làm |
 
@@ -193,6 +193,40 @@ Các quyết định chốt và **vì sao**:
 ### Còn phải làm khi có môi trường (backend + API_KEY)
 - Smoke test: `/` (anonymous) → grid SP published; search keyword → lọc; phân trang; click SP → `/products/[id]`; header đổi theo trạng thái login (anonymous "Sign in" / shop hiện "Seller dashboard" + "Sign out"); `/seller` vẫn gate.
 - Tiếp theo: **U2 (cart)** — thêm cart icon vào header, nút Add to cart ở trang chi tiết.
+
+---
+
+## 3f. Đã làm — U2 (Storefront: giỏ hàng)
+
+**Kiểm tra:** `pnpm typecheck` sạch · `pnpm lint` sạch (0 error) · `pnpm build` sạch (route mới `/cart`; proxy matcher thêm `/cart`). Test thêm: `cartSubtotal`.
+
+> 📄 Spec: [specs/…-u2-cart-…](superpowers/specs/2026-07-14-storefront-u2-cart-design.md) · Plan: [plans/…-u2-cart-…](superpowers/plans/2026-07-14-storefront-u2-cart.md)
+
+### File đã tạo/sửa
+| File | Vai trò |
+|---|---|
+| [types/cart.ts](../e-commerce-nextjs/types/cart.ts) | `Cart`, `CartProduct` |
+| [lib/products/price.ts](../e-commerce-nextjs/lib/products/price.ts) | + `toPriceNumber` (tính toán) |
+| [lib/cart/summary.ts](../e-commerce-nextjs/lib/cart/summary.ts) | `cartSubtotal` (có test) |
+| [actions/cart.actions.ts](../e-commerce-nextjs/actions/cart.actions.ts) | add / updateQuantity / remove / clear |
+| [components/store/](../e-commerce-nextjs/components/store) | `add-to-cart`, `cart-line` (stepper −/+/remove) |
+| [app/(store)/cart/page.tsx](../e-commerce-nextjs/app/(store)/cart) | Trang giỏ hàng (auth) |
+| store-header.tsx (sửa) | + icon cart + badge `cart_count_product` |
+| products/[id]/page.tsx (sửa) | + `<AddToCart/>` |
+| proxy.ts (sửa) | matcher += `/cart/:path*` |
+
+### Ràng buộc backend (đã verify)
+- **Optimistic concurrency**: `PATCH /cart/quantity` + `DELETE /cart` cần `oldQuantity` khớp giá trị server, lệch → `ConflictRequestError`. FE gửi quantity hiện tại làm `oldQuantity`; sau mỗi mutation `revalidatePath('/cart')` refetch để đồng bộ. `newQuantity=0` → xoá dòng.
+- **DELETE có body** `{ productId, oldQuantity }` (apiFetch gửi body khi có `method`+`body`).
+- **Add-to-cart từ trang public**: action check session; anonymous → `redirect('/login?redirect=/products/<id>')`. `/cart` thì proxy gate sẵn.
+- **Stock check** ở add/update (message backend hiện qua toast).
+
+### Hạn chế đã chấp nhận (YAGNI)
+- Badge cart ở header cập nhật **khi điều hướng** (apiFetch no-store → mỗi navigation fresh), KHÔNG cập nhật tức thì khi add mà vẫn đứng ở trang SP. Cần cart-context client mới real-time → để sau nếu cần.
+
+### Còn phải làm khi có môi trường (backend + API_KEY + customer login)
+- Smoke test: anonymous Add to cart → redirect login → sau login add lại → toast; badge hiện count; `/cart` list; −/+ đổi qty (−tại 1 xoá), Remove, Clear; vượt stock → "Only N items in stock"; `/cart` khi chưa login → bị đẩy về login.
+- Tiếp theo: **U3 (checkout + orders)** — thêm nút "Proceed to checkout" ở `/cart`.
 
 ---
 
