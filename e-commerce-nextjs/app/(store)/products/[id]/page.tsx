@@ -1,9 +1,12 @@
 import Link from 'next/link'
 import { apiFetch } from '@/lib/api/server-client'
+import { getClientId } from '@/lib/auth/session'
 import { toPriceString } from '@/lib/products/price'
 import { Badge } from '@/components/ui/badge'
 import { AddToCart } from '@/components/store/add-to-cart'
+import { CommentSection } from '@/components/store/comment-section'
 import type { Product } from '@/types/product'
+import type { Comment } from '@/types/comment'
 
 export default async function ProductDetailPage({
   params,
@@ -32,6 +35,14 @@ export default async function ProductDetailPage({
     ? product.product_images
     : [{ url: product.product_thumb, public_id: 'thumb' }]
   const attrs = product.product_attributes ?? {}
+
+  let comments: Comment[] = []
+  try {
+    comments = await apiFetch<Comment[]>(`/comment?productId=${id}`)
+  } catch {
+    comments = []
+  }
+  const currentUserId = await getClientId()
 
   return (
     <div className="space-y-6">
@@ -64,6 +75,7 @@ export default async function ProductDetailPage({
           <AddToCart productId={product._id} max={product.product_quantity} />
         </div>
       </div>
+      <CommentSection productId={id} comments={comments} currentUserId={currentUserId} />
     </div>
   )
 }

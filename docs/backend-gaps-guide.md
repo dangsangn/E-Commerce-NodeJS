@@ -505,6 +505,56 @@ curl -i -X PATCH http://localhost:5000/api/v1/order/<orderId>/cancel \
 
 ---
 
+# Part 4 — Comment module: authz & data gaps
+
+Three related issues in the `comments` feature, surfaced building storefront U4. None crash; all weaken correctness/security.
+
+## 4.1 `deleteComment` has no ownership check
+
+**Where:** [`src/features/comments/application/use-cases/comment.use-case.ts`](../src/features/comments/application/use-cases/comment.use-case.ts).
+
+`deleteComment(commentId, productId)` confirms the comment exists, then deletes it — but never checks the caller owns it. **Any authenticated user can delete anyone's comment** (and deleting a root cascades to its replies). This is a broken-access-control defect (OWASP A01).
+
+**Fix:** thread the caller's id and verify ownership before deleting:
+```ts
+async deleteComment(commentId: string, productId: string, userId: string): Promise<boolean> {
+  const comment = await this.commentRepository.findById(commentId)
+  if (!comment) throw new NotFoundError('Comment not found')
+  if (comment.userId !== userId) throw new ForbiddenError('Not your comment')
+  // ...existing cascade delete...
+}
+```
+And pass `req.user.userId` from the controller. The storefront only *shows* a delete control on the user's own comments, but FE gating is cosmetic — the server must enforce it.
+
+## 4.2 `createComment` trusts a body-supplied `userId`
+
+**Where:** [`src/features/comments/presentation/controllers/comment.controller.ts`](../src/features/comments/presentation/controllers/comment.controller.ts).
+
+`createComment` passes `req.body` straight to the use-case, so `userId` comes from the client. A caller can post **as anyone** by changing the field. The route has `authentication`, so the real identity is already on `req.user`.
+
+**Fix:** set it server-side, ignoring the client value:
+```ts
+createComment = async (req, res) => {
+  const data = await this.commentUseCase.createComment({ ...req.body, userId: req.user!.userId })
+  new OkResponse({ message: 'Create new comment successfully', data }).send(res)
+}
+```
+(The storefront injects `userId` from the session cookie so posting works today, but that is a courtesy — the server should not accept a client `userId` at all.)
+
+## 4.3 Comment list never returns the author
+
+**Where:** [`src/features/comments/infrastructure/repositories/comment.repository.ts`](../src/features/comments/infrastructure/repositories/comment.repository.ts).
+
+`findComments` calls `.populate('user', 'name email').populate('replyToUser', 'name email')`, but the schema defines `userId`/`replyToUserId` (refs to `Shop`) — there is **no `user`/`replyToUser` path**, so the populate is a no-op. `mapToEntity` also omits them. Net: the client only ever gets `userId`, never a display name — the storefront shows a generic "Customer ••abcd" label as a result.
+
+**Fix (either):**
+- Add virtual populates keyed on the real fields, e.g. `commentSchema.virtual('user', { ref: 'Shop', localField: 'userId', foreignField: '_id', justOne: true })`, populate `user`, and map it into the entity; or
+- In the repository, `.populate('userId', 'name email')` (populate the actual path) and map `doc.userId.name` into a `user` field on the entity.
+
+Also note the model `ref: 'Shop'` for `userId` — confirm that's the correct collection for a customer identity, or point it at the user/account model.
+
+---
+
 # Appendix — Frontend behavior while these are unfixed
 
 The frontend (seller M2/M4, storefront U3) is built to degrade gracefully so you can ship the backend fix independently:
@@ -514,5 +564,6 @@ The frontend (seller M2/M4, storefront U3) is built to degrade gracefully so you
 | Avatar hang | Upload aborts after a 10s client timeout and shows "Avatar upload is temporarily unavailable." | Remove nothing — the action already handles a real 200; it will simply succeed and toast "Avatar updated." |
 | Discount update/delete/query | Not surfaced (no edit/delete buttons; M4 is create + view only). | A future frontend milestone can add edit/delete UI against the new routes. |
 | Order detail/cancel param mismatch (Part 3) | Storefront U3 renders order history from the working list (no detail page); the "Cancel order" button calls the real route and shows an error toast. | Cancel starts working immediately — the button moves a pending order to "cancelled" with no frontend change. |
+| Comment authz / author (Part 4) | Storefront U4 posts/deletes work (delete shown only on own comments, FE-gated); author shown as a generic "Customer ••id" label. | Enforce delete ownership + server-side `userId` (security), and populate the author so real names display. |
 
-No frontend change is *required* when you land these fixes; the avatar path and order-cancel start succeeding automatically. Coordinate a frontend follow-up only if/when discount editing UI is wanted.
+No frontend change is *required* when you land these fixes; the avatar path and order-cancel start succeeding automatically. The comment authz fixes are server-side hardening (the FE already gates delete cosmetically); populating the author lets the FE show real names. Coordinate a frontend follow-up only if/when discount editing UI is wanted.

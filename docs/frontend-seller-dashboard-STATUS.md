@@ -31,7 +31,7 @@ Xây frontend chuẩn best-practice cho toàn bộ tính năng backend. **Seller
 | **U1** | Nền tảng store (layout public) + duyệt: catalog (search + phân trang) + trang chi tiết SP | ✅ **Xong** (typecheck/lint/build sạch) |
 | **U2** | Giỏ hàng (cart): thêm/sửa số lượng/xoá | ✅ **Xong** (typecheck/lint/build sạch) |
 | **U3** | Checkout review + đặt hàng + lịch sử đơn + huỷ đơn | ✅ **Xong** (typecheck/lint/build sạch) |
-| **U4** | Đánh giá sản phẩm (comments/reviews) | ⏳ Chưa làm |
+| **U4** | Đánh giá sản phẩm (comments/reviews) | ✅ **Xong** (typecheck/lint/build sạch) |
 
 ---
 
@@ -257,6 +257,34 @@ Các quyết định chốt và **vì sao**:
 - Smoke test: `/cart` → checkout → review → address/payment → place order → redirect `/orders`, đơn `pending`, cart trống; Cancel (lỗi tới khi BE fix); `/checkout`,`/orders` chưa login → login.
 - Discount ở checkout: **hoãn** (gửi `shop_discounts: []`).
 - Tiếp theo: **U4 (reviews/comments)**.
+
+---
+
+## 3h. Đã làm — U4 (Storefront: bình luận sản phẩm)
+
+**Kiểm tra:** `pnpm typecheck` sạch · `pnpm lint` sạch (0 error) · `pnpm build` sạch (`/products/[id]` có thêm section bình luận). Test thêm: `groupComments`. **→ Storefront U1–U4 HOÀN TẤT.**
+
+> 📄 Spec: [specs/…-u4-comments-…](superpowers/specs/2026-07-14-storefront-u4-comments-design.md) · Plan: [plans/…-u4-comments-…](superpowers/plans/2026-07-14-storefront-u4-comments.md)
+
+### File đã tạo/sửa
+| File | Vai trò |
+|---|---|
+| [types/comment.ts](../e-commerce-nextjs/types/comment.ts) | `Comment` |
+| [lib/comments/group.ts](../e-commerce-nextjs/lib/comments/group.ts) | `groupComments` (tách top-level / replies theo parentId) (có test) |
+| [actions/comment.actions.ts](../e-commerce-nextjs/actions/comment.actions.ts) | `createCommentAction`, `deleteCommentAction` |
+| [components/store/](../e-commerce-nextjs/components/store) | `comment-form`, `comment-section` (list + reply + delete-own) |
+| products/[id]/page.tsx (sửa) | + fetch comments + `<CommentSection>` |
+
+### Ràng buộc backend (đã verify) + gap
+- **1 lần fetch** `GET /comment?productId=X` trả **tất cả** comment (top-level + reply) → group ở client (không N+1).
+- **`userId` lấy từ body** khi tạo → action inject từ `getClientId()` (session). Anonymous post → login redirect.
+- ⚠️ **Delete KHÔNG check ownership** (backend) → FE chỉ hiện nút Delete trên comment của chính mình (so `userId`). Xoá root → xoá luôn reply.
+- ⚠️ **Không có tên tác giả**: `.populate('user')` sai path + mapper bỏ qua → chỉ có `userId`. FE hiển thị label chung + 4 ký tự cuối id.
+- 3 gap trên đã ghi vào [backend-gaps-guide.md](backend-gaps-guide.md) (Part 4).
+
+### Còn phải làm khi có môi trường (backend + API_KEY)
+- Smoke test: xem comment; anonymous post → login → post; reply; delete (chỉ của mình; xoá root xoá reply).
+- Enhancement sau: rating sao (backend chưa có field), nhiều cấp reply, tên tác giả (cần fix populate).
 
 ---
 
