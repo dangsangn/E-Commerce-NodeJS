@@ -25,21 +25,21 @@ export function VerifyOtpForm({ email }: { email: string }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Xác thực Email</CardTitle>
-        <CardDescription>Nhập mã 6 số đã gửi tới {email || 'email của bạn'}</CardDescription>
+        <CardTitle>Verify your email</CardTitle>
+        <CardDescription>Enter the 6-digit code sent to {email || 'your email'}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <form action={formAction} className="space-y-4">
           <input type="hidden" name="email" value={email} />
           <div className="space-y-2">
-            <Label htmlFor="otp">Mã OTP</Label>
+            <Label htmlFor="otp">Verification code</Label>
             <Input id="otp" name="otp" inputMode="numeric" maxLength={6} required placeholder="______" />
           </div>
-          <SubmitButton>Xác nhận</SubmitButton>
+          <SubmitButton>Verify</SubmitButton>
         </form>
         <form action={resendAction}>
           <input type="hidden" name="email" value={email} />
-          <Button type="submit" variant="ghost" className="w-full">Gửi lại mã</Button>
+          <Button type="submit" variant="ghost" className="w-full">Resend code</Button>
         </form>
       </CardContent>
     </Card>

@@ -29,7 +29,7 @@ export async function unwrap<T>(res: Response): Promise<T> {
   if (!res.ok) {
     const message =
       (body && typeof body === 'object' && 'message' in body && (body as { message?: string }).message) ||
-      `Yêu cầu thất bại (${res.status})`
+      `Request failed (${res.status})`
     throw new ApiError(res.status, message as string)
   }
   if (body && typeof body === 'object' && 'data' in body) {

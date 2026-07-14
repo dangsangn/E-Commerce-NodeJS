@@ -19,13 +19,13 @@ export function SignupForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Đăng ký</CardTitle>
-        <CardDescription>Tạo tài khoản để bắt đầu bán hàng</CardDescription>
+        <CardTitle>Sign up</CardTitle>
+        <CardDescription>Create an account to start selling</CardDescription>
       </CardHeader>
       <CardContent>
         <form action={formAction} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Họ tên</Label>
+            <Label htmlFor="name">Full name</Label>
             <Input id="name" name="name" required autoComplete="name" />
           </div>
           <div className="space-y-2">
@@ -33,14 +33,14 @@ export function SignupForm() {
             <Input id="email" name="email" type="email" required autoComplete="email" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Mật khẩu</Label>
+            <Label htmlFor="password">Password</Label>
             <Input id="password" name="password" type="password" required autoComplete="new-password" />
           </div>
-          <SubmitButton>Đăng ký</SubmitButton>
+          <SubmitButton>Sign up</SubmitButton>
         </form>
         <p className="mt-4 text-center text-sm text-muted-foreground">
-          Đã có tài khoản?{' '}
-          <Link href="/login" className="font-medium text-primary hover:underline">Đăng nhập</Link>
+          Already have an account?{' '}
+          <Link href="/login" className="font-medium text-primary hover:underline">Sign in</Link>
         </p>
       </CardContent>
     </Card>

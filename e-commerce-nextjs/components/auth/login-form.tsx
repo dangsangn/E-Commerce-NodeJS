@@ -19,8 +19,8 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Đăng nhập</CardTitle>
-        <CardDescription>Truy cập kênh người bán</CardDescription>
+        <CardTitle>Sign in</CardTitle>
+        <CardDescription>Access your seller dashboard</CardDescription>
       </CardHeader>
       <CardContent>
         <form action={formAction} className="space-y-4">
@@ -30,14 +30,14 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
             <Input id="email" name="email" type="email" required autoComplete="email" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Mật khẩu</Label>
+            <Label htmlFor="password">Password</Label>
             <Input id="password" name="password" type="password" required autoComplete="current-password" />
           </div>
-          <SubmitButton>Đăng nhập</SubmitButton>
+          <SubmitButton>Sign in</SubmitButton>
         </form>
         <p className="mt-4 text-center text-sm text-muted-foreground">
-          Chưa có tài khoản?{' '}
-          <Link href="/signup" className="font-medium text-primary hover:underline">Đăng ký</Link>
+          Don&apos;t have an account?{' '}
+          <Link href="/signup" className="font-medium text-primary hover:underline">Sign up</Link>
         </p>
       </CardContent>
     </Card>

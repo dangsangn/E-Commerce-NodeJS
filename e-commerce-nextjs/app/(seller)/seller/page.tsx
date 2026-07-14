@@ -8,17 +8,17 @@ export default async function SellerHomePage() {
   return (
     <Card className="max-w-lg">
       <CardHeader>
-        <CardTitle>Kênh người bán</CardTitle>
+        <CardTitle>Seller dashboard</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-sm text-muted-foreground">
-          Đăng nhập với: <span className="font-medium">{payload?.email ?? '—'}</span>
+          Signed in as: <span className="font-medium">{payload?.email ?? '—'}</span>
         </p>
         <p className="text-sm text-muted-foreground">
-          Vai trò: {payload?.roles?.join(', ') || 'user'}
+          Role: {payload?.roles?.join(', ') || 'user'}
         </p>
         <form action={logoutAction}>
-          <Button type="submit" variant="outline">Đăng xuất</Button>
+          <Button type="submit" variant="outline">Sign out</Button>
         </form>
       </CardContent>
     </Card>

@@ -162,4 +162,4 @@ Dùng skill `senior-doc-writer` tạo doc trong `docs/` mô tả cách fix, kèm
 ## 9. Quy ước làm việc đã thống nhất
 - **Không commit sau mỗi task** trong lúc thực thi — commit theo mốc/khi được yêu cầu (như lần bàn giao này).
 - Frontend code theo API hiện có; phần backend thiếu → tài liệu hướng dẫn, không sửa source BE.
-- UI **tiếng Việt**.
+- UI **tiếng Anh** (đã đổi từ tiếng Việt sau M1). Copy theo `writing-guidelines` (`.agents/skills`): nút dùng câu mệnh lệnh, tiêu đề/nút viết theo *sentence case*, thông báo lỗi thân thiện không xin lỗi, trạng thái loading kết thúc bằng `…`. Validation message (Zod) trong [lib/validations/auth.ts](../e-commerce-nextjs/lib/validations/auth.ts) cũng là UI copy → cũng dịch. **Chỉ còn** mô tả test (`it('…')`) trong `__tests__/` là tiếng Việt (nội bộ, không lộ ra UI).

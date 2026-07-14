@@ -14,7 +14,7 @@ export interface FetchOptions {
 
 function baseUrl(): string {
   const url = process.env.BACKEND_URL
-  if (!url) throw new Error('BACKEND_URL chưa được cấu hình')
+  if (!url) throw new Error('BACKEND_URL is not configured')
   return `${url}/api/v1`
 }
 

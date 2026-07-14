@@ -5,7 +5,11 @@ import { cookies } from 'next/headers'
 import { apiFetch, ApiError } from '@/lib/api/server-client'
 import { setSession, clearSession } from '@/lib/auth/session'
 import { COOKIE } from '@/lib/auth/tokens'
-import { loginSchema, signupSchema, verifyOtpSchema } from '@/lib/validations/auth'
+import {
+  loginSchema,
+  signupSchema,
+  verifyOtpSchema,
+} from '@/lib/validations/auth'
 import type { LoginData } from '@/types/api'
 import type { ActionState } from '@/actions/state'
 
@@ -13,58 +17,75 @@ function errorMessage(e: unknown, fallback: string): string {
   return e instanceof ApiError ? e.message : fallback
 }
 
-export async function signupAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+export async function signupAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   const parsed = signupSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) return { ok: false, message: parsed.error.issues[0].message }
+  if (!parsed.success)
+    return { ok: false, message: parsed.error.issues[0].message }
   try {
     await apiFetch('/auth/signup', { body: parsed.data })
   } catch (e) {
-    return { ok: false, message: errorMessage(e, 'Đăng ký thất bại') }
+    return { ok: false, message: errorMessage(e, 'Could not create your account') }
   }
   redirect(`/verify-otp?email=${encodeURIComponent(parsed.data.email)}`)
 }
 
-export async function loginAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+export async function loginAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   const parsed = loginSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) return { ok: false, message: parsed.error.issues[0].message }
+  if (!parsed.success)
+    return { ok: false, message: parsed.error.issues[0].message }
   const redirectTo = (formData.get('redirect') as string) || '/seller'
   try {
     const data = await apiFetch<LoginData>('/auth/login', { body: parsed.data })
     await setSession(data.tokens, data.user._id)
   } catch (e) {
-    return { ok: false, message: errorMessage(e, 'Đăng nhập thất bại') }
+    return { ok: false, message: errorMessage(e, 'Could not sign you in') }
   }
   redirect(redirectTo)
 }
 
-export async function verifyOtpAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+export async function verifyOtpAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   const parsed = verifyOtpSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) return { ok: false, message: parsed.error.issues[0].message }
+  if (!parsed.success)
+    return { ok: false, message: parsed.error.issues[0].message }
   try {
-    const data = await apiFetch<LoginData>('/auth/verify-otp', { body: parsed.data })
+    const data = await apiFetch<LoginData>('/auth/verify-otp', {
+      body: parsed.data,
+    })
     await setSession(data.tokens, data.user._id)
   } catch (e) {
-    return { ok: false, message: errorMessage(e, 'Xác thực OTP thất bại') }
+    return { ok: false, message: errorMessage(e, 'Could not verify your code') }
   }
   redirect('/seller')
 }
 
-export async function resendOtpAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+export async function resendOtpAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   const email = String(formData.get('email') ?? '')
-  if (!email) return { ok: false, message: 'Thiếu email' }
+  if (!email) return { ok: false, message: 'Email is required' }
   try {
     await apiFetch('/auth/resend-otp', { body: { email } })
   } catch (e) {
-    return { ok: false, message: errorMessage(e, 'Gửi lại OTP thất bại') }
+    return { ok: false, message: errorMessage(e, 'Could not resend the code') }
   }
-  return { ok: true, message: 'Đã gửi lại mã OTP' }
+  return { ok: true, message: 'Verification code sent' }
 }
 
 export async function logoutAction(): Promise<void> {
   const store = await cookies()
   const clientId = store.get(COOKIE.CLIENT)?.value
   const refresh = store.get(COOKIE.REFRESH)?.value
-  // Backend /auth/logout xác thực bằng x-client-id + x-refresh-token (không phải authorization).
+  // Backend /auth/logout authenticates with x-client-id + x-refresh-token (not authorization).
   if (clientId && refresh) {
     try {
       await fetch(`${process.env.BACKEND_URL}/api/v1/auth/logout`, {
@@ -76,7 +97,7 @@ export async function logoutAction(): Promise<void> {
         },
       })
     } catch {
-      // Bỏ qua lỗi mạng — vẫn xoá session phía client.
+      // Ignore network errors — still clear the client-side session.
     }
   }
   await clearSession()
