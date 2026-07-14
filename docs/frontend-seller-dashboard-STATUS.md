@@ -17,10 +17,10 @@ Xây frontend chuẩn best-practice cho toàn bộ tính năng backend, **ưu ti
 | Milestone | Nội dung | Trạng thái |
 |---|---|---|
 | **M1** | Nền tảng (BFF, session, proxy) + Auth (signup/OTP/login/logout) | ✅ **Xong** (build/test/lint sạch) |
-| **M2** | Nâng cấp lên Shop + cập nhật avatar + role-gate `/seller` | ⏳ Chưa làm |
-| **M3** | Quản lý sản phẩm: list draft/published, tạo (2 bước), sửa, publish, upload ảnh | ⏳ Chưa làm |
-| **M4** | Discount: tạo, xem theo shop, tra cứu theo code | ⏳ Chưa làm |
-| **BE docs** | Tài liệu hướng dẫn fix 2 lỗi backend (dùng `senior-doc-writer`) | ⏳ Chưa làm |
+| **M2** | Nâng cấp lên Shop + cập nhật avatar + role-gate `/seller` | ✅ **Xong** (typecheck/lint/build sạch) |
+| **M3** | Quản lý sản phẩm: list draft/published, tạo (2 bước), sửa, publish, upload ảnh | ✅ **Xong** (typecheck/lint/build sạch) |
+| **M4** | Discount: tạo, xem theo shop, tra cứu theo code | ✅ **Xong** (typecheck/lint/build sạch) |
+| **BE docs** | Tài liệu hướng dẫn fix 2 lỗi backend (dùng `senior-doc-writer`) | ✅ **Xong** → [backend-gaps-guide.md](backend-gaps-guide.md) |
 
 ---
 
@@ -77,6 +77,86 @@ Các quyết định chốt và **vì sao**:
 
 ---
 
+## 3b. Đã làm — M2 (Upgrade Shop + Avatar + Role-gate)
+
+**Kiểm tra:** `pnpm typecheck` sạch · `pnpm lint` sạch (0 error) · `pnpm build` sạch (route `/seller/account` xuất hiện, `ƒ Proxy (Middleware)` còn nguyên). Test unit đã viết thêm (gate + user schema) nhưng **runner vitest chưa chạy được trên Node 20.9.0** (`node:util` thiếu `styleText`, cần Node ≥ 20.12) — đây là gap môi trường, không phải lỗi code.
+
+### File đã tạo/sửa
+| File | Vai trò |
+|---|---|
+| [lib/auth/gate.ts](../e-commerce-nextjs/lib/auth/gate.ts) | `shouldGateShop(pathname, roles)` — hàm thuần, edge-safe (có test) |
+| [proxy.ts](../e-commerce-nextjs/proxy.ts) | Gọi `shouldGateShop` **sau** block refresh → redirect `/seller/account` nếu non-shop |
+| [lib/validations/user.ts](../e-commerce-nextjs/lib/validations/user.ts) | `upgradeShopSchema` (`{ shopName? }`, có test) |
+| [lib/api/server-client.ts](../e-commerce-nextjs/lib/api/server-client.ts) | Thêm `signal?: AbortSignal` vào `apiFetch` (additive) |
+| [lib/api/error-message.ts](../e-commerce-nextjs/lib/api/error-message.ts) | `errorMessage(e, fallback)` tách dùng chung (bỏ trùng lặp giữa 2 file action) |
+| [actions/user.actions.ts](../e-commerce-nextjs/actions/user.actions.ts) | `upgradeToShopAction` (⚠️ `setSession` token MỚI), `updateAvatarAction` (timeout 10s) |
+| [components/ui/avatar.tsx](../e-commerce-nextjs/components/ui/avatar.tsx) | shadcn Avatar (Base UI) |
+| [components/account/upgrade-shop-form.tsx](../e-commerce-nextjs/components/account/upgrade-shop-form.tsx) | Card Shop: trạng thái hoặc form upgrade |
+| [components/account/avatar-form.tsx](../e-commerce-nextjs/components/account/avatar-form.tsx) | Card Profile: avatar + form upload |
+| [app/(seller)/seller/account/page.tsx](../e-commerce-nextjs/app/(seller)/seller/account/page.tsx) | Server Component: đọc roles, render 2 card |
+
+### Điều chỉnh so với plan M2
+1. **Bỏ shadcn `form`**: style `base-nova` kéo theo `react-hook-form`, nhưng M2 giữ pattern Server-Action + `useActionState` của M1 (không dùng react-hook-form). Không component nào import `form.tsx` → cài vào chỉ thừa dependency. Chỉ cài `avatar` (dùng `@base-ui/react` đã có sẵn, không đổi manifest).
+2. **Tách `errorMessage` sang module riêng** (kết quả code review): xoá trùng lặp verbatim giữa `auth.actions.ts` và `user.actions.ts`.
+
+### Còn phải làm khi có môi trường (backend + API_KEY)
+- Smoke test: login non-shop → vào `/seller` phải bị đẩy sang `/seller/account`; submit upgrade → toast "You're now a shop", card Shop chuyển "active", `/seller` hết bị chặn; upload avatar → sau ~10s hiện "Avatar upload is temporarily unavailable" (đúng như dự kiến, chờ backend fix `.send(res)` — xem §6).
+- Chạy `pnpm test:run` trên Node ≥ 20.12 để xác nhận unit test (M1 22 + gate 4 + user schema 4).
+
+---
+
+## 3c. Đã làm — M3 (Quản lý sản phẩm)
+
+**Kiểm tra:** `pnpm typecheck` sạch · `pnpm lint` sạch (0 error) · `pnpm build` sạch (3 route mới: `/seller/products`, `/seller/products/new`, `/seller/products/[id]/edit`). Unit test thêm (price + product schema) — vitest runner vẫn chờ Node ≥ 20.12.
+
+### File đã tạo/sửa
+| File | Vai trò |
+|---|---|
+| [types/product.ts](../e-commerce-nextjs/types/product.ts) | Kiểu Product/list/pagination/prepared-images + `PRODUCT_TYPES`, `CREATABLE_TYPES` |
+| [lib/products/price.ts](../e-commerce-nextjs/lib/products/price.ts) | `toPriceString` chuẩn hoá Decimal128 (có test) |
+| [lib/validations/product.ts](../e-commerce-nextjs/lib/validations/product.ts) | Zod discriminated-union theo `product_type` + `splitAttributes` + edit schema (có test) |
+| [actions/product.actions.ts](../e-commerce-nextjs/actions/product.actions.ts) | 6 action: prepareImages, create, update, publish, unpublish, addImages |
+| [components/products/](../e-commerce-nextjs/components/products) | `attribute-fields`, `image-uploader`, `create-product-form`, `product-list`, `product-row-actions`, `edit-product-form` |
+| [app/(seller)/seller/products/](../e-commerce-nextjs/app/(seller)/seller/products) | list (`page.tsx`), tạo (`new/page.tsx`), sửa (`[id]/edit/page.tsx`) |
+| [components/ui/](../e-commerce-nextjs/components/ui) | shadcn: table, tabs, badge, select, textarea |
+
+### Ràng buộc backend quan trọng (đã verify trong source)
+- **Tạo 2 bước bắt buộc**: `POST /product/upload/prepare` (multipart field **`images`**) → `{ productId, images, thumb }`; rồi `POST /product` dùng lại `productId`=`_id`, `thumb`, `images` y nguyên — backend từ chối nếu `public_id` không nằm dưới `products/{shopId}/{productId}`.
+- **`product_price` là Decimal128** → JSON `{ $numberDecimal }` → normalize khi hiển thị (`toPriceString`), gửi number khi ghi.
+- **Chỉ CLOTHING + ELECTRONICS tạo được** (SHOES/OTHER hiện trong dropdown nhưng disabled). Attribute theo type: Clothing `brand/color/size` (bắt buộc) + `material`; Electronics `manufacturer` (bắt buộc) + `model`.
+- **Trạng thái draft/published không nằm trong payload** — quyết định bởi endpoint gọi (`/list/draft` vs `/list/published`); publish/unpublish là 2 route PATCH riêng.
+
+### Còn phải làm khi có môi trường (backend + API_KEY + seed grant)
+- ⚠️ **RBAC**: `protect('product')` cần grant create/read/update cho role `shop` (seed trong DB qua `accesscontrol`). Nếu chưa seed → 403 "You don't have permission…" (FE hiển thị message này). Đây là rủi ro smoke-test #1, không verify được nếu thiếu DB.
+- Smoke test: `/seller/products` (2 tab) → tạo (upload ảnh → form details bật) → publish từ row → edit (đổi giá/mô tả, thêm ảnh) → thử ELECTRONICS (manufacturer bắt buộc), xác nhận SHOES/OTHER disabled.
+
+---
+
+## 3d. Đã làm — M4 (Discount)
+
+**Kiểm tra:** `pnpm typecheck` sạch · `pnpm lint` sạch (0 error) · `pnpm build` sạch (2 route mới: `/seller/discounts`, `/seller/discounts/new`). Unit test thêm (discount create schema) — vitest runner vẫn chờ Node ≥ 20.12.
+
+### File đã tạo/sửa
+| File | Vai trò |
+|---|---|
+| [types/discount.ts](../e-commerce-nextjs/types/discount.ts) | Kiểu Discount + enum `DiscountType`/`AppliesTo` |
+| [lib/validations/discount.ts](../e-commerce-nextjs/lib/validations/discount.ts) | Zod create schema (percentage ≤100, end>start, specific cần product_ids) (có test) |
+| [actions/discount.actions.ts](../e-commerce-nextjs/actions/discount.actions.ts) | `createDiscountAction`, `lookupDiscountByCodeAction` |
+| [components/discounts/](../e-commerce-nextjs/components/discounts) | `create-discount-form`, `discount-list`, `discount-code-lookup` |
+| [app/(seller)/seller/discounts/](../e-commerce-nextjs/app/(seller)/seller/discounts) | list + lookup (`page.tsx`), tạo (`new/page.tsx`) |
+
+### Phạm vi & ràng buộc backend (đã verify trong source)
+- **Chỉ create + view** (get-by-shop + get-by-code). `update`/`delete`/`query` có trong service nhưng **KHÔNG route** → không làm FE (xem §6 gap #2).
+- **`discount_shop_id`**: DTO validation bắt buộc non-empty, nhưng controller ghi đè bằng userId → FE gửi userId của mình để qua validation.
+- **`discount_start/end_date` phải ISO** — convert từ `<input type="date">` (`YYYY-MM-DD`) sang ISO trong action.
+- **`specific_products` cần `discount_product_ids`** (FE nhập chuỗi id ngăn cách bởi dấu phẩy → tách mảng; không làm product-picker).
+- **get-by-code strict**: backend ném lỗi nếu chưa bắt đầu / hết hạn / inactive / không tồn tại — FE hiển thị đúng message đó.
+
+### Còn phải làm khi có môi trường (backend + API_KEY + seed grant)
+- Smoke test: `/seller/discounts` (list + tra cứu code) → tạo fixed_amount (all products, ngày tương lai) → xuất hiện trong list; thử percentage >100 (backend chặn), `specific_products` không id (FE chặn); tra cứu code hợp lệ → hiện chi tiết, code hết hạn/inactive/không có → hiện lý do backend.
+
+---
+
 ## 4. Cách chạy & kiểm tra (khi quay lại)
 
 ```bash
@@ -128,12 +208,13 @@ pnpm test:run && pnpm typecheck && pnpm lint && pnpm build
 
 ---
 
-## 6. Backend gaps — cần tài liệu riêng (KHÔNG sửa source BE)
+## 6. Backend gaps — đã có tài liệu riêng (KHÔNG sửa source BE)
 
-Dùng skill `senior-doc-writer` tạo doc trong `docs/` mô tả cách fix, kèm file/dòng + đề xuất:
+✅ **Đã viết guide đầy đủ** (chẩn đoán + cơ chế + fix chính xác): [docs/backend-gaps-guide.md](backend-gaps-guide.md).
 
-1. **`updateAvatar` thiếu `.send(res)`** — [src/features/user/controllers/index.ts](../src/features/user/controllers/index.ts): tạo `OkResponse` nhưng không gọi `.send(res)` → request `/user/me/avatar` **treo/timeout**. Ảnh hưởng M2.
-2. **Discount thiếu route update/delete/query** — đã có `UpdateDiscountDTO`/`QueryDiscountDTO` nhưng router chỉ wire create + get-by-code + get-by-shop. Ảnh hưởng M4.
+1. **`updateAvatar` thiếu `.send(res)`** — [src/features/user/controllers/index.ts](../src/features/user/controllers/index.ts): tạo `OkResponse` nhưng không gọi `.send(res)` → request `/user/me/avatar` **treo/timeout**. Ảnh hưởng M2. Fix = thêm `.send(res)`.
+2. **Discount thiếu route update/delete/query** — đã có `UpdateDiscountDTO`/`QueryDiscountDTO` + service, nhưng router chỉ wire create + get-by-code + get-by-shop. Ảnh hưởng M4. Cần thêm controller method + route.
+   - ⚠️ **Bẫy Express 5**: `validationMiddleware(..., 'query')` sẽ **crash** (req.query là getter read-only ở Express 5) → guide nêu 3 cách xử lý. Xem guide.
 
 ---
 
