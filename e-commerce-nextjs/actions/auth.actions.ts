@@ -2,7 +2,8 @@
 
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
-import { apiFetch, ApiError } from '@/lib/api/server-client'
+import { apiFetch } from '@/lib/api/server-client'
+import { errorMessage } from '@/lib/api/error-message'
 import { setSession, clearSession } from '@/lib/auth/session'
 import { COOKIE } from '@/lib/auth/tokens'
 import {
@@ -12,10 +13,6 @@ import {
 } from '@/lib/validations/auth'
 import type { LoginData } from '@/types/api'
 import type { ActionState } from '@/actions/state'
-
-function errorMessage(e: unknown, fallback: string): string {
-  return e instanceof ApiError ? e.message : fallback
-}
 
 export async function signupAction(
   _prev: ActionState,

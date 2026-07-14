@@ -1,15 +1,12 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { apiFetch, ApiError } from '@/lib/api/server-client'
+import { apiFetch } from '@/lib/api/server-client'
+import { errorMessage } from '@/lib/api/error-message'
 import { setSession, getClientId } from '@/lib/auth/session'
 import { upgradeShopSchema } from '@/lib/validations/user'
 import type { Tokens } from '@/types/api'
 import type { ActionState } from '@/actions/state'
-
-function errorMessage(e: unknown, fallback: string): string {
-  return e instanceof ApiError ? e.message : fallback
-}
 
 interface UpgradeData {
   roles: string[]
