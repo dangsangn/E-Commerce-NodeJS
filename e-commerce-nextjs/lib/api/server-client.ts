@@ -10,6 +10,7 @@ export interface FetchOptions {
   auth?: boolean
   tags?: string[]
   cache?: RequestCache
+  signal?: AbortSignal
 }
 
 function baseUrl(): string {
@@ -38,6 +39,7 @@ export async function apiFetch<T>(path: string, opts: FetchOptions = {}): Promis
     body: opts.multipart ?? (json ? JSON.stringify(opts.body) : undefined),
     cache: opts.cache ?? 'no-store',
     next: opts.tags ? { tags: opts.tags } : undefined,
+    signal: opts.signal,
   })
   return unwrap<T>(res)
 }
