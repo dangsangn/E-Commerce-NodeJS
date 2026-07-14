@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { decodeJwt, isExpiringSoon, hasRole } from '@/lib/auth/tokens'
 import type { JwtPayload } from '@/types/api'
 
-// Tạo JWT giả: header.payload.signature (chỉ payload là quan trọng khi decode)
+// Build a fake JWT: header.payload.signature (only the payload matters when decoding)
 function fakeJwt(payload: object): string {
   const b64url = (obj: object) =>
     Buffer.from(JSON.stringify(obj))
@@ -14,11 +14,11 @@ function fakeJwt(payload: object): string {
 }
 
 describe('decodeJwt', () => {
-  it('decode payload hợp lệ', () => {
+  it('decodes a valid payload', () => {
     const p = { userId: 'u1', email: 'a@b.com', roles: ['shop'], type: 'access', exp: 100, iat: 1 }
     expect(decodeJwt(fakeJwt(p))).toEqual(p)
   })
-  it('trả null nếu token sai định dạng', () => {
+  it('returns null for a malformed token', () => {
     expect(decodeJwt('not-a-jwt')).toBeNull()
     expect(decodeJwt('a.b')).toBeNull()
   })
@@ -26,20 +26,20 @@ describe('decodeJwt', () => {
 
 describe('isExpiringSoon', () => {
   const p: JwtPayload = { userId: 'u1', email: 'a@b.com', roles: [], type: 'access', exp: 1000, iat: 0 }
-  it('true khi còn dưới skew (60s)', () => {
-    // exp=1000s => 1_000_000ms; now=970_000ms => còn 30s < 60s
+  it('true when under the skew window (60s)', () => {
+    // exp=1000s => 1_000_000ms; now=970_000ms => 30s left < 60s
     expect(isExpiringSoon(p, 970_000)).toBe(true)
   })
-  it('false khi còn nhiều thời gian', () => {
-    expect(isExpiringSoon(p, 900_000)).toBe(false) // còn 100s > 60s
+  it('false when there is plenty of time left', () => {
+    expect(isExpiringSoon(p, 900_000)).toBe(false) // 100s left > 60s
   })
-  it('true khi payload null hoặc thiếu exp', () => {
+  it('true when payload is null or missing exp', () => {
     expect(isExpiringSoon(null, 0)).toBe(true)
   })
 })
 
 describe('hasRole', () => {
-  it('nhận biết role', () => {
+  it('detects role membership', () => {
     const p: JwtPayload = { userId: 'u', email: 'e', roles: ['user', 'shop'], type: 'access', exp: 1, iat: 1 }
     expect(hasRole(p, 'shop')).toBe(true)
     expect(hasRole(p, 'admin')).toBe(false)

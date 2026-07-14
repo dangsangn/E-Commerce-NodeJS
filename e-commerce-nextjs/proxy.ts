@@ -51,7 +51,7 @@ export default async function proxy(req: NextRequest): Promise<NextResponse> {
   let payload = access ? decodeJwt(access) : null
   const res = NextResponse.next()
 
-  // Refresh proactively nếu access sắp/đã hết hạn và còn refresh token.
+  // Refresh proactively when the access token is expiring/expired and a refresh token is present.
   if (refresh && isExpiringSoon(payload, Date.now())) {
     const tokens = await refreshTokens(clientId, refresh)
     if (!tokens) return redirectToLogin(req)
