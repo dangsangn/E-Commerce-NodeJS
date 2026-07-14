@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { COOKIE, decodeJwt, isExpiringSoon } from '@/lib/auth/tokens'
+import { shouldGateShop } from '@/lib/auth/gate'
 import type { Tokens } from '@/types/api'
 
 const TWO_DAYS = 60 * 60 * 24 * 2
@@ -60,6 +61,12 @@ export default async function proxy(req: NextRequest): Promise<NextResponse> {
   }
 
   if (!payload) return redirectToLogin(req)
+
+  // Role-gate: non-shops may only reach /seller/account (to upgrade).
+  // Runs AFTER refresh so a just-upgraded user is judged by fresh roles.
+  if (shouldGateShop(req.nextUrl.pathname, payload.roles)) {
+    return NextResponse.redirect(new URL('/seller/account', req.url))
+  }
 
   return res
 }
