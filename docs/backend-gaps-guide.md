@@ -400,13 +400,119 @@ curl -i "http://localhost:5000/api/v1/discount/?page=1&limit=10&discount_type=pe
 
 ---
 
+# Part 3 — Order detail & cancel read the wrong route param
+
+## 3.1 Overview
+
+**What:** `GET /order/:id` (order detail) and `PATCH /order/:id/cancel` (cancel) always fail with `'Order not found'`, even for a real order the caller owns. The order *list* (`GET /order`) works fine.
+
+**Why:** The route declares the URL parameter as `:id`, but the controller reads `req.params.orderId`. Express only populates the param under the name in the route pattern, so `req.params.orderId` is `undefined` → `findById(undefined)` → `null` → `NotFoundError('Order not found')`.
+
+**Where:** [`src/features/order/routes/index.ts`](../src/features/order/routes/index.ts) vs [`src/features/order/controller/index.ts`](../src/features/order/controller/index.ts).
+
+**Impact:** Storefront U3 — the customer cannot view a single order via its own endpoint, and the "Cancel order" button errors. U3 works around detail by rendering everything from the working list; cancel is wired to the real route and degrades to an error toast until this is fixed.
+
+## 3.2 Mental model
+
+A route parameter is a **named slot**. `router.get('/:id', ...)` creates a slot called `id`. The controller asks for a slot called `orderId` — a slot that was never created — and gets `undefined`. The names on both sides must be the **same string**; Express does not match by position.
+
+## 3.3 The mismatch, exactly
+
+Routes ([routes/index.ts](../src/features/order/routes/index.ts)):
+```ts
+router.patch('/:id/cancel', asyncHandler(OrderController.cancelOrder))
+router.get('/:id', asyncHandler(OrderController.getOrderDetail))
+```
+Controller ([controller/index.ts](../src/features/order/controller/index.ts)):
+```ts
+getOrderDetail = async (req, res) => {
+  const data = await OrderService.getOrderDetail({
+    orderId: req.params.orderId as string,   // ← undefined: the route slot is `id`
+    userId: req.user?.userId,
+  })
+  ...
+}
+cancelOrder = async (req, res) => {
+  const data = await OrderService.cancelOrder({
+    orderId: req.params.orderId as string,   // ← undefined
+    userId: req.user?.userId,
+  })
+  ...
+}
+```
+
+The `as string` cast is what let this compile — it asserts a value TypeScript couldn't verify, hiding the `undefined`. A lesson: casts on `req.params.*` silence exactly the check that would have caught this.
+
+## 3.4 The fix
+
+Pick **one** side and make the names match. Simplest — read the param the route actually defines:
+
+```ts
+// controller/index.ts — read `id`, matching the route pattern
+getOrderDetail = async (req, res) => {
+  const data = await OrderService.getOrderDetail({
+    orderId: req.params.id as string,
+    userId: req.user?.userId,
+  })
+  return OkResponse.send(res, { data })
+}
+cancelOrder = async (req, res) => {
+  const data = await OrderService.cancelOrder({
+    orderId: req.params.id as string,
+    userId: req.user?.userId,
+  })
+  return OkResponse.send(res, { data })
+}
+```
+
+Equivalent alternative — rename the route slots to `:orderId` (keep the controller as-is):
+```ts
+router.patch('/:orderId/cancel', asyncHandler(OrderController.cancelOrder))
+router.get('/:orderId', asyncHandler(OrderController.getOrderDetail))
+```
+Either works; do not do both half-way. The service and repository are already correct.
+
+## 3.5 Also: `GET /order` ignores pagination
+
+[`controller/index.ts`](../src/features/order/controller/index.ts) `getOrdersByUser` passes only `{ userId }` to the service, dropping `req.query.page`/`limit`, so the list is always page 1 (default limit). The service + repository accept `page`/`limit`. Thread them through if you want real pagination:
+```ts
+getOrdersByUser = async (req, res) => {
+  const data = await OrderService.getOrdersByUser({
+    userId: req.user?.userId,
+    page: Number(req.query.page) || 1,
+    limit: Number(req.query.limit) || 10,
+  })
+  return OkResponse.send(res, { data })
+}
+```
+
+## 3.6 Verify
+
+```bash
+# Detail (auth) — should return the order, not "Order not found":
+curl -i http://localhost:5000/api/v1/order/<orderId> \
+  -H "x-api-key: <key>" -H "x-client-id: <userId>" -H "authorization: <token>"
+
+# Cancel a pending order (auth):
+curl -i -X PATCH http://localhost:5000/api/v1/order/<orderId>/cancel \
+  -H "x-api-key: <key>" -H "x-client-id: <userId>" -H "authorization: <token>"
+# → 200 with order_status "cancelled"; 400 if not pending / not yours.
+```
+
+## 3.7 Senior notes
+- **Prefer a single source of truth for param names.** A shared constant or typed route table avoids the name drift between router and controller. At minimum, avoid `as string` on `req.params.*` — let TS force you to handle the possibly-undefined value, which surfaces this bug at compile time.
+- **The list "hid" the detail bug.** Because the list works and returns full order objects, the app *looks* functional; only fetching one order reveals the break. When a detail endpoint mirrors data already in a list, add a smoke test that hits the detail route specifically.
+
+---
+
 # Appendix — Frontend behavior while these are unfixed
 
-The seller frontend (M2, M4) is built to degrade gracefully so you can ship the backend fix independently:
+The frontend (seller M2/M4, storefront U3) is built to degrade gracefully so you can ship the backend fix independently:
 
 | Gap | Frontend behavior today | After your fix |
 |---|---|---|
 | Avatar hang | Upload aborts after a 10s client timeout and shows "Avatar upload is temporarily unavailable." | Remove nothing — the action already handles a real 200; it will simply succeed and toast "Avatar updated." |
 | Discount update/delete/query | Not surfaced (no edit/delete buttons; M4 is create + view only). | A future frontend milestone can add edit/delete UI against the new routes. |
+| Order detail/cancel param mismatch (Part 3) | Storefront U3 renders order history from the working list (no detail page); the "Cancel order" button calls the real route and shows an error toast. | Cancel starts working immediately — the button moves a pending order to "cancelled" with no frontend change. |
 
-No frontend change is *required* when you land these fixes; the avatar path starts succeeding automatically. Coordinate a frontend follow-up only if/when discount editing UI is wanted.
+No frontend change is *required* when you land these fixes; the avatar path and order-cancel start succeeding automatically. Coordinate a frontend follow-up only if/when discount editing UI is wanted.

@@ -72,5 +72,5 @@ export default async function proxy(req: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-  matcher: ['/seller/:path*', '/cart/:path*'],
+  matcher: ['/seller/:path*', '/cart/:path*', '/checkout/:path*', '/orders/:path*'],
 }

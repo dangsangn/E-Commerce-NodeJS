@@ -4,7 +4,7 @@ import { toPriceString } from '@/lib/products/price'
 import { cartSubtotal } from '@/lib/cart/summary'
 import { clearCartAction } from '@/actions/cart.actions'
 import { CartLine } from '@/components/store/cart-line'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import type { Cart } from '@/types/cart'
 
 export default async function CartPage() {
@@ -38,9 +38,12 @@ export default async function CartPage() {
             <form action={clearCartAction}>
               <Button type="submit" variant="ghost">Clear cart</Button>
             </form>
-            <div className="text-right">
-              <p className="text-sm text-muted-foreground">Subtotal</p>
-              <p className="text-xl font-semibold tabular-nums">{toPriceString(cartSubtotal(items))}</p>
+            <div className="flex flex-col items-end gap-2 text-right">
+              <div>
+                <p className="text-sm text-muted-foreground">Subtotal</p>
+                <p className="text-xl font-semibold tabular-nums">{toPriceString(cartSubtotal(items))}</p>
+              </div>
+              <Link href="/checkout" className={buttonVariants()}>Proceed to checkout</Link>
             </div>
           </div>
         </div>

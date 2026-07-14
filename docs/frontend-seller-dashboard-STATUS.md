@@ -30,7 +30,7 @@ Xây frontend chuẩn best-practice cho toàn bộ tính năng backend. **Seller
 |---|---|---|
 | **U1** | Nền tảng store (layout public) + duyệt: catalog (search + phân trang) + trang chi tiết SP | ✅ **Xong** (typecheck/lint/build sạch) |
 | **U2** | Giỏ hàng (cart): thêm/sửa số lượng/xoá | ✅ **Xong** (typecheck/lint/build sạch) |
-| **U3** | Checkout review + đặt hàng + lịch sử đơn + huỷ đơn | ⏳ Chưa làm |
+| **U3** | Checkout review + đặt hàng + lịch sử đơn + huỷ đơn | ✅ **Xong** (typecheck/lint/build sạch) |
 | **U4** | Đánh giá sản phẩm (comments/reviews) | ⏳ Chưa làm |
 
 ---
@@ -227,6 +227,36 @@ Các quyết định chốt và **vì sao**:
 ### Còn phải làm khi có môi trường (backend + API_KEY + customer login)
 - Smoke test: anonymous Add to cart → redirect login → sau login add lại → toast; badge hiện count; `/cart` list; −/+ đổi qty (−tại 1 xoá), Remove, Clear; vượt stock → "Only N items in stock"; `/cart` khi chưa login → bị đẩy về login.
 - Tiếp theo: **U3 (checkout + orders)** — thêm nút "Proceed to checkout" ở `/cart`.
+
+---
+
+## 3g. Đã làm — U3 (Storefront: checkout + đơn hàng)
+
+**Kiểm tra:** `pnpm typecheck` sạch · `pnpm lint` sạch (0 error) · `pnpm build` sạch (route mới `/checkout`, `/orders`; proxy matcher thêm cả hai). Test thêm: `buildShopOrders`.
+
+> 📄 Spec: [specs/…-u3-checkout-orders-…](superpowers/specs/2026-07-14-storefront-u3-checkout-orders-design.md) · Plan: [plans/…-u3-checkout-orders-…](superpowers/plans/2026-07-14-storefront-u3-checkout-orders.md)
+
+### File đã tạo/sửa
+| File | Vai trò |
+|---|---|
+| [types/order.ts](../e-commerce-nextjs/types/order.ts) | Order + checkout types + `ORDER_STATUSES` |
+| [lib/checkout/build-shop-orders.ts](../e-commerce-nextjs/lib/checkout/build-shop-orders.ts) | Gom cart → `shop_order_ids` theo shop (có test) |
+| [actions/order.actions.ts](../e-commerce-nextjs/actions/order.actions.ts) | `placeOrderAction`, `cancelOrderAction` |
+| [components/store/](../e-commerce-nextjs/components/store) | `checkout-wizard` (3 bước), `order-card` (+ cancel) |
+| [app/(store)/checkout/page.tsx](../e-commerce-nextjs/app/(store)/checkout) | Checkout: cart → review → wizard |
+| [app/(store)/orders/page.tsx](../e-commerce-nextjs/app/(store)/orders) | Lịch sử đơn |
+| cart/page.tsx (sửa) | + nút "Proceed to checkout" |
+| proxy.ts (sửa) | matcher += `/checkout`, `/orders` |
+
+### Ràng buộc backend (đã verify)
+- **Checkout review** cần mỗi item gửi `price` khớp `Number(product_price)` + `shopId` khớp shop của SP (lấy từ cart). Lệch → "price has changed". Review idempotent (không trừ stock, không tăng discount count).
+- **Place order** `POST /order` → tạo đơn `pending`, reserve stock atomic, xoá item khỏi cart.
+- ⚠️ **Order detail + cancel BỊ LỖI backend**: controller đọc `req.params.orderId` nhưng route là `:id` → `undefined` → luôn "Order not found". FE **không** làm trang detail; nút Cancel vẫn wire vào route thật (lỗi cho tới khi BE fix). `GET /order` bỏ qua page/limit → chỉ trang 1. Đã ghi vào [backend-gaps-guide.md](backend-gaps-guide.md) (Part 3).
+
+### Còn phải làm khi có môi trường (backend + API_KEY + customer login)
+- Smoke test: `/cart` → checkout → review → address/payment → place order → redirect `/orders`, đơn `pending`, cart trống; Cancel (lỗi tới khi BE fix); `/checkout`,`/orders` chưa login → login.
+- Discount ở checkout: **hoãn** (gửi `shop_discounts: []`).
+- Tiếp theo: **U4 (reviews/comments)**.
 
 ---
 
