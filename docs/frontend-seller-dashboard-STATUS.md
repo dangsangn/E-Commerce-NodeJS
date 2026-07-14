@@ -12,7 +12,9 @@
 
 ## 1. Tổng quan nhanh
 
-Xây frontend chuẩn best-practice cho toàn bộ tính năng backend, **ưu tiên Seller Dashboard trước**, storefront khách hàng làm sau. Chia 4 milestone:
+Xây frontend chuẩn best-practice cho toàn bộ tính năng backend. **Seller Dashboard (M1–M4) đã xong**; nay làm tiếp **storefront khách hàng (U1–U4)**.
+
+**Seller Dashboard:**
 
 | Milestone | Nội dung | Trạng thái |
 |---|---|---|
@@ -21,6 +23,15 @@ Xây frontend chuẩn best-practice cho toàn bộ tính năng backend, **ưu ti
 | **M3** | Quản lý sản phẩm: list draft/published, tạo (2 bước), sửa, publish, upload ảnh | ✅ **Xong** (typecheck/lint/build sạch) |
 | **M4** | Discount: tạo, xem theo shop, tra cứu theo code | ✅ **Xong** (typecheck/lint/build sạch) |
 | **BE docs** | Tài liệu hướng dẫn fix 2 lỗi backend (dùng `senior-doc-writer`) | ✅ **Xong** → [backend-gaps-guide.md](backend-gaps-guide.md) |
+
+**Customer Storefront (phần user):**
+
+| Milestone | Nội dung | Trạng thái |
+|---|---|---|
+| **U1** | Nền tảng store (layout public) + duyệt: catalog (search + phân trang) + trang chi tiết SP | ✅ **Xong** (typecheck/lint/build sạch) |
+| **U2** | Giỏ hàng (cart): thêm/sửa số lượng/xoá | ⏳ Chưa làm |
+| **U3** | Checkout review + đặt hàng + lịch sử đơn + huỷ đơn | ⏳ Chưa làm |
+| **U4** | Đánh giá sản phẩm (comments/reviews) | ⏳ Chưa làm |
 
 ---
 
@@ -154,6 +165,34 @@ Các quyết định chốt và **vì sao**:
 
 ### Còn phải làm khi có môi trường (backend + API_KEY + seed grant)
 - Smoke test: `/seller/discounts` (list + tra cứu code) → tạo fixed_amount (all products, ngày tương lai) → xuất hiện trong list; thử percentage >100 (backend chặn), `specific_products` không id (FE chặn); tra cứu code hợp lệ → hiện chi tiết, code hết hạn/inactive/không có → hiện lý do backend.
+
+---
+
+## 3e. Đã làm — U1 (Storefront: nền tảng + duyệt sản phẩm)
+
+**Kiểm tra:** `pnpm typecheck` sạch · `pnpm lint` sạch (0 error) · `pnpm build` sạch (route mới: `/` = store home, `/products/[id]`). Test thêm: `buildCatalogQuery` (4 case).
+
+> 📄 Spec: [specs/…-storefront-u1-…](superpowers/specs/2026-07-14-storefront-u1-foundation-browse-design.md) · Plan: [plans/…-storefront-u1-…](superpowers/plans/2026-07-14-storefront-u1-foundation-browse.md)
+
+### File đã tạo/sửa
+| File | Vai trò |
+|---|---|
+| **`app/page.tsx`** | **ĐÃ XOÁ** — bỏ redirect `/`→`/seller`; `/` giờ là store home |
+| [lib/products/catalog-query.ts](../e-commerce-nextjs/lib/products/catalog-query.ts) | `buildCatalogQuery` (map URL `q`→backend `keySearch`, clamp page) (có test) |
+| [components/store/](../e-commerce-nextjs/components/store) | `search-box` (client), `product-card`, `product-grid`, `store-header` (server) |
+| [app/(store)/layout.tsx](../e-commerce-nextjs/app/(store)/layout.tsx) | Shell store: header + main + footer |
+| [app/(store)/page.tsx](../e-commerce-nextjs/app/(store)/page.tsx) | Catalog: grid + search + phân trang (Server Component) |
+| [app/(store)/products/[id]/page.tsx](../e-commerce-nextjs/app/(store)/products) | Trang chi tiết SP (public) |
+
+### Quyết định & ràng buộc (đã verify backend)
+- **Store là public** — `apiFetch` gọi `GET /product`, `GET /product/:id` **không** `auth` (chỉ `x-api-key`). Proxy giữ nguyên matcher `/seller/:path*`.
+- **`/` giờ = store home** (không còn auto-redirect sang `/seller`). Seller vào dashboard qua link "Seller dashboard" ở header (chỉ hiện khi JWT có role `shop`).
+- **Param search backend là `keySearch`** (map từ `?q=`).
+- ⚠️ **Backend caveat**: `GET /product/:id` (`getDetailProduct`) **không** lọc `isPublished` → link trực tiếp tới id draft vẫn render. Repo có `getProductPublishedById` nhưng chưa route. Đây là gap backend, U1 không workaround.
+
+### Còn phải làm khi có môi trường (backend + API_KEY)
+- Smoke test: `/` (anonymous) → grid SP published; search keyword → lọc; phân trang; click SP → `/products/[id]`; header đổi theo trạng thái login (anonymous "Sign in" / shop hiện "Seller dashboard" + "Sign out"); `/seller` vẫn gate.
+- Tiếp theo: **U2 (cart)** — thêm cart icon vào header, nút Add to cart ở trang chi tiết.
 
 ---
 
