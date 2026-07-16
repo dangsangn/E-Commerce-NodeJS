@@ -20,7 +20,7 @@ class OrderController {
 
   getOrderDetail = async (req: Request, res: Response) => {
     const data = await OrderService.getOrderDetail({
-      orderId: req.params.orderId as string,
+      orderId: req.params.id as string,
       userId: req.user?.userId,
     })
     return OkResponse.send(res, { data })
@@ -28,7 +28,7 @@ class OrderController {
 
   cancelOrder = async (req: Request, res: Response) => {
     const data = await OrderService.cancelOrder({
-      orderId: req.params.orderId as string,
+      orderId: req.params.id as string,
       userId: req.user?.userId,
     })
     return OkResponse.send(res, { data })
