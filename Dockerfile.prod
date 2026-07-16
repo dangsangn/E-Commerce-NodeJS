@@ -43,4 +43,6 @@ USER node
 # Render/Koyeb sẽ inject PORT qua env; code đọc process.env.PORT.
 EXPOSE 5000
 
-CMD ["node", "dist/server.js"]
+# Chạy migration (idempotent) trước rồi start server.
+# exec để node kế thừa PID 1 và nhận được SIGTERM khi Render spin-down.
+CMD ["sh", "-c", "node dist/migrations/migrate.js && exec node dist/server.js"]

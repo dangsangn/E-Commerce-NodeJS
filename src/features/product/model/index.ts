@@ -132,7 +132,7 @@ export const clothingSchema = new Schema(
     },
   },
   {
-    collection: 'clothes',
+    collection: 'Clothes',
     timestamps: true,
   },
 )
@@ -152,7 +152,7 @@ export const electronicSchema = new Schema(
     },
   },
   {
-    collection: 'electronics',
+    collection: 'Electronics',
     timestamps: true,
   },
 )

@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose'
 
 const DOCUMENT_NAME = 'Cart'
-const COLLECTION_NAME = 'carts'
+const COLLECTION_NAME = 'Carts'
 
 export const CART_STATE = Object.freeze({
   ACTIVE: 'active',

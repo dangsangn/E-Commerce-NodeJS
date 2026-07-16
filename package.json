@@ -8,6 +8,8 @@
     "start": "node dist/server.js",
     "migrate": "ts-node -r tsconfig-paths/register src/migrations/migrate.ts",
     "migrate:rollback": "ts-node -r tsconfig-paths/register src/migrations/migrate.ts rollback",
+    "migrate:prod": "node dist/migrations/migrate.js",
+    "start:prod": "node dist/migrations/migrate.js && node dist/server.js",
     "dev": "nodemon src/server.ts",
     "build": "tsc && tsc-alias"
   },
