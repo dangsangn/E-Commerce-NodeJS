@@ -6,15 +6,33 @@ import { CommentEntity } from '../../domain/entities/comment.entity'
 import { CommentModel } from '../database/models/comment.model'
 
 export class MongoCommentRepository implements ICommentRepository {
+  // Lấy id dạng string dù ref đã populate (object có _id) hay chưa (ObjectId).
+  private refId(ref: any): string | null {
+    if (!ref) return null
+    if (typeof ref === 'object' && ref._id) return ref._id.toString()
+    return ref.toString()
+  }
+
+  // Nếu ref đã được populate thì trả về { name, email }, ngược lại undefined.
+  // User schema dùng field usr_name / usr_email nên phải map lại tên field.
+  private refUser(ref: any): { name: string; email: string } | undefined {
+    if (ref && typeof ref === 'object' && ref._id) {
+      return { name: ref.usr_name ?? '', email: ref.usr_email ?? '' }
+    }
+    return undefined
+  }
+
   // Mapper: Mongoose Document -> Domain Entity
   private mapToEntity(doc: any): CommentEntity {
     return {
       id: doc._id.toString(),
-      productId: doc.productId.toString(),
-      userId: doc.userId.toString(),
+      productId: this.refId(doc.productId)!,
+      userId: this.refId(doc.userId)!,
       content: doc.content,
-      parentId: doc.parentId ? doc.parentId.toString() : null,
-      replyToUserId: doc.replyToUserId ? doc.replyToUserId.toString() : null,
+      parentId: this.refId(doc.parentId),
+      replyToUserId: this.refId(doc.replyToUserId),
+      user: this.refUser(doc.userId),
+      replyToUser: this.refUser(doc.replyToUserId),
       isDeleted: doc.isDeleted,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
@@ -43,8 +61,10 @@ export class MongoCommentRepository implements ICommentRepository {
       .sort({ createdAt: 1 })
       .skip(Number(skip))
       .limit(Number(limit))
-      .populate('user', 'name email')
-      .populate('replyToUser', 'name email')
+      // Populate bằng SCHEMA PATH (userId / replyToUserId), not model name.
+      // Select đúng field của User schema: usr_name / usr_email.
+      .populate('userId', 'usr_name usr_email')
+      .populate('replyToUserId', 'usr_name usr_email')
       .lean()
 
     return docs.map((doc) => this.mapToEntity(doc))

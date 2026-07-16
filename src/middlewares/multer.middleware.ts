@@ -1,5 +1,4 @@
 import { ALLOWED_MINE, MAX_FILE_SIZE, MAX_FILES } from '@/constants/common'
-import logger from '@/loggers'
 import { Request } from 'express'
 import multer from 'multer'
 
@@ -12,6 +11,7 @@ const fileFilter: multer.Options['fileFilter'] = (
   file: Express.Multer.File,
   cb: multer.FileFilterCallback,
 ) => {
+  console.log('🚀 ~ file:', file)
   if (!ALLOWED_MINE.includes(file.mimetype)) {
     return cb(new Error('Invalid file type. Only images are allowed.'))
   }

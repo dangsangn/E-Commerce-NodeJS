@@ -180,10 +180,11 @@ export class CartService {
       cart._id.toString(),
       productIds,
     )
-    if (!updated)
+    if (!updated) {
       throw new ConflictRequestError(
         'Cart was updated by other request. Please request and try again',
       )
+    }
 
     return updated
   }

@@ -102,7 +102,7 @@ export class CartRepository {
     )
 
     return CartModel.findOneAndUpdate(
-      { _id: cartId },
+      { _id: cartId, cart_state: CART_STATE.ACTIVE },
       [
         {
           $set: {
@@ -130,6 +130,9 @@ export class CartRepository {
       {
         new: true,
         lean: true,
+        // Mongoose 9 no longer auto-detects an array update as an aggregation
+        // pipeline — it must be opted into explicitly.
+        updatePipeline: true,
       },
     )
   }

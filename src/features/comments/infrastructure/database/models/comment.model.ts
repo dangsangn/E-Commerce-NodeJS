@@ -15,14 +15,18 @@ export interface ICommentDocument extends Document {
 const commentSchema = new Schema<ICommentDocument>(
   {
     productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-    userId: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     content: { type: String, required: true },
     parentId: {
       type: Schema.Types.ObjectId,
       ref: DOCUMENT_NAME,
       default: null,
     },
-    replyToUserId: { type: Schema.Types.ObjectId, ref: 'Shop', default: null },
+    replyToUserId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
     isDeleted: { type: Boolean, default: false },
   },
   {

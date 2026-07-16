@@ -47,7 +47,13 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   }
 
   if (statusCode >= 500) {
-    logger.error('Unhandled request error', logMeta)
+    logger.error('Unhandled request error', {
+      ...logMeta,
+      name: err.name,
+      message: err.message,
+      code: err.code,
+      stack: err.stack,
+    })
   } else {
     logger.warn('Request error', logMeta)
   }

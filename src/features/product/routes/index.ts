@@ -1,9 +1,9 @@
+import { uploadImage } from '@/middlewares/multer.middleware'
 import express from 'express'
-import ProductController from '../controller'
 import { asyncHandler } from '../../../utils'
 import { authentication } from '../../auth/utils/checkAuth'
-import { grantAccess, protect } from '../../auth/utils/rbac'
-import { uploadImage } from '@/middlewares/multer.middleware'
+import { protect } from '../../auth/utils/rbac'
+import ProductController from '../controller'
 
 const router = express.Router()
 const can = protect('product')

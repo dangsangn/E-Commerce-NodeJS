@@ -1,13 +1,12 @@
+import { InternalServerError } from '@/core/error.response'
+import logger from '@/loggers'
 import {
   v2 as cloudinary,
   UploadApiOptions,
   UploadApiResponse,
 } from 'cloudinary'
-import Multer from 'multer'
-import config from '../../../configs'
-import logger from '@/loggers'
-import { InternalServerError } from '@/core/error.response'
 import { Readable } from 'stream'
+import config from '../../../configs'
 
 cloudinary.config({
   cloud_name: config.cloudinaryCloudName,

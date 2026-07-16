@@ -1,13 +1,11 @@
-import { Request, Response } from 'express'
-import { OkResponse } from '../../../core/success.response'
-import { ProductServiceFactory } from '../service'
-import { validate } from 'class-validator'
-import { createProductSchema } from '../dto/create.dto'
-import { BadRequestError } from '../../../core/error.response'
-import { UploadService } from '../../upload/services'
-import { updateProductSchema } from '../dto/update.dto'
 import logger from '@/loggers'
-import { validateImageBuffer } from '@/features/upload/validator/image.validator'
+import { Request, Response } from 'express'
+import { BadRequestError } from '../../../core/error.response'
+import { OkResponse } from '../../../core/success.response'
+import { UploadService } from '../../upload/services'
+import { createProductSchema } from '../dto/create.dto'
+import { updateProductSchema } from '../dto/update.dto'
+import { ProductServiceFactory } from '../service'
 
 class ProductController {
   createProduct = async (req: Request, res: Response) => {
