@@ -11,10 +11,21 @@ export const productType = Object.freeze({
   OTHER: 'OTHER',
 })
 
-const imageSchema = new Schema(
+export const imageSchema = new Schema(
   {
     url: { type: String, required: true },
     public_id: { type: String, required: true },
+  },
+  {
+    _id: false,
+  },
+)
+
+const variationSchema = new Schema(
+  {
+    name: { type: String, required: true }, // 'Color' | 'Size' | 'Storage'
+    options: { type: [String], required: true }, // ['Red', 'Blue']
+    images: { type: [imageSchema], default: [] }, // image according to the first axis option
   },
   {
     _id: false,
@@ -73,10 +84,6 @@ const productSchema = new Schema(
       max: [5, 'Rating must be at most 5'],
       set: (val: number) => Math.round(val * 10) / 10,
     },
-    product_variations: {
-      type: Array,
-      default: [],
-    },
     isDraft: {
       type: Boolean,
       default: true,
@@ -95,6 +102,17 @@ const productSchema = new Schema(
       index: true,
     },
     deletedAt: { type: Date, default: null },
+    product_variations: {
+      type: [variationSchema],
+      default: [],
+      validate: {
+        validator: (v: any) => v.length <= 3,
+        message: 'Max is 3-axis variant',
+      },
+    },
+    product_price_min: { type: Schema.Types.Decimal128 },
+    product_price_max: { type: Schema.Types.Decimal128 },
+    product_sku_count: { type: Number, default: 0 },
   },
   {
     timestamps: true,
