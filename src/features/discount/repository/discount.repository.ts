@@ -83,7 +83,11 @@ class DiscountRepository {
   }
 
   // business logic
-  static async incrementUserCount(discountId: string, userId: string) {
+  static async incrementUserCount(
+    discountId: string,
+    userId: string,
+    // session: mongoose.ClientSession,
+  ) {
     return await DiscountModel.findByIdAndUpdate(
       discountId,
       {

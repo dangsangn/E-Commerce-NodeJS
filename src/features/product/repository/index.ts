@@ -5,11 +5,11 @@ import { ProductModel } from '../model'
 
 export class ProductRepository {
   static searchProducts = async ({
-    query,
+    filters,
     page = 1,
     limit = 50,
   }: {
-    query: any
+    filters: any
     page: number
     limit: number
   }) => {
@@ -18,21 +18,29 @@ export class ProductRepository {
       limit: limitNum,
       page: pageNum,
     } = parsePagination({ page, limit })
-    const { keySearch, ...others } = query
-    const hasTextSearch = keySearch && keySearch.trim()
+    const { keySearch, price_min, price_max, ...userFilters } = filters
+
     const queryBuilt = {
-      ...(hasTextSearch && { $text: { $search: hasTextSearch } }),
+      ...userFilters,
+      ...(keySearch && { $text: { $search: keySearch } }),
+      ...(price_min != null && price_max != null
+        ? {
+            product_price: {
+              ...(price_min !== null && { $gte: price_min }),
+              ...(price_max !== null && { $lte: price_max }),
+            },
+          }
+        : {}),
       isPublished: true,
-      ...others,
+      isDeleted: false,
     } satisfies any
+
     const [result, total] = await Promise.all([
       ProductModel.find(
         queryBuilt,
-        hasTextSearch ? { score: { $meta: 'textScore' } } : {},
+        keySearch ? { score: { $meta: 'textScore' } } : {},
       )
-        .sort(
-          hasTextSearch ? { score: { $meta: 'textScore' } } : { updatedAt: -1 },
-        )
+        .sort(keySearch ? { score: { $meta: 'textScore' } } : { updatedAt: -1 })
         .skip(skip)
         .limit(limitNum)
         .lean()
@@ -57,12 +65,16 @@ export class ProductRepository {
       page: pageNum,
     } = parsePagination({ page, limit })
     const [result, total] = await Promise.all([
-      ProductModel.find({ ...query, isDraft: true })
+      ProductModel.find({ ...query, isDraft: true, isDeleted: false })
         .skip(skip)
         .limit(limitNum)
         .lean()
         .exec(),
-      ProductModel.countDocuments({ ...query, isDraft: true }),
+      ProductModel.countDocuments({
+        ...query,
+        isDraft: true,
+        isDeleted: false,
+      }),
     ])
     return createPaginationResponse(result, total, pageNum, limitNum)
   }
@@ -82,12 +94,16 @@ export class ProductRepository {
       page: pageNum,
     } = parsePagination({ page, limit })
     const [result, total] = await Promise.all([
-      ProductModel.find({ ...query, isPublished: true })
+      ProductModel.find({ ...query, isPublished: true, isDeleted: false })
         .skip(skip)
         .limit(limitNum)
         .lean()
         .exec(),
-      ProductModel.countDocuments({ ...query, isPublished: true }),
+      ProductModel.countDocuments({
+        ...query,
+        isPublished: true,
+        isDeleted: false,
+      }),
     ])
     return createPaginationResponse(result, total, pageNum, limitNum)
   }

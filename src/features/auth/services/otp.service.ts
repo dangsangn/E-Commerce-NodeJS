@@ -1,6 +1,5 @@
 import crypto from 'crypto'
 import { pubClient as redis } from '@/utils/redis.util'
-import { hash } from 'zod'
 import { BadRequestError } from '@/core/error.response'
 
 const OTP_TTL = 300 // 5 minutes
@@ -11,6 +10,14 @@ const hashOtp = (otp: string) => {
     .update(otp)
     .digest('hex')
 }
+
+const INCR_WITH_TTL = `
+  local n = redis.call('INCR', KEYS[1])
+  if n == 1 then
+    redis.call('EXPIRE', KEYS[1], ARGV[1])
+  end
+  return n
+`
 
 class OtpService {
   static MAX_ATTEMPTS = 5
@@ -23,7 +30,10 @@ class OtpService {
   }
 
   static async verify(email: string, otp: string): Promise<boolean> {
-    const attempts = await redis.incr(`otp:attempts:${email}`)
+    const attempts = (await redis.eval(INCR_WITH_TTL, {
+      keys: [`otp:attempts:${email}`],
+      arguments: [String(OTP_TTL)],
+    })) as number
     if (attempts === 1) await redis.expire(`otp:attempts:${email}`, OTP_TTL)
     if (attempts > this.MAX_ATTEMPTS) {
       await redis.del(`otp:signup:${email}`)
@@ -42,9 +52,8 @@ class OtpService {
 
   // Users are only allowed to resend the OTP once every 60 seconds.
   static async canResend(email: string): Promise<boolean> {
-    // Only Set of Not eXist
     const ok = await redis.set(`otp:resend:${email}`, '1', {
-      NX: true,
+      NX: true, // Only Set of Not eXist
       expiration: {
         type: 'EX',
         value: this.RESEND_COOL_DOWN,

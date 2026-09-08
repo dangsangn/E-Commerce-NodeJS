@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import { BadRequestError } from '../../../core/error.response'
 import {
   DiscountResponseDTO,
@@ -212,6 +213,7 @@ export class DiscountService {
       await DiscountRepository.incrementUserCount(
         discount._id.toString(),
         userId,
+        // session,
       )
     }
 
@@ -278,5 +280,70 @@ export class DiscountService {
         ? discount.discount_max_uses - discount.discount_uses_count
         : undefined,
     }
+  }
+
+  async calculateDiscount({
+    code,
+    userId,
+    orderValue,
+    productIds,
+  }: {
+    code: string
+    userId: string
+    orderValue: number
+    productIds: string[]
+  }): Promise<{
+    discountAmount: number
+    finalAmount: number
+    discountId: string
+  }> {
+    const discount = await this.getDiscountByCode(code)
+
+    const userUsage = await DiscountRepository.countUserUsage(
+      discount._id.toString(),
+      userId,
+    )
+    if (userUsage >= (discount.discount_max_uses_per_user ?? 1)) {
+      throw new BadRequestError(
+        'You have used this discount code too many times.',
+      )
+    }
+
+    if (orderValue < (discount.discount_min_order_value ?? 0)) {
+      throw new BadRequestError(
+        `Order value must be greater than ${discount.discount_min_order_value}.`,
+      )
+    }
+
+    if (discount.discount_applies_to === 'specific_products') {
+      const hasValidProduct = productIds.some((productId) =>
+        (discount.discount_product_ids ?? []).includes(productId),
+      )
+      if (!hasValidProduct) {
+        throw new BadRequestError(
+          'This discount is not applicable to the selected products.',
+        )
+      }
+    }
+
+    const { discountAmount, finalAmount } = this.calculateDiscountAmount(
+      discount.discount_type,
+      discount.discount_value,
+      orderValue,
+    )
+
+    return {
+      discountAmount,
+      finalAmount,
+      discountId: discount._id.toString(),
+    }
+  }
+
+  async commitDiscountUsage(
+    discountId: string,
+    userId: string,
+    // session: mongoose.ClientSession,
+  ) {
+    return DiscountRepository.incrementUserCount(discountId, userId)
   }
 }
