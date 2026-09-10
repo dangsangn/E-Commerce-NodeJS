@@ -127,6 +127,10 @@ productSchema.pre('save', async function () {
   this.product_slug = slugify(this.product_name, { lower: true })
 })
 
+// color and size used to live here, but they are variation AXES, not SPU
+// attributes: they are what makes one shirt two different warehouse codes.
+// They now belong to product_variations + sku_tier_idx. The fields stay,
+// optional, so pre-split documents keep their historical values.
 export const clothingSchema = new Schema(
   {
     brand: {
@@ -135,11 +139,9 @@ export const clothingSchema = new Schema(
     },
     color: {
       type: String,
-      required: true,
     },
     size: {
       type: String,
-      required: true,
     },
     material: {
       type: String,

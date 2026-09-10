@@ -10,6 +10,8 @@ const can = protect('product')
 
 router.get('/', asyncHandler(ProductController.searchProducts))
 router.get('/:id', asyncHandler(ProductController.getDetailProduct))
+// Buyer picked a different variant — refresh one cell, not the whole detail.
+router.get('/:id/sku/:skuId', asyncHandler(ProductController.getSkuDetail))
 
 router.use(authentication)
 
@@ -25,6 +27,20 @@ router.get(
   asyncHandler(ProductController.getPublishedProductByShop),
 )
 router.patch('/:id', can.update, asyncHandler(ProductController.updateProduct))
+// Variant axes: rename them and hang a photo on each option. Cannot change the
+// shape of the matrix — that would repoint existing SKUs.
+router.patch(
+  '/:id/variations',
+  can.update,
+  asyncHandler(ProductController.updateVariations),
+)
+// Price lives on the SKU and stock on the inventory row, so both are edited here
+// rather than through PATCH /:id.
+router.patch(
+  '/:id/sku',
+  can.update,
+  asyncHandler(ProductController.updateSkus),
+)
 router.patch(
   '/published/:id',
   can.update,

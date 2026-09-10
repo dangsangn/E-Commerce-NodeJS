@@ -105,12 +105,6 @@ class AuthService {
       usr_verified: false,
     })
 
-    // const payload: TokenPayload = {
-    //   userId: String(newUser._id),
-    //   email,
-    //   roles: [userRole.rol_name],
-    // }
-    // const tokens = await this.reissueTokens(payload)
     this.sendEmailOtp(email)
   }
 

@@ -4,7 +4,11 @@ import { BadRequestError } from '../../../core/error.response'
 import { OkResponse } from '../../../core/success.response'
 import { UploadService } from '../../upload/services'
 import { createProductSchema } from '../dto/create.dto'
-import { updateProductSchema } from '../dto/update.dto'
+import {
+  updateProductSchema,
+  updateSkuSchema,
+  updateVariationsSchema,
+} from '../dto/update.dto'
 import { ProductServiceFactory } from '../service'
 
 class ProductController {
@@ -16,8 +20,10 @@ class ProductController {
       logger.error('Validation error:', { error: parsed.error })
       throw new BadRequestError(error)
     }
+    // parsed.data, not req.body: the schema folds a legacy flat payload
+    // (product_price + product_quantity) into a one-entry sku_list.
     const data = await ProductServiceFactory.createProduct({
-      ...req.body,
+      ...parsed.data,
       product_shop: req.user?.userId,
     })
     return OkResponse.send(res, { data })
@@ -67,12 +73,23 @@ class ProductController {
     return OkResponse.send(res, { data })
   }
 
+  // Returns { spu, skus } — the variant axes plus every matrix cell with its stock.
   getDetailProduct = async (req: Request, res: Response) => {
     const data = await ProductServiceFactory.getDetailProduct({
       product_id: req.params.id as string,
     })
     return OkResponse.send(res, { data })
   }
+
+  // One cell, for when the buyer switches variant and only price + stock change.
+  getSkuDetail = async (req: Request, res: Response) => {
+    const data = await ProductServiceFactory.getSkuDetail({
+      product_id: req.params.id as string,
+      sku_id: req.params.skuId as string,
+    })
+    return OkResponse.send(res, { data })
+  }
+
   updateProduct = async (req: Request, res: Response) => {
     const parsed = updateProductSchema.safeParse(req.body)
     if (!parsed.success) {
@@ -83,10 +100,43 @@ class ProductController {
     const data = await ProductServiceFactory.updateProduct({
       product_id: req.params.id as string,
       product_shop: req.user?.userId,
-      payload: req.body,
+      payload: parsed.data,
     })
     return OkResponse.send(res, { data })
   }
+
+  // Renames and per-option photos. The shape of the matrix is frozen here — see
+  // the service for why.
+  updateVariations = async (req: Request, res: Response) => {
+    const parsed = updateVariationsSchema.safeParse(req.body)
+    if (!parsed.success) {
+      throw new BadRequestError(
+        parsed.error.issues.map((i) => i.message).join(', '),
+      )
+    }
+    const data = await ProductServiceFactory.updateVariations({
+      product_id: req.params.id as string,
+      product_shop: req.user?.userId,
+      variations: parsed.data.product_variations,
+    })
+    return OkResponse.send(res, { data })
+  }
+
+  updateSkus = async (req: Request, res: Response) => {
+    const parsed = updateSkuSchema.safeParse(req.body)
+    if (!parsed.success) {
+      throw new BadRequestError(
+        parsed.error.issues.map((i) => i.message).join(', '),
+      )
+    }
+    const data = await ProductServiceFactory.updateSkus({
+      product_id: req.params.id as string,
+      product_shop: req.user?.userId,
+      skus: parsed.data.skus,
+    })
+    return OkResponse.send(res, { data })
+  }
+
   uploadProductImageByLink = async (req: Request, res: Response) => {
     const { url } = req.body
     const userId = req.user?.userId
@@ -105,6 +155,8 @@ class ProductController {
     const data = await ProductServiceFactory.prepareImages({
       shopId: userId,
       files,
+      // multer puts non-file multipart fields on req.body
+      draftId: req.body?.draftId,
     })
     return OkResponse.send(res, { data })
   }

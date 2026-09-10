@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import { createPaginationResponse, parsePagination } from '../../../utils'
 import { FindAndUpdateProductPayload } from '../dto'
 import { ProductModel } from '../model'
+import { DerivedPricing } from '../types'
 
 export class ProductRepository {
   static searchProducts = async ({
@@ -20,17 +21,25 @@ export class ProductRepository {
     } = parsePagination({ page, limit })
     const { keySearch, price_min, price_max, ...userFilters } = filters
 
+    /*
+      Price filter after the SPU/SKU split: a product matches when its SKU price
+      range OVERLAPS the requested window, not when a single price falls inside
+      it. A jacket sold at 199k–459k must show up in a "200k–300k" search.
+      product_price_min/max are written in the same transaction as the SKUs, and
+      backfilled for legacy rows by migration 004.
+    */
+    const priceFilter =
+      price_min != null || price_max != null
+        ? {
+            ...(price_max != null && { product_price_min: { $lte: price_max } }),
+            ...(price_min != null && { product_price_max: { $gte: price_min } }),
+          }
+        : {}
+
     const queryBuilt = {
       ...userFilters,
       ...(keySearch && { $text: { $search: keySearch } }),
-      ...(price_min != null && price_max != null
-        ? {
-            product_price: {
-              ...(price_min !== null && { $gte: price_min }),
-              ...(price_max !== null && { $lte: price_max }),
-            },
-          }
-        : {}),
+      ...priceFilter,
       isPublished: true,
       isDeleted: false,
     } satisfies any
@@ -111,26 +120,32 @@ export class ProductRepository {
   static setPublishedProductByShop = async ({
     product_shop,
     product_id,
+    session,
   }: {
     product_shop: string
     product_id: string
+    session?: mongoose.ClientSession
   }) => {
     return ProductModel.updateOne(
       { product_shop, _id: product_id },
       { isPublished: true, isDraft: false },
+      session ? { session } : {},
     )
   }
 
   static setDraftProductByShop = async ({
     product_shop,
     product_id,
+    session,
   }: {
     product_shop: string
     product_id: string
+    session?: mongoose.ClientSession
   }) => {
     return ProductModel.updateOne(
       { product_shop, _id: product_id },
       { isDraft: true, isPublished: false },
+      session ? { session } : {},
     )
   }
 
@@ -139,6 +154,47 @@ export class ProductRepository {
       .select({
         __v: 0,
       })
+      .lean()
+      .exec()
+  }
+
+  /*
+    updateDerivedPricing — write the numbers that "climb up" from the SKUs.
+
+    Called inside the create/update transaction, never from a post('save') hook:
+    a hook runs outside the transaction, so a rollback would leave the SPU
+    advertising a price range no SKU backs.
+  */
+  static updateDerivedPricing = async ({
+    product_id,
+    pricing,
+    session,
+  }: {
+    product_id: string | mongoose.Types.ObjectId
+    pricing: DerivedPricing
+    session?: mongoose.ClientSession
+  }) => {
+    return ProductModel.updateOne(
+      { _id: product_id },
+      { $set: pricing },
+      session ? { session } : {},
+    )
+  }
+
+  // Whole-array replace: product_variations is positional, so a partial update
+  // would need $set paths per index and could leave the axes half-renamed.
+  static replaceVariations = async ({
+    product_id,
+    variations,
+  }: {
+    product_id: string
+    variations: unknown[]
+  }) => {
+    return ProductModel.findByIdAndUpdate(
+      product_id,
+      { $set: { product_variations: variations } },
+      { returnDocument: 'after' },
+    )
       .lean()
       .exec()
   }

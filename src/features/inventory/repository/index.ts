@@ -1,30 +1,25 @@
 import mongoose from 'mongoose'
 import { InventoryModel } from '../models'
 
-export const insertInventory = async ({
-  product_id,
-  shop_id,
-  stock,
-  location = 'unKnow',
+/*
+  One inventory row per SKU — `inven_sku_id` is required and uniquely indexed.
+  `inven_product_id` is kept alongside it so "total stock of this SPU" stays a
+  single indexed aggregate instead of a join.
+*/
+export const insertInventoryMany = async ({
+  rows,
   session,
 }: {
-  product_id: mongoose.Types.ObjectId
-  shop_id: mongoose.Types.ObjectId
-  stock: number
-  location?: string
-  session: mongoose.ClientSession
+  rows: {
+    inven_product_id: mongoose.Types.ObjectId
+    inven_sku_id: mongoose.Types.ObjectId
+    inven_shop_id: mongoose.Types.ObjectId
+    inven_stock: number
+    inven_location?: string
+  }[]
+  session?: mongoose.ClientSession
 }) => {
-  const payload = {
-    inven_product_id: product_id,
-    inven_shop_id: shop_id,
-    inven_stock: stock,
-    inven_location: location,
-  }
-  if (session) {
-    const [doc] = await InventoryModel.create([payload], { session })
-    return doc
-  }
-  return await InventoryModel.create(payload)
+  return InventoryModel.insertMany(rows, session ? { session } : {})
 }
 
 /*
@@ -37,21 +32,29 @@ export const insertInventory = async ({
 
   This is an atomic operation — MongoDB guarantees no race conditions.
   No pessimistic lock needed, no distributed lock needed.
+
+  `skuId` is optional so existing callers keep compiling, but pass it whenever
+  you have it: a multi-variant SPU now owns several inventory rows, and matching
+  on inven_product_id alone would deduct from an arbitrary variant.
 */
 export const reserveInventory = async ({
   productId,
+  skuId,
   quantity,
   cartId,
   session,
 }: {
   productId: string
+  skuId?: string
   quantity: number
   cartId: string
   session: mongoose.ClientSession
 }) => {
   return InventoryModel.findOneAndUpdate(
     {
-      inven_product_id: new mongoose.Types.ObjectId(productId),
+      ...(skuId
+        ? { inven_sku_id: new mongoose.Types.ObjectId(skuId) }
+        : { inven_product_id: new mongoose.Types.ObjectId(productId) }),
       inven_stock: { $gte: quantity }, // ONLY update if stock >= quantity
     },
     {
@@ -80,18 +83,22 @@ export const reserveInventory = async ({
 */
 export const releaseInventory = async ({
   productId,
+  skuId,
   quantity,
   cartId,
   session,
 }: {
   productId: string
+  skuId?: string
   quantity: number
   cartId: string
   session: mongoose.ClientSession
 }) => {
   return InventoryModel.findOneAndUpdate(
     {
-      inven_product_id: new mongoose.Types.ObjectId(productId),
+      ...(skuId
+        ? { inven_sku_id: new mongoose.Types.ObjectId(skuId) }
+        : { inven_product_id: new mongoose.Types.ObjectId(productId) }),
     },
     {
       $inc: { inven_stock: quantity }, // add back to stock
@@ -110,4 +117,41 @@ export const getInventoryByProductId = async (productId: string) => {
   return InventoryModel.findOne({
     inven_product_id: new mongoose.Types.ObjectId(productId),
   }).lean()
+}
+
+// Stock per SKU for one SPU — what the product detail page renders the matrix from.
+export const getInventoryByProductIdGroupedBySku = async (
+  productId: string,
+): Promise<Map<string, number>> => {
+  const rows = await InventoryModel.find({
+    inven_product_id: new mongoose.Types.ObjectId(productId),
+  })
+    .select({ inven_sku_id: 1, inven_stock: 1 })
+    .lean()
+  return new Map(
+    rows.map((r) => [String(r.inven_sku_id), r.inven_stock ?? 0]),
+  )
+}
+
+/*
+  setInventoryStockBySku — absolute stock write from the seller dashboard.
+
+  Deliberately NOT an $inc: the seller is stating "there are 20 in the box now",
+  not "add 20". Reservations are left untouched — releasing them still adds back
+  on top of whatever the seller set.
+*/
+export const setInventoryStockBySku = async ({
+  skuId,
+  stock,
+  session,
+}: {
+  skuId: string
+  stock: number
+  session?: mongoose.ClientSession
+}) => {
+  return InventoryModel.updateOne(
+    { inven_sku_id: new mongoose.Types.ObjectId(skuId) },
+    { $set: { inven_stock: stock } },
+    session ? { session } : {},
+  )
 }
