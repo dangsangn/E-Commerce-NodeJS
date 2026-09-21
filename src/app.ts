@@ -9,6 +9,14 @@ import logger from './loggers'
 const app = express()
 const isDev = (process.env.NODE_ENV || 'development') !== 'production'
 
+// Behind a reverse proxy (Render, nginx), `req.ip` is the proxy's address
+// unless Express is told how many hops to trust — which would put every user of
+// the per-IP rate limiter into a single shared bucket. Opt in per environment:
+// trusting a hop that isn't actually there lets clients spoof X-Forwarded-For
+// and walk around the limit, so the safe default is to trust nothing.
+const trustProxy = Number(process.env.TRUST_PROXY ?? 0)
+if (trustProxy > 0) app.set('trust proxy', trustProxy)
+
 // middleware setup
 app.use(compression())
 app.use(helmet())

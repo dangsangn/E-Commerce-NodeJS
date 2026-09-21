@@ -51,6 +51,27 @@ class AuthController {
     const data = await AuthService.sendEmailOtp(req.body.email)
     return OkResponse.send(res, { data })
   }
+
+  forgotPassword = async (req: Request, res: Response) => {
+    const data = await AuthService.forgotPassword({ email: req.body.email })
+    return OkResponse.send(res, { data })
+  }
+
+  verifyResetOtp = async (req: Request, res: Response) => {
+    const data = await AuthService.verifyResetOtp({
+      email: req.body.email,
+      otp: req.body.otp,
+    })
+    return OkResponse.send(res, { data })
+  }
+
+  resetPassword = async (req: Request, res: Response) => {
+    const data = await AuthService.resetPassword({
+      resetTicket: req.body.resetTicket,
+      password: req.body.password,
+    })
+    return OkResponse.send(res, { data })
+  }
 }
 
 export default new AuthController()
