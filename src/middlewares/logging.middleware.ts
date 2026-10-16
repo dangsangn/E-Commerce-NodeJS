@@ -1,6 +1,7 @@
 import logger, { runWithContext, setUserId } from '@/loggers'
 import { randomUUID } from 'crypto'
 import { NextFunction, Request, Response } from 'express'
+import { getClientIp } from '@/utils/client-ip.util'
 
 export const loggingMiddleware = (
   req: Request,
@@ -20,7 +21,9 @@ export const loggingMiddleware = (
     logger.http('request started', {
       method: req.method,
       url: req.originalUrl,
-      ip: req.ip,
+      // The API key is not checked yet, so the end-user IP cannot be trusted
+      // here — log only who opened the connection.
+      peerIp: req.ip,
     })
   })
 
@@ -33,7 +36,8 @@ export const loggingMiddleware = (
     const meta = {
       method: req.method,
       url: req.originalUrl,
-      ip: req.ip,
+      ip: getClientIp(req),
+      peerIp: req.ip,
       statusCode: res.statusCode,
       duration: `${duration.toFixed(2)}ms`,
     }

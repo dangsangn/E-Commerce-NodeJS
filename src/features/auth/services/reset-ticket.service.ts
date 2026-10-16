@@ -19,6 +19,13 @@ class ResetTicketService {
     return ticket
   }
 
+  // Read-only lookup: lets resetPassword validate the new password BEFORE the
+  // ticket is spent, so a rejected password does not end the reset session.
+  // Never treat a peek as authorisation on its own — only consume() is.
+  static async peek(ticket: string): Promise<string | null> {
+    return (await redis.get(`pwd:ticket:${hashTicket(ticket)}`)) ?? null
+  }
+
   // Single use: read and delete atomically. Returns the userId, or null when
   // the ticket is unknown, already spent, or expired.
   static async consume(ticket: string): Promise<string | null> {

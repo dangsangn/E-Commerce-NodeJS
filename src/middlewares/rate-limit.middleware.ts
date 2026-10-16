@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { pubClient as redis } from '@/utils/redis.util'
 import { BadRequestError } from '@/core/error.response'
 import { asyncHandler } from '@/utils'
+import { getClientIp } from '@/utils/client-ip.util'
 
 const INCR_WITH_TTL = `
   local n = redis.call('INCR', KEYS[1])
@@ -19,8 +20,9 @@ const INCR_WITH_TTL = `
  * thousands of different addresses — that costs us both account enumeration
  * and a burnt SMTP quota (which in turn damages sending-domain reputation).
  *
- * Note: behind a reverse proxy, `req.ip` is the proxy unless the app sets
- * `trust proxy` — in which case every user would share one bucket.
+ * The IP comes from getClientIp: requests arrive via our Next.js server, so
+ * plain req.ip would put every user into one shared bucket. See
+ * docs/22. client-ip-forwarding-guide.md
  */
 export const rateLimitByIp = (opts: {
   keyPrefix: string
@@ -28,7 +30,7 @@ export const rateLimitByIp = (opts: {
   windowSec: number
 }) =>
   asyncHandler(async (req: Request, _res: Response, next: NextFunction) => {
-    const ip = req.ip ?? 'unknown'
+    const ip = getClientIp(req)
     const hits = (await redis.eval(INCR_WITH_TTL, {
       keys: [`rl:${opts.keyPrefix}:${ip}`],
       arguments: [String(opts.windowSec)],

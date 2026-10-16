@@ -215,7 +215,9 @@ class AuthService {
     resetTicket: string
     password: string
   }) => {
-    const userId = await ResetTicketService.consume(resetTicket)
+    // Peek, validate, THEN spend. Spending first would burn the ticket on any
+    // rejected password and send the user all the way back to a new OTP.
+    const userId = await ResetTicketService.peek(resetTicket)
     if (!userId) throw new BadRequestError('Reset session is invalid or expired')
 
     // usr_password is `select: false` in the schema, so it must be asked for.
@@ -233,6 +235,15 @@ class AuthService {
 
     const salt = await bcrypt.genSalt(10)
     const hashPassword = await bcrypt.hash(password, salt)
+
+    // The atomic spend is what authorises the write, not the peek above: of two
+    // concurrent requests holding the same ticket, only one gets the userId
+    // back from GETDEL — the other stops here without touching the password.
+    const spentBy = await ResetTicketService.consume(resetTicket)
+    if (spentBy !== userId) {
+      throw new BadRequestError('Reset session is invalid or expired')
+    }
+
     await UserModel.updateOne(
       { _id: userId },
       { $set: { usr_password: hashPassword } },

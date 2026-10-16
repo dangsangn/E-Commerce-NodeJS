@@ -3,6 +3,8 @@ import AuthController from '../controllers'
 import { asyncHandler } from '../../../utils'
 import { authentication } from '../utils/checkAuth'
 import { rateLimitByIp } from '@/middlewares/rate-limit.middleware'
+import { validationMiddleware } from '@/middlewares/validation.middleware'
+import { ResetPasswordDTO } from '../dtos'
 
 const router = express.Router()
 
@@ -23,7 +25,11 @@ router.post(
   asyncHandler(AuthController.forgotPassword),
 )
 router.post('/verify-reset-otp', asyncHandler(AuthController.verifyResetOtp))
-router.post('/reset-password', asyncHandler(AuthController.resetPassword))
+router.post(
+  '/reset-password',
+  validationMiddleware(ResetPasswordDTO, 'body'),
+  asyncHandler(AuthController.resetPassword),
+)
 
 router.use(authentication)
 router.post('/logout', asyncHandler(AuthController.logout))

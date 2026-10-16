@@ -58,6 +58,18 @@ const main = async () => {
   check('reset resend NOT blocked by signup cooldown',
     (await OtpService.canResend(EMAIL, 'reset')) === true)
 
+  // --- a verified code lifts its own cooldown ("Start over" right after OTP) ---
+  await cleanup()
+  check('reset cooldown armed by first send', (await OtpService.canResend(EMAIL, 'reset')) === true)
+  const spent = await OtpService.generate(EMAIL, 'reset')
+  await OtpService.verify(EMAIL, spent, 'reset')
+  check('new reset code allowed right after a successful verify',
+    (await OtpService.canResend(EMAIL, 'reset')) === true)
+  await OtpService.generate(EMAIL, 'reset')
+  await OtpService.verify(EMAIL, '000000', 'reset')
+  check('failed verify does NOT lift the cooldown',
+    (await OtpService.canResend(EMAIL, 'reset')) === false)
+
   // --- attempt counter is per purpose ---
   await cleanup()
   await OtpService.generate(EMAIL, 'reset')
@@ -96,6 +108,27 @@ const main = async () => {
   )
   check(`8 concurrent consumes -> exactly 1 success (got ${consumed.filter(Boolean).length})`,
     consumed.filter(Boolean).length === 1)
+
+  // --- peek: validate before spending ---
+  const t3 = await ResetTicketService.issue('64f000000000000000000abc')
+  check('peek returns the userId', (await ResetTicketService.peek(t3)) === '64f000000000000000000abc')
+  check('peek does NOT spend the ticket (rejected password can retry)',
+    (await ResetTicketService.peek(t3)) === '64f000000000000000000abc')
+  check('consume still works after peeks',
+    (await ResetTicketService.consume(t3)) === '64f000000000000000000abc')
+  check('peek after consume returns null', (await ResetTicketService.peek(t3)) === null)
+
+  // Two resets racing on one ticket: both peeks pass, only one consume wins —
+  // exactly the guard resetPassword relies on before writing the password.
+  const t4 = await ResetTicketService.issue('64f000000000000000000abc')
+  const raced = await Promise.all(
+    Array.from({ length: 4 }, async () => {
+      const peeked = await ResetTicketService.peek(t4)
+      return peeked !== null && (await ResetTicketService.consume(t4)) === peeked
+    }),
+  )
+  check(`4 concurrent peek+consume -> exactly 1 write allowed (got ${raced.filter(Boolean).length})`,
+    raced.filter(Boolean).length === 1)
 
   await cleanup()
   const leftover = await redis.keys(`*${EMAIL}*`)

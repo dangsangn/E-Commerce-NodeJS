@@ -77,8 +77,13 @@ class OtpService {
     })) as number
 
     // Clear the counter on success so a fresh code does not inherit the
-    // failed attempts of the previous one.
-    if (match === 1) await redis.del(attemptKey)
+    // failed attempts of the previous one. Also lift the resend cooldown: the
+    // code it protected is spent, and leaving it up makes a request for a new
+    // one within 60s silently send nothing (e.g. "Start over" right after
+    // verifying a reset code). Only the inbox owner can verify, so this opens
+    // no spam path.
+    if (match === 1)
+      await redis.del([attemptKey, `otp:resend:${purpose}:${email}`])
     return match === 1
   }
 
